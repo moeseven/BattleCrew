@@ -1,3 +1,4 @@
+package gameLogic;
 
 public abstract class Item {
 
