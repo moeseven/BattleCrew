@@ -5,20 +5,20 @@ import java.util.LinkedList;
 
 
 public class Player implements Serializable{
-	private Hero selectedHero;
+	private Warrior selectedHero;
 	//private Quest activeQuest;
-	protected LinkedList<Hero> heroes;
+	protected LinkedList<Warrior> heroes;
 	private LinkedList<Item> inventory;
 	protected int inventoryCapacity;
-	private LinkedList<Hero> availableHeroes;
+	private LinkedList<Warrior> availableHeroes;
 	protected int groupSize;
 	private Game game;
 	private int gold;
 	private boolean cheat=false;
 	public Player(Game game) {
 		this.game=game;
-		heroes=new LinkedList<Hero>();
-		availableHeroes=new LinkedList<Hero>();
+		heroes=new LinkedList<Warrior>();
+		availableHeroes=new LinkedList<Warrior>();
 		inventoryCapacity=100;
 		inventory=new LinkedList<Item>();
 		gold=100;
@@ -35,7 +35,7 @@ public class Player implements Serializable{
 		}
 		
 	}
-	public boolean addSummon(Hero hero) {
+	public boolean addSummon(Warrior hero) {
 		for(int a=0; a<heroes.size();a++) {// prevent equal names
 			for(int b=0; b<heroes.size();b++) {
 				if(heroes.get(b).getName().equals(hero.getName())) {
@@ -47,7 +47,7 @@ public class Player implements Serializable{
 		hero.setPlayer(this);
 		return true;
 	}
-	public boolean addHero(Hero hero) {// do not exeed maximum size
+	public boolean addHero(Warrior hero) {// do not exeed maximum size
 		if(heroes.size()<groupSize) {
 			for(int a=0; a<heroes.size();a++) {// prevent equal names
 				for(int b=0; b<heroes.size();b++) {
@@ -65,14 +65,14 @@ public class Player implements Serializable{
 			return false;
 		}
 	}
-	public void removeHeroFromTavern(Hero hero) {
+	public void removeHeroFromTavern(Warrior hero) {
 		if(availableHeroes.size()>=1&&availableHeroes.contains(hero)) {
 			availableHeroes.remove(hero);
 			hero.setPlayer(null);
 		}
 	}
 	public void removeDeadHeroesFromRoster() {
-		LinkedList<Hero> deadHeroes=new LinkedList<Hero>();
+		LinkedList<Warrior> deadHeroes=new LinkedList<Warrior>();
 		for(int i=0; i<heroes.size();i++) {
 			if(heroes.get(i).isDead()) {
 				deadHeroes.add(heroes.get(i));
@@ -82,7 +82,7 @@ public class Player implements Serializable{
 			heroes.remove(deadHeroes.get(i));
 		}
 	}
-	public void removeHero(Hero hero) {
+	public void removeHero(Warrior hero) {
 		if(heroes.size()>=1&&heroes.contains(hero)) {
 			heroes.remove(hero);
 			//hero.setPlayer(null);
@@ -116,16 +116,16 @@ public class Player implements Serializable{
 		}
 		return success;
 	}
-	public Hero getSelectedHero() {
+	public Warrior getSelectedHero() {
 		return selectedHero;
 	}
-	public void setSelectedHero(Hero selectedHero) {
+	public void setSelectedHero(Warrior selectedHero) {
 		this.selectedHero = selectedHero;
 	}
-	public LinkedList<Hero> getHeroes() {
+	public LinkedList<Warrior> getHeroes() {
 		return heroes;
 	}
-	public void setHeroes(LinkedList<Hero> heroes) {
+	public void setHeroes(LinkedList<Warrior> heroes) {
 		this.heroes = heroes;
 	}
 	public LinkedList<Item> getInventory() {
@@ -144,10 +144,10 @@ public class Player implements Serializable{
 	public void setGame(Game game) {
 		this.game = game;
 	}
-	public LinkedList<Hero> getAvailableHeroes() {
+	public LinkedList<Warrior> getAvailableHeroes() {
 		return availableHeroes;
 	}
-	public void setAvailableHeroes(LinkedList<Hero> availableHeroes) {
+	public void setAvailableHeroes(LinkedList<Warrior> availableHeroes) {
 		this.availableHeroes = availableHeroes;
 	}
 	public int getGroupSize() {

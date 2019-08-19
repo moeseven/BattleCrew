@@ -8,7 +8,7 @@ public abstract class Item {
 		return 0;
 	}
 
-	public abstract void mod(Hero hero);
+	public abstract void mod(Warrior hero);
 
 	public int getWeight() {
 		// TODO Auto-generated method stub
@@ -20,6 +20,6 @@ public abstract class Item {
 		return null;
 	}
 
-	public abstract void demod(Hero hero);
+	public abstract void demod(Warrior hero);
 
 }

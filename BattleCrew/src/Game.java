@@ -15,7 +15,7 @@ public class Game implements Serializable {
 	public MyLog log;
 	//private LinkedList<Quest> availableQuests;
 	private int idleStressRelief = 10;
-	private Hero lastCaster;
+	private Warrior lastCaster;
 	public Game() {
 		super();
 		player = new Player(this);
@@ -42,10 +42,10 @@ public class Game implements Serializable {
 	public int getMaximumGroupSize() {
 		return maximumGroupSize;
 	}
-	public Hero getLastCaster() {
+	public Warrior getLastCaster() {
 		return lastCaster;
 	}
-	public void setLastCaster(Hero lastCaster) {
+	public void setLastCaster(Warrior lastCaster) {
 		this.lastCaster = lastCaster;
 	}
 
