@@ -1,2 +1,13 @@
-name,stamina_cost,damage_target,heal_target,stamina_heal_self
-bash,7,5,0,0
+name,stamina_cost,damage_target,heal_target,stamina_damage,range,miss_base,miss_per_distance,use_per_round,self_target_allowed,has_target
+shortsword,6,6,0,1,1,1,0,1,0,1
+slingshot,4,4,0,1,7,2,2,1,0,1
+shortbow,5,7,0,0,9,3,2,1,0,1
+longbow,8,12,0,0,12,7,1,1,0,1
+longsword,8,9,0,1,1,2,0,1,0,1
+pike,10,10,0,1,2,3,2,1,0,1
+helebard,14,17,0,3,2,5,2,1,0,1
+broadsword,12,16,0,2,1,4,0,1,0,1
+quickBandage,5,0,5,1,1,0,0,1,1,1
+club,8,5,0,3,1,0,0,1,0,1
+mace,10,7,0,5,1,0,0,1,0,1
+swapWeapon,7,0,0,0,0,0,0,1,0,0

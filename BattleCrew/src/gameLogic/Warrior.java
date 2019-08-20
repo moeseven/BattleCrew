@@ -8,14 +8,16 @@ public class Warrior {
 	private LinkedList<Card> offensives,defensives;
 	private LinkedList<Ability> abilities;
 	private Equipment equipment;
-	private int health_max;
 	private int health;
-	private int stamina_max;
 	private int stamina;
+	private int walked_tiles_this_round;	
+	private int round_stamina;
+	private int speed;// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
+	//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
 	//stats
 	private int strength; //~maximum stamina use per round	
-	private int endurance; //~stamina_max
-	private int vitality; //~health_max
+	private int endurance; //~stamina_max=2*endurance
+	private int vitality; //~health_max=3*vitality
 	private int dexterity; //~deck size (avg card quality increases with size)
 	// offesnive deck: -3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
 	// defesnive deck: 0,0,0,1,1,2 (does not grow)
@@ -23,6 +25,11 @@ public class Warrior {
 		this.player=player;
 		abilities= new LinkedList<Ability>();
 		equipment=new Equipment(this);
+	}
+	public void initialize() {
+		health=3*vitality;
+		stamina=3*endurance;
+		walked_tiles_this_round=0;
 	}
 	public void setUpDecks() {
 		setUpDefensiveDeck();
@@ -61,6 +68,16 @@ public class Warrior {
 		defensive_deck.add(new Card(2));//1*two
 		Collections.shuffle(defensive_deck);
 	}
+	public void roundBegin() {
+		stamina+=2+(endurance/3.0+round_stamina/1.5);
+		if(stamina>3*endurance) {
+			stamina=3*endurance;
+		}
+		round_stamina=strength;
+		walked_tiles_this_round=0;
+	}
+	
+	//getters and setters
 	public Player getPlayer() {
 		// TODO Auto-generated method stub
 		return player;

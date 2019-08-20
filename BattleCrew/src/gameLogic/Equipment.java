@@ -9,6 +9,8 @@ public class Equipment implements Serializable{
 	private Item potion=null;
 	private Item hand1=null;
 	private Item hand2=null;
+	private Item hand1b=null;
+	private Item hand2b=null;
 	private Item body=null;
 	private Item head=null;
 	private Item ring1=null;
@@ -66,6 +68,12 @@ public class Equipment implements Serializable{
 		if(hand1!=hand2&&hand2!=null&&hand2.droppable) {
 			allItems.add(hand2);
 		}
+		if(hand1b!=null&&hand1b.droppable) {
+			allItems.add(hand1b);
+		}		
+		if(hand1b!=hand2b&&hand2b!=null&&hand2b.droppable) {
+			allItems.add(hand2b);
+		}
 		if(head!=null&&head.droppable) {
 			allItems.add(head);
 		}
@@ -87,6 +95,23 @@ public class Equipment implements Serializable{
 			return true;
 		}else {
 			return false;
+		}		
+	}
+	public void swapWeapons() {
+		Item hand1_vol,hand2_vol;
+		hand1_vol=hand1b;
+		hand2_vol=hand2b;
+		hand1b=hand1;
+		hand2b=hand2;
+		unequipHand1();
+		unequipHand2();
+		if (hand1_vol!=null) {
+			equipHand1(hand1_vol);
+		}
+		if (hand2_vol!=null) {
+			if(hand1_vol!=hand2_vol) {
+				equipHand2(hand2_vol);
+			}
 		}		
 	}
 	//equip

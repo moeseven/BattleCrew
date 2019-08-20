@@ -1,16 +1,29 @@
 package gameLogic;
 
-public abstract class Item {
+public class Item {
 
 	public boolean droppable;
+	private int gold_value;
+	private int category;
+
+	public Item(String[] stats) {
+		super();
+		//generate item out of table
+	}
 
 	public int getCategory() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public abstract void mod(Warrior hero);
-
+	public void mod(Warrior hero) {
+		
+	}
+	public void demod(Warrior hero) {
+	
+	}
+	
+	//getters and setters
 	public int getWeight() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -21,6 +34,6 @@ public abstract class Item {
 		return null;
 	}
 
-	public abstract void demod(Warrior hero);
+	
 
 }
