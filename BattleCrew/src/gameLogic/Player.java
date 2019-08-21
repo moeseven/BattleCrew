@@ -4,8 +4,12 @@ package gameLogic;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import HexTilePlayground.HexTile;
+import HexTilePlayground.HexTilePlayer;
+import HexTilePlayground.HexTileUnit;
 
-public class Player implements Serializable{
+
+public class Player implements HexTilePlayer,Serializable{
 	private Warrior selectedHero;
 	//private Quest activeQuest;
 	protected LinkedList<Warrior> heroes;
@@ -163,5 +167,15 @@ public class Player implements Serializable{
 	}
 	public void setCheat(boolean c) {
 		cheat=c;
+	}
+	@Override
+	public HexTile getSelectedTile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public HexTileUnit getSelectedUnit() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

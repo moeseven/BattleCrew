@@ -5,10 +5,14 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import gameLogic.Ability;
+import gameLogic.Game;
+import gameLogic.Item;
 public class ItemBuilder {
 	private HashMap<String,String[]> map;
-	public ItemBuilder() throws IOException {		
+	private Game game;
+	public ItemBuilder(Game game) throws IOException {		
 		super();		
+		this.game=game;
 		map= new HashMap<String,String[]>();
 		String path ="./resources/Items.csv";
 		String row;
@@ -20,12 +24,12 @@ public class ItemBuilder {
 		csvReader.close();
 	}
 
-	public Ability buildAbilitybyName(String name) {
+	public Item buildItembyName(String name) {
 		if (map.containsKey(name)) {
-			return new Ability(map.get(name)); //all parameters needed to genarate an item
+			return new Item(map.get(name),game); //all parameters needed to genarate an item
 		}else {
 			
-			return new Ability(1);
+			return new Item();
 		}
 		
 	}

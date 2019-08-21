@@ -4,13 +4,17 @@ package gameLogic;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import builders.AbilityBuilder;
+import builders.ItemBuilder;
+
 public class Game implements Serializable {
 	private Player player; // change this for multiplayer
 	protected int maximumGroupSize=5;
 	//public GeneratorRandom generator;
 	// public MyImageLoader imageLoader;
 	//public CardBuilder cardBuilder;
-	//public ItemBuilder itemBuilder;
+	public ItemBuilder itemBuilder;
+	public AbilityBuilder abilityBuilder;
 	//public ItemSpecialBuilder itemSpecialBuilder;
 	//public ItemSuffixBuilder itemSuffixBuilder;
 	public MyLog log;

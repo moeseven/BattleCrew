@@ -25,7 +25,7 @@ public class AbilityBuilder {
 			return new Ability(map.get(name)); //all parameters needed to genarate an ability
 		}else {
 			
-			return new Ability(1);
+			return new Ability();
 		}
 		
 	}

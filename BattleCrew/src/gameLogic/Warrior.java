@@ -2,7 +2,11 @@ package gameLogic;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class Warrior {
+import HexTilePlayground.HexTile;
+import HexTilePlayground.HexTilePlayer;
+import HexTilePlayground.HexTileUnit;
+
+public class Warrior implements HexTileUnit{
 	private Player player;
 	private LinkedList<Card> offensive_deck,defensive_deck;
 	private LinkedList<Card> offensives,defensives;
@@ -101,6 +105,46 @@ public class Warrior {
 	public boolean isDead() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	public float getHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public HexTile getHexTile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public int getImageNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public float getMaxHealth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public boolean isFleeing() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isReadyToMove() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean reachableTile(HexTile arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void setTile(HexTile arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
