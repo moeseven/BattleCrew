@@ -56,6 +56,14 @@ public class Equipment implements Serializable{
 		}
 		return success;
 	}
+	public int getTotalWeight() {
+		LinkedList<Item> list = getAllEquippedItems();
+		int weight=0;
+		for (int i = 0; i <list.size(); i++) {
+			weight+=list.get(i).getWeight();
+		}
+		return weight;
+	}
 	public LinkedList<Item> getAllEquippedItems(){
 		LinkedList<Item> allItems=new LinkedList<Item>();
 		//only return items that are equipable to heroes dont return "teeth,claws" for example

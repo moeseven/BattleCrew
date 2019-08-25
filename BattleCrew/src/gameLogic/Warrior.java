@@ -7,80 +7,230 @@ import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileUnit;
 
 public class Warrior implements HexTileUnit{
+	private static int BASE_HP=10;
+	private static int BASE_STAMINA=20;
 	private Player player;
-	private LinkedList<Card> offensive_deck,defensive_deck;
+	private Deck offensive_deck,defensive_deck;
 	private LinkedList<Card> offensives,defensives;
 	private LinkedList<Ability> abilities;
 	private Equipment equipment;
 	private int health;
-	private int stamina;
+	private double stamina;
 	private int walked_tiles_this_round;	
-	private int round_stamina;
+	private int round_actions;
 	private int speed;// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
 	//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
-	//stats
-	private int strength; //~maximum stamina use per round	
-	private int endurance; //~stamina_max=2*endurance
+	private int level;
+	private int skillpoints;
+	//stats	
+	private int offense; //~deck size offensive (avg card quality increases with size)
+	private int defense; //~deck size defensive (avg card quality increases with size)
+	private int strength; //  stamina cost penalty vs weight of equipment satminacost_mult= max(1,1+(strength-total_weight)*0.1)
+	private int dexterity; //miss chance mitigation vs dexterity demand of ability + //TODO reroll defensive/offensive card vs lower dexterity opponent
+	private int endurance; //~stamina_max=3*endurance
 	private int vitality; //~health_max=3*vitality
-	private int dexterity; //~deck size (avg card quality increases with size)
-	// offesnive deck: -3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
-	// defesnive deck: 0,0,0,1,1,2 (does not grow)
-	public Warrior(Player player) {
+	
+	// offensive deck: 0(shuffle),-3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
+	// defensive deck: 0(shuffle),1,1,1,2,2,2,2,3,3,3,3,3 ...
+	public Warrior(Player player,int level) {
 		this.player=player;
+		this.level=level;
 		abilities= new LinkedList<Ability>();
 		equipment=new Equipment(this);
+		offensive_deck= new OffensiveDeck();
+		defensive_deck= new DefensiveDeck();
+		//lvl 1 stats:
+		offense=defense=strength=dexterity=endurance=vitality=1;
+		for (int i = 0; i < level; i++) {
+			lvlUp(false,false);
+		}
 	}
 	public void initialize() {
-		health=3*vitality;
-		stamina=3*endurance;
+		health=calcMaxHp();
+		stamina=calcMaxStamina();
+		setUpDecks();
 		walked_tiles_this_round=0;
 	}
 	public void setUpDecks() {
-		setUpDefensiveDeck();
-		setUpOffensiveDeck();
+		offensive_deck.setUp();
+		defensive_deck.setUp();
 	}
-	public void setUpOffensiveDeck() {
-		//offensive_deck
-		offensive_deck= new LinkedList<Card>();		
-		for (int i = 0; i <offensives.size(); i++) {
-			offensive_deck.add(offensives.get(i));
-		}
-		// offesnive deck: -3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
-		int modifier=-3;
-		int modifierCount=1;
-		int modifierCounter=0;
-		for (int i = 0; i < dexterity; i++) {
-			for (modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
-				offensive_deck.add(new Card(modifier));
-			}
-			modifier++;modifierCount++;	
-		}
-		Collections.shuffle(offensive_deck);
-	}
-	public void setUpDefensiveDeck() {
-		//defensive_deck
-		defensive_deck= new LinkedList<Card>();
-		for (int i = 0; i <defensives.size(); i++) {
-			defensive_deck.add(defensives.get(i));
-		}
-		for (int i = 0; i < 3; i++) {//3*zero
-			defensive_deck.add(new Card(0));
-		}
-		for (int i = 0; i < 2; i++) {//2*one
-			defensive_deck.add(new Card(1));
-		}
-		defensive_deck.add(new Card(2));//1*two
-		Collections.shuffle(defensive_deck);
+	public void battleBegin() {
+		setUpDecks();
+		initialize();
 	}
 	public void roundBegin() {
-		stamina+=2+(endurance/3.0+round_stamina/1.5);
-		if(stamina>3*endurance) {
-			stamina=3*endurance;
-		}
-		round_stamina=strength;
+		round_actions=3;
 		walked_tiles_this_round=0;
+		stamina+=3;
+		if(stamina>calcMaxStamina()) {
+			stamina=calcMaxStamina();
+		}
+		if (stamina<0) {
+			stamina = 0;
+		}		
+	}
+	public void lvlUp(boolean display,boolean manualSkilling) { 		
+		vitality+=1;
+		if(display) {
+			//TODO 
+		}
+		if (manualSkilling) {
+			skillpoints+=1;
+			addRandomStat(1);
+		}else {
+			addRandomStat(2);
+		}
+	}
+	public void addRandomStat(int burst) {
+		for(int i=0; i<level+15;i++) {
+			int random=(int) (Math.random()*6);
+			switch (random) {
+			case 0:
+				offense+=burst;
+				break;
+			case 1:
+				defense+=burst;
+				break;	
+			case 2:
+				strength+=burst;
+				break;
+			case 3:
+				dexterity+=burst;
+				break;
+			case 4:
+				endurance+=burst;
+				break;	
+			case 5:
+				vitality+=burst;
+				break;
+			default:
+				vitality+=burst;
+				break;
+			}
+		}
+	}
+	//battle
+	public boolean isAHit(Ability ability, Warrior target_warrior) {//miss_chance horrible performance
+		int deficit=dexterity-ability.getDexterity_demand()-player.getGame().getBattle().getBattleField().getDistance(getHexTile(), getHexTile());		
+		LinkedList<Boolean> dice= new LinkedList<Boolean>();
+		for (int i = 0; i < 9; i++) {
+			dice.add(true);
+		}
+		dice.add(false);
+		if (deficit>0) {
+			for (int i = 0; i < deficit; i++) {
+				dice.add(true);
+			}
+		}else {
+			for (int i = 0; i < -deficit; i++) {
+				dice.add(false);
+			}
+		}
+		Collections.shuffle(dice);
+		Boolean hit= dice.getFirst();
+		if (!hit) {
+			player.getGame().log.addLine("miss!");
+		}		
+		return hit;
+	}
+	//getters calc
+	public double getStaminaCostMultiplier() {
+		return  Math.max(1,1+(equipment.getTotalWeight()-strength)*0.15);
+	}
+	public int calcMaxHp() {
+		return 3*vitality+BASE_HP;
+	}
+	public int calcMaxStamina() {
+		return 3*endurance+BASE_STAMINA;
+	}
+	public int offensiveRoll() {
+		return offensive_deck.pullCard().getModifier();
+	}
+	public int defensiveRoll() {
+		return defensive_deck.pullCard().getModifier();
 	}
 	
+	////////////////////////////////////////////////
+	//Deck
+	private class Deck {
+		protected LinkedList<Card> cards;
+		public Deck() {
+			super();
+			cards = new LinkedList<Card>();
+			
+		}
+		public Card pullCard() {//puts top card back to bottom and returns it
+			Card pulledCard= cards.removeFirst();
+			cards.addLast(pulledCard);
+			if(pulledCard.isShuffler()) {//shuffle
+				shuffle();
+			}
+			return pulledCard;
+		}
+		public void shuffle() {
+			Collections.shuffle(cards);
+		}
+		public void setUp() {
+			//deck: 0(shuffle),1,1,1,2,2,2,2,3,3,3,3,3 ...
+			cards= new LinkedList<Card>();
+			cards.add(new Card(0,true));//shuffle card
+			int modifier=1;
+			int modifierCount=3;
+			int modifierCounter=0;
+			for (int i = 0; i < defense; i++) {
+				for (modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
+					cards.add(new Card(modifier,false));
+				}
+				modifier++;modifierCount++;	
+			}
+			shuffle();		
+		}		
+	}
+	private class DefensiveDeck extends Deck{
+		@Override
+		public void setUp() {
+			// defensive deck: 0(shuffle),1,1,1,2,2,2,2,3,3,3,3,3 ...
+			cards= new LinkedList<Card>();
+			for (int i = 0; i <defensives.size(); i++) {
+				cards.add(defensives.get(i));
+			}
+			cards.add(new Card(0,true));//shuffle card
+			int modifier=1;
+			int modifierCount=3;
+			int modifierCounter=0;
+			for (int i = 0; i < defense; i++) {
+				for (modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
+					cards.add(new Card(modifier,false));
+				}
+				modifier++;modifierCount++;	
+			}
+			shuffle();		
+		}
+		
+	}
+	private class OffensiveDeck extends Deck{
+		@Override
+		public void setUp() {
+			//offensive_deck
+			cards= new LinkedList<Card>();		
+			for (int i = 0; i <offensives.size(); i++) {
+				cards.add(offensives.get(i));
+			}
+			// offesnive deck: 0(shuffle),-3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
+			cards.add(new Card(0,true));
+			int modifier=-3;
+			int modifierCount=1;
+			int modifierCounter=0;
+			for (int i = 0; i < offense; i++) {
+				for (modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
+					cards.add(new Card(modifier,false));
+				}
+				modifier++;modifierCount++;	
+			}
+			shuffle();
+		}		
+	}
 	//getters and setters
 	public Player getPlayer() {
 		// TODO Auto-generated method stub
@@ -146,5 +296,44 @@ public class Warrior implements HexTileUnit{
 		// TODO Auto-generated method stub
 		
 	}
-
+	public double getStamina() {
+		return stamina;
+	}
+	public void setStamina(double stamina) {
+		this.stamina = stamina;
+	}
+	public int getOffense() {
+		return offense;
+	}
+	public void setOffense(int offense) {
+		this.offense = offense;
+	}
+	public int getDefense() {
+		return defense;
+	}
+	public void setDefense(int defense) {
+		this.defense = defense;
+	}
+	public int getStrength() {
+		return strength;
+	}
+	public void setStrength(int strength) {
+		this.strength = strength;
+	}
+	public int getDexterity() {
+		return dexterity;
+	}
+	public void setDexterity(int dexterity) {
+		this.dexterity = dexterity;
+	}
+	public int getVitality() {
+		return vitality;
+	}
+	public void setVitality(int vitality) {
+		this.vitality = vitality;
+	}
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
 }

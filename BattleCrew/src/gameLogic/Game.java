@@ -9,6 +9,8 @@ import builders.ItemBuilder;
 
 public class Game implements Serializable {
 	private Player player; // change this for multiplayer
+	private Player opponent;
+	private Battle battle;
 	protected int maximumGroupSize=5;
 	//public GeneratorRandom generator;
 	// public MyImageLoader imageLoader;
@@ -33,7 +35,9 @@ public class Game implements Serializable {
 		log = new MyLog();		
 		// cardBuilder.printMap();
 	}
-
+	public void startBattle(Battlefield battlefield, Player attacker, Player defender) {
+		battlefield= new Battlefield(10, 10, 15, this);
+	}
 	// getters and setters
 
 	public Player getPlayer() {
@@ -53,5 +57,17 @@ public class Game implements Serializable {
 	public void setLastCaster(Warrior lastCaster) {
 		this.lastCaster = lastCaster;
 	}
-
+	public Battle getBattle() {
+		return battle;
+	}
+	public void setBattlefield(Battle battle) {
+		this.battle = battle;
+	}
+	public Player getOpponent() {
+		return opponent;
+	}
+	public void setOpponent(Player opponent) {
+		this.opponent = opponent;
+	}
+	
 }
