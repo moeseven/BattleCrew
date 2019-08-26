@@ -30,4 +30,7 @@ public class BattleWindow extends JFrame{
 	public String get_sprite_path() {
 		return sprite_path;
 	}
+	public Game getGame() {
+		return game;
+	}
 }

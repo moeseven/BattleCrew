@@ -3,9 +3,12 @@ package gameLogic;
 public class Battle {
 	private Warrior activeWarrior;
 	private Battlefield battleField;
+	private Player attacker,defender;
 	private Game game;
-	public Battle(Game game, Battlefield battlefield) {
+	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		this.battleField=battlefield;
+		this.attacker=attacker;
+		this.defender=defender;
 	}
 	
 

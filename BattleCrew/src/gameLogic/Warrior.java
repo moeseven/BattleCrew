@@ -14,11 +14,12 @@ public class Warrior implements HexTileUnit{
 	private Deck offensive_deck,defensive_deck;
 	private LinkedList<Card> offensives,defensives;
 	private LinkedList<Ability> abilities;
+	private Ability selected_ability;
 	private Equipment equipment;
 	private int image_number;
 	private int walked_tiles_this_round;	
 	private int round_actions;
-	private Tile tile;
+	private HexTile tile;
 	// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
 	//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
 	private int level;
@@ -46,11 +47,17 @@ public class Warrior implements HexTileUnit{
 		equipment=new Equipment(this);
 		offensive_deck= new OffensiveDeck();
 		defensive_deck= new DefensiveDeck();
-		give_random_stats();
+		offensives=new LinkedList<Card>();
+		defensives=new LinkedList<Card>();
+		give_random_starting_stats();
+		initialize();
 	}
-	private void give_random_stats() {
+	private void give_random_starting_stats() {
+		image_number=33;
 		//lvl 1 stats:
 		offense=defense=strength=dexterity=endurance=vitality=1;
+		addRandomStat(3);
+		addRandomStat(2);
 		addRandomStat(1);
 		for (int i = 0; i < level; i++) {
 			lvlUp(false,false);
@@ -60,7 +67,6 @@ public class Warrior implements HexTileUnit{
 		health=calcMaxHp();
 		stamina=calcMaxStamina();
 		setUpDecks();
-		walked_tiles_this_round=0;
 	}
 	public void setUpDecks() {
 		offensive_deck.setUp();
@@ -94,7 +100,6 @@ public class Warrior implements HexTileUnit{
 		}
 	}
 	public void addRandomStat(int burst) {
-		for(int i=0; i<level+15;i++) {
 			int random=(int) (Math.random()*6);
 			switch (random) {
 			case 0:
@@ -119,7 +124,6 @@ public class Warrior implements HexTileUnit{
 				vitality+=burst;
 				break;
 			}
-		}
 	}
 	//battle
 	public boolean isAHit(Ability ability, Warrior target_warrior) {//miss_chance horrible performance
@@ -282,7 +286,7 @@ public class Warrior implements HexTileUnit{
 	}
 	@Override
 	public void setTile(HexTile tile) {
-		this.tile=(Tile) tile;		
+		this.tile= tile;		
 	}
 	//////////////////////////////////////////
 	//getters and setters
@@ -293,21 +297,25 @@ public class Warrior implements HexTileUnit{
 
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
-	public void setName(String string) {
+	public void setName(String name) {
 		// TODO Auto-generated method stub
+		this.name=name;
 		
 	}
 
 	public void setPlayer(Player player) {
 		// TODO Auto-generated method stub
-		
+		this.player=player;
 	}
 
 	public boolean isDead() {
 		// TODO Auto-generated method stub
+		if (this.getHealth()<=0) {
+			return true;
+		}
 		return false;
 	}
 	

@@ -11,6 +11,7 @@ public class Game implements Serializable {
 	private Player player; // change this for multiplayer
 	private Player opponent;
 	private Battle battle;
+	public double image_scale;
 	protected int maximumGroupSize=5;
 	//public GeneratorRandom generator;
 	// public MyImageLoader imageLoader;
@@ -23,8 +24,9 @@ public class Game implements Serializable {
 	//private LinkedList<Quest> availableQuests;
 	private int idleStressRelief = 10;
 	private Warrior lastCaster;
-	public Game() {
+	public Game(double image_scale) {
 		super();
+		this.image_scale=image_scale;
 		player = new Player(this);
 		lastCaster= null;
 //		cardBuilder = new CardBuilder();
@@ -35,8 +37,8 @@ public class Game implements Serializable {
 		log = new MyLog();		
 		// cardBuilder.printMap();
 	}
-	public void startBattle(Battlefield battlefield, Player attacker, Player defender) {
-		battlefield= new Battlefield(10, 10, 15, this);
+	public void startExampleBattle(Player attacker, Player defender) {
+		battle= new Battle(this, new Battlefield(20, 10, image_scale, this), attacker, defender);		
 	}
 	// getters and setters
 

@@ -11,6 +11,7 @@ import HexTilePlayground.HexTileUnit;
 
 public class Player implements HexTilePlayer,Serializable{
 	private Warrior selectedWarrior;
+	private HexTile selectedTile;
 	private LinkedList<Warrior> availableWarriors;
 	protected LinkedList<Warrior> warriors;
 	private LinkedList<Item> inventory;
@@ -121,9 +122,29 @@ public class Player implements HexTilePlayer,Serializable{
 		}
 		return success;
 	}
-	public Warrior getSelectedHero() {
+	//////////////////HEXTILEPLAYER
+	@Override
+	public HexTile getSelectedTile() {
+		// TODO Auto-generated method stub
+		return selectedTile;
+	}
+	@Override
+	public Warrior getSelectedUnit() {
+		// TODO Auto-generated method stub
 		return selectedWarrior;
 	}
+	@Override
+	public void setSelectedUnit(HexTileUnit unit) {
+		// TODO Auto-generated method stub
+		selectedWarrior=(Warrior) unit;
+	}	
+	@Override
+	public void setSelectedTile(HexTile tile) {
+		// TODO Auto-generated method stub
+		this.selectedTile=tile;
+	}
+	///////////////////////////////	
+
 	public void setSelectedHero(Warrior selectedHero) {
 		this.selectedWarrior = selectedHero;
 	}
@@ -168,14 +189,8 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setCheat(boolean c) {
 		cheat=c;
 	}
-	@Override
-	public HexTile getSelectedTile() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public HexTileUnit getSelectedUnit() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
+
+	
 }

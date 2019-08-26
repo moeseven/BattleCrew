@@ -20,7 +20,7 @@ public class ControlComponent extends JComponent {
 	public ControlComponent(Player player,BattleWindow bw){
 		this.player=player;
 		this.bw=bw;
-		height=24;
+		height=12;
 		setBorder(new LineBorder(Color.GREEN));
 		super.setPreferredSize(new Dimension(440,height*15));
 		setVisible(true);
@@ -29,23 +29,23 @@ protected void paintComponent(Graphics g){
 	super.paintComponent(g);
 	//paint Hero info all interesting stats about the hero
 	LinkedList<String> lines=new LinkedList<String>();
-	lines.add(player.getSelectedHero().getName()+" ("+player.getSelectedHero().getName()+", "+player.getSelectedHero().getName()+")");
 	lines.add("");
-	lines.add("health: "+player.getSelectedHero().getHealth()+"/"+player.getSelectedHero().calcMaxHp()+" ("+player.getSelectedHero().getLevel()+")");
+	lines.add(player.getSelectedUnit().getName()+"  (Level "+player.getSelectedUnit().getLevel()+")");
+	lines.add("");
+	lines.add("health: "+(int)(player.getSelectedUnit().getHealth())+"/"+player.getSelectedUnit().calcMaxHp());
+	lines.add("stamina: "+(int)(player.getSelectedUnit().getStamina())+"/"+player.getSelectedUnit().calcMaxStamina());
 	//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
 	lines.add("");
 	//main stats
-	lines.add("offesnive skill: "+player.getSelectedHero().getOffense());
-	lines.add("defensive skill: "+player.getSelectedHero().getDefense());
-	lines.add("strength: "+player.getSelectedHero().getStrength());
-	lines.add("dexterity: "+player.getSelectedHero().getDexterity());
-	lines.add("vitality: "+player.getSelectedHero().getVitality());		
-	lines.add("");
-	//			
+	lines.add("offesnive skill: "+player.getSelectedUnit().getOffense());
+	lines.add("defensive skill: "+player.getSelectedUnit().getDefense());
+	lines.add("strength: "+player.getSelectedUnit().getStrength());
+	lines.add("dexterity: "+player.getSelectedUnit().getDexterity());
+	lines.add("vitality: "+player.getSelectedUnit().getVitality());		
 	lines.add("");
 	//defensive
-	lines.add("armor: "+player.getSelectedHero().getArmor());
-	lines.add("Level: "+player.getSelectedHero().getLevel());
+	lines.add("armor: "+player.getSelectedUnit().getArmor());
+	
 	//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
 	//Quirks
 	lines.add("");
@@ -61,14 +61,14 @@ protected void paintComponent(Graphics g){
 //		}
 //		lines.add("");
 //	}
-	//g.drawImage(StaticImageLoader.getImage(bw.get_sprite_path(), player.getSelectedHero().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
-	g.drawImage(MyStaticImageLoader.getImage(player.getSelectedHero().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
+	g.drawImage(StaticImageLoader.getScaledImage(bw.get_sprite_path(), player.getSelectedUnit().getImageNumber(), bw.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-50,null);	
+	//g.drawImage(MyStaticImageLoader.getImage(player.getSelectedUnit().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
 	//
 	for(int i=0; i<lines.size();i++) {
 		if(i<=height+1) {
-			g.drawString(lines.get(i), 10, 10+12*i);
+			g.drawString(lines.get(i), 160, 10+12*i);
 		}else {
-			g.drawString(lines.get(i), 150, 10+12*(i-height+2));
+			g.drawString(lines.get(i), 300, 10+12*(i-height+2));
 		}
 		
 	}
