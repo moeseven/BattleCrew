@@ -7,10 +7,12 @@ import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.Warrior;
 import gui.BattleWindow;
+import imageloader.MyStaticImageLoader;
 
 public class Main {
 	public static void main(String[] args) {		
 		StaticImageLoader.prepareImage("./images");
+		//MyStaticImageLoader.prepareImage();
 		Game game = new Game();
 		Player player = game.getPlayer();
 		Warrior warrior = new Warrior("Herbert", player, 1);

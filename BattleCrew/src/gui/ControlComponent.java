@@ -11,6 +11,7 @@ import javax.swing.border.LineBorder;
 
 import SpriteSheet.StaticImageLoader;
 import gameLogic.Player;
+import imageloader.MyStaticImageLoader;
 
 public class ControlComponent extends JComponent {
 	private Player player;
@@ -60,7 +61,8 @@ protected void paintComponent(Graphics g){
 //		}
 //		lines.add("");
 //	}
-	g.drawImage(StaticImageLoader.getImage(bw.get_sprite_path(), player.getSelectedHero().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
+	//g.drawImage(StaticImageLoader.getImage(bw.get_sprite_path(), player.getSelectedHero().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
+	g.drawImage(MyStaticImageLoader.getImage(player.getSelectedHero().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
 	//
 	for(int i=0; i<lines.size();i++) {
 		if(i<=height+1) {
