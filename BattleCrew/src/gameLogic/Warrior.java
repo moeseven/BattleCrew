@@ -10,37 +10,48 @@ public class Warrior implements HexTileUnit{
 	private static int BASE_HP=10;
 	private static int BASE_STAMINA=20;
 	private Player player;
+	private String name;
 	private Deck offensive_deck,defensive_deck;
 	private LinkedList<Card> offensives,defensives;
 	private LinkedList<Ability> abilities;
 	private Equipment equipment;
-	private int health;
-	private double stamina;
+	private int image_number;
 	private int walked_tiles_this_round;	
 	private int round_actions;
-	private int speed;// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
+	private Tile tile;
+	// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
 	//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
 	private int level;
 	private int skillpoints;
-	//stats	
+	//attributes
 	private int offense; //~deck size offensive (avg card quality increases with size)
 	private int defense; //~deck size defensive (avg card quality increases with size)
 	private int strength; //  stamina cost penalty vs weight of equipment satminacost_mult= max(1,1+(strength-total_weight)*0.1)
 	private int dexterity; //miss chance mitigation vs dexterity demand of ability + //TODO reroll defensive/offensive card vs lower dexterity opponent
 	private int endurance; //~stamina_max=3*endurance
 	private int vitality; //~health_max=3*vitality
-	
+	//stats
+	private int speed;
+	private int health;
+	private double stamina;
+	private int armor;
 	// offensive deck: 0(shuffle),-3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
 	// defensive deck: 0(shuffle),1,1,1,2,2,2,2,3,3,3,3,3 ...
-	public Warrior(Player player,int level) {
+	public Warrior(String name,Player player,int level) {
 		this.player=player;
 		this.level=level;
+		this.name=name;
+		armor=0;
 		abilities= new LinkedList<Ability>();
 		equipment=new Equipment(this);
 		offensive_deck= new OffensiveDeck();
 		defensive_deck= new DefensiveDeck();
+		give_random_stats();
+	}
+	private void give_random_stats() {
 		//lvl 1 stats:
 		offense=defense=strength=dexterity=endurance=vitality=1;
+		addRandomStat(1);
 		for (int i = 0; i < level; i++) {
 			lvlUp(false,false);
 		}
@@ -231,6 +242,49 @@ public class Warrior implements HexTileUnit{
 			shuffle();
 		}		
 	}
+	//interface methods
+	@Override
+	public float getHealth() {
+		return health;
+	}
+	@Override
+	public HexTile getHexTile() {
+		// TODO Auto-generated method stub
+		return tile;
+	}
+	@Override
+	public int getImageNumber() {
+		return image_number;
+	}
+	@Override
+	public float getMaxHealth() {
+		return calcMaxHp();
+	}
+	@Override
+	public boolean isFleeing() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isReadyToMove() {
+		//TODO
+		if (walked_tiles_this_round<speed) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public boolean reachableTile(HexTile tile) {
+		if (tile.getDistance(this.tile)==1&&tile.getUnit()==null) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public void setTile(HexTile tile) {
+		this.tile=(Tile) tile;		
+	}
+	//////////////////////////////////////////
 	//getters and setters
 	public Player getPlayer() {
 		// TODO Auto-generated method stub
@@ -256,46 +310,7 @@ public class Warrior implements HexTileUnit{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	@Override
-	public float getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public HexTile getHexTile() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public int getImageNumber() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public float getMaxHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public boolean isFleeing() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean isReadyToMove() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean reachableTile(HexTile arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public void setTile(HexTile arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	public double getStamina() {
 		return stamina;
 	}
@@ -334,6 +349,15 @@ public class Warrior implements HexTileUnit{
 	}
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	public int getLevel() {
+		return level;
+	}
+	public int getArmor() {
+		return armor;
+	}
+	public void setArmor(int armor) {
+		this.armor = armor;
 	}
 	
 }

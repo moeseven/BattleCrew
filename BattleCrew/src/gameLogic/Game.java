@@ -60,7 +60,7 @@ public class Game implements Serializable {
 	public Battle getBattle() {
 		return battle;
 	}
-	public void setBattlefield(Battle battle) {
+	public void setBattle(Battle battle) {
 		this.battle = battle;
 	}
 	public Player getOpponent() {

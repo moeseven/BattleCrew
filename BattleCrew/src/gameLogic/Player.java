@@ -10,20 +10,20 @@ import HexTilePlayground.HexTileUnit;
 
 
 public class Player implements HexTilePlayer,Serializable{
-	private Warrior selectedHero;
-	//private Quest activeQuest;
-	protected LinkedList<Warrior> heroes;
+	private Warrior selectedWarrior;
+	private LinkedList<Warrior> availableWarriors;
+	protected LinkedList<Warrior> warriors;
 	private LinkedList<Item> inventory;
 	protected int inventoryCapacity;
-	private LinkedList<Warrior> availableHeroes;
+	
 	protected int groupSize;
 	private Game game;
 	private int gold;
 	private boolean cheat=false;
 	public Player(Game game) {
 		this.game=game;
-		heroes=new LinkedList<Warrior>();
-		availableHeroes=new LinkedList<Warrior>();
+		warriors=new LinkedList<Warrior>();
+		availableWarriors=new LinkedList<Warrior>();
 		inventoryCapacity=100;
 		inventory=new LinkedList<Item>();
 		gold=100;
@@ -41,55 +41,55 @@ public class Player implements HexTilePlayer,Serializable{
 		
 	}
 	public boolean addSummon(Warrior hero) {
-		for(int a=0; a<heroes.size();a++) {// prevent equal names
-			for(int b=0; b<heroes.size();b++) {
-				if(heroes.get(b).getName().equals(hero.getName())) {
+		for(int a=0; a<warriors.size();a++) {// prevent equal names
+			for(int b=0; b<warriors.size();b++) {
+				if(warriors.get(b).getName().equals(hero.getName())) {
 					hero.setName(hero.getName()+" I");
 				}
 			}
 		}
-		heroes.addFirst(hero);
+		warriors.addFirst(hero);
 		hero.setPlayer(this);
 		return true;
 	}
 	public boolean addHero(Warrior hero) {// do not exeed maximum size
-		if(heroes.size()<groupSize) {
-			for(int a=0; a<heroes.size();a++) {// prevent equal names
-				for(int b=0; b<heroes.size();b++) {
-					if(heroes.get(b).getName().equals(hero.getName())) {
+		if(warriors.size()<groupSize) {
+			for(int a=0; a<warriors.size();a++) {// prevent equal names
+				for(int b=0; b<warriors.size();b++) {
+					if(warriors.get(b).getName().equals(hero.getName())) {
 						hero.setName(hero.getName()+" I");
 					}
 				}
 			}
-			heroes.addFirst(hero);
+			warriors.addFirst(hero);
 //			hero.setInventory(inventory);
 			hero.setPlayer(this);
-			selectedHero=hero;
+			selectedWarrior=hero;
 			return true;
 		}else {
 			return false;
 		}
 	}
 	public void removeHeroFromTavern(Warrior hero) {
-		if(availableHeroes.size()>=1&&availableHeroes.contains(hero)) {
-			availableHeroes.remove(hero);
+		if(availableWarriors.size()>=1&&availableWarriors.contains(hero)) {
+			availableWarriors.remove(hero);
 			hero.setPlayer(null);
 		}
 	}
 	public void removeDeadHeroesFromRoster() {
 		LinkedList<Warrior> deadHeroes=new LinkedList<Warrior>();
-		for(int i=0; i<heroes.size();i++) {
-			if(heroes.get(i).isDead()) {
-				deadHeroes.add(heroes.get(i));
+		for(int i=0; i<warriors.size();i++) {
+			if(warriors.get(i).isDead()) {
+				deadHeroes.add(warriors.get(i));
 			}
 		}
 		for(int i=0; i<deadHeroes.size();i++) {
-			heroes.remove(deadHeroes.get(i));
+			warriors.remove(deadHeroes.get(i));
 		}
 	}
 	public void removeHero(Warrior hero) {
-		if(heroes.size()>=1&&heroes.contains(hero)) {
-			heroes.remove(hero);
+		if(warriors.size()>=1&&warriors.contains(hero)) {
+			warriors.remove(hero);
 			//hero.setPlayer(null);
 //			hero.setInventory(new LinkedList<Item>());
 		}
@@ -122,16 +122,16 @@ public class Player implements HexTilePlayer,Serializable{
 		return success;
 	}
 	public Warrior getSelectedHero() {
-		return selectedHero;
+		return selectedWarrior;
 	}
 	public void setSelectedHero(Warrior selectedHero) {
-		this.selectedHero = selectedHero;
+		this.selectedWarrior = selectedHero;
 	}
 	public LinkedList<Warrior> getHeroes() {
-		return heroes;
+		return warriors;
 	}
 	public void setHeroes(LinkedList<Warrior> heroes) {
-		this.heroes = heroes;
+		this.warriors = heroes;
 	}
 	public LinkedList<Item> getInventory() {
 		return inventory;
@@ -150,10 +150,10 @@ public class Player implements HexTilePlayer,Serializable{
 		this.game = game;
 	}
 	public LinkedList<Warrior> getAvailableHeroes() {
-		return availableHeroes;
+		return availableWarriors;
 	}
 	public void setAvailableHeroes(LinkedList<Warrior> availableHeroes) {
-		this.availableHeroes = availableHeroes;
+		this.availableWarriors = availableHeroes;
 	}
 	public int getGroupSize() {
 		return groupSize;

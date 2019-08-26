@@ -5,7 +5,7 @@ public class Battle {
 	private Battlefield battleField;
 	private Game game;
 	public Battle(Game game, Battlefield battlefield) {
-		
+		this.battleField=battlefield;
 	}
 	
 
@@ -27,5 +27,11 @@ public class Battle {
 	}
 	public void setGame(Game game) {
 		this.game = game;
+	}
+
+
+	public boolean isOver() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
