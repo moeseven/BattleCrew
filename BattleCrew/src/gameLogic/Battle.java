@@ -9,9 +9,10 @@ public class Battle {
 		this.battleField=battlefield;
 		this.attacker=attacker;
 		this.defender=defender;
+		activeWarrior=attacker.getHeroes().getFirst();
 	}
 	
-
+	
 	//getters and setters
 	public Warrior getActiveWarrior() {
 		return activeWarrior;

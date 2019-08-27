@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileUnit;
+import javafx.scene.control.skin.TitledPaneSkin;
 
 public class Warrior implements HexTileUnit{
 	private static int BASE_HP=10;
@@ -20,8 +21,7 @@ public class Warrior implements HexTileUnit{
 	private int walked_tiles_this_round;	
 	private int round_actions;
 	private HexTile tile;
-	// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
-	//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
+
 	private int level;
 	private int skillpoints;
 	//attributes
@@ -31,8 +31,9 @@ public class Warrior implements HexTileUnit{
 	private int dexterity; //miss chance mitigation vs dexterity demand of ability + //TODO reroll defensive/offensive card vs lower dexterity opponent
 	private int endurance; //~stamina_max=3*endurance
 	private int vitality; //~health_max=3*vitality
+	private int speed; //penalty mitigation for moving more than one tile
 	//stats
-	private int speed;
+	
 	private int health;
 	private double stamina;
 	private int armor;
@@ -55,7 +56,7 @@ public class Warrior implements HexTileUnit{
 	private void give_random_starting_stats() {
 		image_number=33;
 		//lvl 1 stats:
-		offense=defense=strength=dexterity=endurance=vitality=1;
+		offense=defense=strength=dexterity=endurance=vitality=speed=1;
 		addRandomStat(3);
 		addRandomStat(2);
 		addRandomStat(1);
@@ -100,7 +101,7 @@ public class Warrior implements HexTileUnit{
 		}
 	}
 	public void addRandomStat(int burst) {
-			int random=(int) (Math.random()*6);
+			int random=(int) (Math.random()*7);
 			switch (random) {
 			case 0:
 				offense+=burst;
@@ -120,12 +121,24 @@ public class Warrior implements HexTileUnit{
 			case 5:
 				vitality+=burst;
 				break;
+			case 6:
+				speed+=burst;
 			default:
 				vitality+=burst;
 				break;
 			}
 	}
 	//battle
+	public boolean useAbility(Battle battle, Tile tile) {
+		if (battle.getActiveWarrior()==this) { //TODO
+			if (selected_ability==null) {
+				moveOneTile(tile);
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	public boolean isAHit(Ability ability, Warrior target_warrior) {//miss_chance horrible performance
 		int deficit=dexterity-ability.getDexterity_demand()-player.getGame().getBattle().getBattleField().getDistance(getHexTile(), getHexTile());		
 		LinkedList<Boolean> dice= new LinkedList<Boolean>();
@@ -246,6 +259,38 @@ public class Warrior implements HexTileUnit{
 			shuffle();
 		}		
 	}
+	public double getMoveStamina_cost() {
+		//walking a lot increases cost
+		// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
+		//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
+		//TODO
+		double stamina_cost_movement=2.0+(3.0*walked_tiles_this_round)/(1.0+Math.max(0, speed));
+		return stamina_cost_movement;
+	}
+	public boolean moveOneTile(Tile tile) {
+		if(isReadyToMove()&&reachableTile(tile)) {			
+			if(payStaminaCost(getMoveStamina_cost())) {
+				this.tile.setUnit(null);
+				tile.setUnit(this);
+				this.tile=tile;
+				walked_tiles_this_round++;
+				return true;
+			}			
+		}
+		return false;
+	}
+	public boolean payStaminaCost(double cost) {
+		double modified_cost=getModifiedStaminaCost(cost);
+		if (modified_cost>stamina) {
+			return false;
+		}else {
+			stamina-=modified_cost;
+			return true;
+		}
+	}
+	public double getModifiedStaminaCost(double cost) {
+		return cost*getStaminaCostMultiplier();
+	}
 	//interface methods
 	@Override
 	public float getHealth() {
@@ -272,7 +317,7 @@ public class Warrior implements HexTileUnit{
 	@Override
 	public boolean isReadyToMove() {
 		//TODO
-		if (walked_tiles_this_round<speed) {
+		if (stamina>getMoveStamina_cost()) {
 			return true;
 		}
 		return false;
@@ -367,5 +412,30 @@ public class Warrior implements HexTileUnit{
 	public void setArmor(int armor) {
 		this.armor = armor;
 	}
+	public LinkedList<Ability> getAbilities() {
+		return abilities;
+	}
+	public void setAbilities(LinkedList<Ability> abilities) {
+		this.abilities = abilities;
+	}
+	public Ability getSelected_ability() {
+		return selected_ability;
+	}
+	public void setSelected_ability(Ability selected_ability) {
+		this.selected_ability = selected_ability;
+	}
+	public int getSpeed() {
+		return speed;
+	}
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	public int getEndurance() {
+		return endurance;
+	}
+	public void setEndurance(int endurance) {
+		this.endurance = endurance;
+	}
+	
 	
 }

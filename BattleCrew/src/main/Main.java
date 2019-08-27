@@ -17,8 +17,9 @@ public class Main {
 		Player defender = new Player(game);
 		Warrior warrior = new Warrior("Herbert", player, 1);
 		player.setSelectedHero(warrior);
+		player.addHero(warrior);
 		game.startExampleBattle(player, defender);
-		player.setSelectedHero(warrior);
+		game.getBattle().setActiveWarrior(warrior);
 		player.setSelectedTile(game.getBattle().getBattleField().getTiles().get(0));
 		player.getSelectedTile().setUnit(warrior);
 		warrior.setTile(player.getSelectedTile());

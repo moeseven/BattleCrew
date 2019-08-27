@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
@@ -15,4 +16,5 @@ public class TableComponent extends HexTileTableComponent {
 		this.bw=gf;
 	}
 
+	
 }

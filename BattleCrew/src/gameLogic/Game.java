@@ -72,4 +72,5 @@ public class Game implements Serializable {
 		this.opponent = opponent;
 	}
 	
+	
 }
