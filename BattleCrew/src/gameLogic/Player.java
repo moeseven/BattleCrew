@@ -12,6 +12,7 @@ import HexTilePlayground.HexTileUnit;
 public class Player implements HexTilePlayer,Serializable{
 	private Warrior selectedWarrior;
 	private HexTile selectedTile;
+	private boolean AI;
 	private LinkedList<Warrior> availableWarriors;
 	protected LinkedList<Warrior> warriors;
 	private LinkedList<Item> inventory;
@@ -21,8 +22,9 @@ public class Player implements HexTilePlayer,Serializable{
 	private Game game;
 	private int gold;
 	private boolean cheat=false;
-	public Player(Game game) {
+	public Player(Game game, Boolean AI) {
 		this.game=game;
+		this.AI=AI;
 		warriors=new LinkedList<Warrior>();
 		availableWarriors=new LinkedList<Warrior>();
 		inventoryCapacity=100;
@@ -188,6 +190,10 @@ public class Player implements HexTilePlayer,Serializable{
 	}
 	public void setCheat(boolean c) {
 		cheat=c;
+	}
+	public boolean isAI() {
+		// TODO Auto-generated method stub
+		return AI;
 	}
 
 

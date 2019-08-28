@@ -17,7 +17,6 @@ public class Tile extends HexTile {
 	@Override
 	public void triggerLeftClick(HexTilePlayer player) {
 		// TODO Auto-generated method stub
-		player.setSelectedTile(this);
 		if (this.getUnit()!=null) {
 			player.setSelectedUnit(this.getUnit());
 		}
@@ -32,6 +31,11 @@ public class Tile extends HexTile {
 		}
 		
 		//TODO make hex tile classes more basic 
+	}
+
+	public Warrior getWarrior() {
+		// TODO Auto-generated method stub
+		return (Warrior) getUnit();
 	}
 	
 

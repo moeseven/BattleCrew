@@ -1,6 +1,7 @@
 package gameLogic;
 
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -27,8 +28,14 @@ public class Game implements Serializable {
 	public Game(double image_scale) {
 		super();
 		this.image_scale=image_scale;
-		player = new Player(this);
+		player = new Player(this,false);
 		lastCaster= null;
+		try {
+			abilityBuilder=new AbilityBuilder();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //		cardBuilder = new CardBuilder();
 //		itemBuilder = new ItemBuilder(this,"resources/items.properties");
 //		itemSpecialBuilder = new ItemSpecialBuilder(this,"resources/itemsSpecial.properties");
@@ -38,7 +45,7 @@ public class Game implements Serializable {
 		// cardBuilder.printMap();
 	}
 	public void startExampleBattle(Player attacker, Player defender) {
-		battle= new Battle(this, new Battlefield(20, 10, image_scale, this), attacker, defender);		
+		battle= new Battle(this, new Battlefield(20, 8, image_scale, this), attacker, defender);		
 	}
 	// getters and setters
 

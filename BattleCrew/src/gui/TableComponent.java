@@ -15,6 +15,5 @@ public class TableComponent extends HexTileTableComponent {
 		super(player, table, gf, gf.get_sprite_path());
 		this.bw=gf;
 	}
-
 	
 }

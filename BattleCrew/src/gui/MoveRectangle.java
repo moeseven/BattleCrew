@@ -21,7 +21,7 @@ public class MoveRectangle extends ClickableRectangle {
 		setCaption(new LinkedList<String>());
 		getCaption().add(name);
 		getCaption().add(" ");
-		getCaption().add("stamina_cost: "+player.getSelectedUnit().getModifiedStaminaCost(player.getSelectedUnit().getMoveStamina_cost())+"("+player.getSelectedUnit().getMoveStamina_cost()+")");
+		getCaption().add("stamina_cost: "+((int)(10*player.getSelectedUnit().getModifiedStaminaCost(player.getSelectedUnit().getMoveStamina_cost())))/10.0+"("+((int) (10*player.getSelectedUnit().getMoveStamina_cost()))/10.0+")");
 	}
 	
 	@Override

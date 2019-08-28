@@ -21,15 +21,22 @@ public class AbilityRectangle extends ClickableRectangle {
 	@Override
 	public void updateCaption() {
 		setCaption(new LinkedList<String>());
-		getCaption().add(ability.getName());
-		getCaption().add("");
-		if (ability.getDamage_target()>0) {
-			getCaption().add("damage: "+ability.getDamage_target());
-		}
-		getCaption().add("stamina_cost: "+player.getSelectedUnit().getModifiedStaminaCost(ability.getStamina_cost())+"("+ability.getStamina_cost()+")");
-		if (ability.getDexterity_demand()>0) {
-			getCaption().add("dexterity demand: "+ability.getDexterity_demand());
-		}	
+		getCaption().add(ability.getName());			
+		if (ability.isUsed()) {
+			if (ability.getDamage_target()>0) {
+				getCaption().add("damage rolls: "+ability.getDamage_target()+" +"+ability.getOffensiveRollValue()+" -"+ability.getDefensiveRollValue()+" = "+(ability.getDamage_target()+ability.getOffensiveRollValue()-ability.getDefensiveRollValue()));
+			}
+			
+		}else {
+			getCaption().add("");
+			if (ability.getDamage_target()>0) {
+				getCaption().add("damage: "+ability.getDamage_target());
+			}
+			getCaption().add("stamina_cost: "+((int)(10*player.getSelectedUnit().getModifiedStaminaCost(ability.getStamina_cost()))/10.0)+"("+ability.getStamina_cost()+")");
+				if (ability.getDexterity_demand()>0) {
+					getCaption().add("dexterity demand: "+ability.getDexterity_demand());
+				}
+			}
 	}
 	
 	@Override

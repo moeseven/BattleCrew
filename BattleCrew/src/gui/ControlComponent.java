@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
@@ -28,6 +30,7 @@ public class ControlComponent extends JComponent {
 		setBorder(new LineBorder(Color.GREEN));
 		super.setPreferredSize(new Dimension(440,(height-1)*15));
 		addAbilities();
+		addMouseListener(new MyMouseListener());
 		setVisible(true);
 	}
 	public void addAbilities() {
@@ -51,6 +54,7 @@ public class ControlComponent extends JComponent {
 			public void onClick(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//select next active unit
+				battle_window.getGame().getBattle().endActiveWarriorTurn();
 			}
 		});
 	}
@@ -105,8 +109,25 @@ protected void paintComponent(Graphics g){
 		
 	}
 	
+	
 }
 public RectangleClicker getRectangleClicker() {
 	return rectangle_clicker;
+}
+private class MyMouseListener extends MouseAdapter{
+	public void mousePressed(MouseEvent e){	
+		if(e.getButton()==1){
+			//get equipment position from click
+			rectangle_clicker.triggerClick(e);
+			rectangle_clicker.updateCaptions();
+			revalidate();
+			repaint();		
+			battle_window.repaint();
+		}else{
+			if (e.getButton()==3){
+				//new CardView(card);
+			}
+		}
+	} 
 }
 }

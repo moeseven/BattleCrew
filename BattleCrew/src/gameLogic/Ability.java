@@ -16,9 +16,11 @@ public class Ability {
 	private boolean self_target_allowed;
 	private boolean has_target;
 	private boolean ground_target;
+	private boolean friendly;
 	private LinkedList<CheckableConditions> conditions;
+	private boolean used;
 	//
-	private int offensive_roll,defensive_roll;
+	private Roll offensive_roll,defensive_roll;
 	private int last_range_check=0;
 	public Ability() {
 		super();
@@ -38,34 +40,68 @@ public class Ability {
 		self_target_allowed= Boolean.parseBoolean(stats[7]);
 		has_target=Boolean.parseBoolean(stats[8]);
 		ground_target=Boolean.parseBoolean(stats[9]);
+		friendly=Boolean.parseBoolean(stats[10]);
 	}
 	public boolean attempt(Warrior origin_warrior, Warrior target_warrior) {
 		//TODO
+		if (checkStamina(origin_warrior)&&!used) {
+			if (checkRange(origin_warrior, target_warrior)) {
+				if (checkLegalTarget(origin_warrior, target_warrior)) {
+					use(origin_warrior, target_warrior);
+				}
+			}
+		}
 		return true;
 	}
 	public boolean use(Warrior origin_warrior, Warrior target_warrior) {
 		//TODO
 		//pay cost
-		origin_warrior.setStamina(origin_warrior.getStamina()-(stamina_cost*origin_warrior.getStaminaCostMultiplier()));
+		payStaminaCost(origin_warrior);
+		used=true;
+		if (damage_target>0&&has_target&&origin_warrior.isAHit(this, target_warrior)) {
+			offensive_roll=new Roll(origin_warrior, origin_warrior.offensiveRoll());
+			defensive_roll=new Roll(target_warrior, target_warrior.defensiveRoll());
+		}
+		return true;
+	}
+	public boolean applyAbilityAfterRoll(Warrior origin_warrior,Warrior target_warrior) {
 		if (damage_target>0&&has_target) {
-			offensive_roll=origin_warrior.offensiveRoll();
-			defensive_roll=target_warrior.defensiveRoll();
+			target_warrior.takeDamage(damage_target+offensive_roll.roll_value-defensive_roll.roll_value);
 		}
 		return true;
 	}
 
 	public boolean checkRange(Warrior origin_warrior,Warrior target_warrior) {
-		//TODO
-		return true;
+		if (origin_warrior.getHexTile().getDistance(target_warrior.getHexTile())<=range) {
+			return true;
+		}
+		return false;
 	}
-	public boolean checkStamina(Warrior origin_warrior,Warrior target_warrior) {
-		//TODO
-		return true;
+	public boolean checkStamina(Warrior origin_warrior) {
+		if(origin_warrior.getStamina()>=origin_warrior.getModifiedStaminaCost(stamina_cost)) {
+			return true;
+		}
+		return false;
 	}
 	public boolean checkLegalTarget(Warrior origin_warrior,Warrior target_warrior) {
 		//TODO
+		if (origin_warrior==target_warrior) {
+			if (!self_target_allowed) {
+				return false;
+			}
+		}
+		if (origin_warrior.getPlayer()==target_warrior.getPlayer()) {
+			if (!friendly) {
+				return false;
+			}
+		}		
 		return true;
 	}
+	public void payStaminaCost(Warrior origin_warrior) {
+		origin_warrior.setStamina(origin_warrior.getStamina()-(stamina_cost*origin_warrior.getStaminaCostMultiplier()));
+	}
+	
+	
 	//getters and setters
 	public int getDexterity_demand() {
 		return dexterity_demand;
@@ -127,5 +163,36 @@ public class Ability {
 	public void setImage_number(int image_number) {
 		this.image_number = image_number;
 	}
+	public boolean isUsed() {
+		return used;
+	}
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+	public int getDefensiveRollValue() {
+		if (defensive_roll!=null) {
+			return defensive_roll.roll_value;
+		}
+		return 0;
+	}
+	public int getOffensiveRollValue() {
+		if (offensive_roll!=null) {
+			return offensive_roll.roll_value;
+		}
+		return 0;
+	}
+	private class Roll {
+		public int roll_value;
+		public Warrior warrior;
+		public Roll(Warrior warrior, int roll_value) {
+			this.roll_value=roll_value;
+			this.warrior=warrior;
+					
+		}
+		public void reroll() {
+			roll_value=warrior.offensiveRoll();
+		}
+	}
 	
 }
+

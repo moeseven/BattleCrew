@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileUnit;
+import builders.AbilityBuilder;
 import javafx.scene.control.skin.TitledPaneSkin;
 
 public class Warrior implements HexTileUnit{
@@ -52,6 +53,8 @@ public class Warrior implements HexTileUnit{
 		defensives=new LinkedList<Card>();
 		give_random_starting_stats();
 		initialize();
+		//testability
+		abilities.add(player.getGame().abilityBuilder.buildAbilitybyName("shortsword"));
 	}
 	private void give_random_starting_stats() {
 		image_number=33;
@@ -79,6 +82,9 @@ public class Warrior implements HexTileUnit{
 	}
 	public void roundBegin() {
 		round_actions=3;
+		for (int i = 0; i < abilities.size(); i++) {
+			abilities.get(i).setUsed(false);
+		}
 		walked_tiles_this_round=0;
 		stamina+=3;
 		if(stamina>calcMaxStamina()) {
@@ -134,6 +140,8 @@ public class Warrior implements HexTileUnit{
 			if (selected_ability==null) {
 				moveOneTile(tile);
 				return true;
+			}else {
+				selected_ability.attempt(this, tile.getWarrior());
 			}
 		}
 		
@@ -162,15 +170,22 @@ public class Warrior implements HexTileUnit{
 		}		
 		return hit;
 	}
+	public void takeDamage(int damage) {
+		int after_armor_damage=Math.max(damage-armor,0);		
+		this.setHealth(health-(after_armor_damage));
+		if (health<=0) {
+			health=0;
+		}
+	}
 	//getters calc
 	public double getStaminaCostMultiplier() {
 		return  Math.max(1,1+(equipment.getTotalWeight()-strength)*0.15);
 	}
 	public int calcMaxHp() {
-		return 3*vitality+BASE_HP;
+		return vitality+BASE_HP;
 	}
 	public int calcMaxStamina() {
-		return 3*endurance+BASE_STAMINA;
+		return endurance+BASE_STAMINA;
 	}
 	public int offensiveRoll() {
 		return offensive_deck.pullCard().getModifier();
@@ -318,7 +333,9 @@ public class Warrior implements HexTileUnit{
 	public boolean isReadyToMove() {
 		//TODO
 		if (stamina>getMoveStamina_cost()) {
-			return true;
+			if (player.getGame().getBattle().getActiveWarrior()==this) {
+				return true;
+			}			
 		}
 		return false;
 	}

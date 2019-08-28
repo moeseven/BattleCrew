@@ -1,7 +1,10 @@
 package gameLogic;
 
+import java.util.Collections;
+import java.util.LinkedList;
+
 public class Battle {
-	private Warrior activeWarrior;
+	private LinkedList<Warrior> battleParticipants;
 	private Battlefield battleField;
 	private Player attacker,defender;
 	private Game game;
@@ -9,16 +12,69 @@ public class Battle {
 		this.battleField=battlefield;
 		this.attacker=attacker;
 		this.defender=defender;
-		activeWarrior=attacker.getHeroes().getFirst();
+		battleParticipants= new LinkedList<Warrior>();
+		//place warriors and add them to battlefield
+		for (int i = 0; i < attacker.getHeroes().size(); i++) {
+			battleParticipants.add(attacker.getHeroes().get(i));
+			attacker.getHeroes().get(i).setTile(battlefield.getTiles().get(i));
+			battlefield.getTiles().get(i).setUnit(attacker.getHeroes().get(i));
+			attacker.getHeroes().get(i).battleBegin();
+		}
+		for (int i = 0; i < defender.getHeroes().size(); i++) {
+			battleParticipants.add(defender.getHeroes().get(i));
+			defender.getHeroes().get(i).setTile(battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)));
+			battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)).setUnit(defender.getHeroes().get(i));
+			defender.getHeroes().get(i).battleBegin();
+		}
+		
+		//sort 
+		setHeroTrunOrder();
+		selectActiveWarriorForPlayer();
 	}
-	
-	
+	private void selectActiveWarriorForPlayer() {
+		attacker.setSelectedTile(getActiveWarrior().getHexTile());
+		attacker.setSelectedHero(getActiveWarrior());
+		defender.setSelectedTile(getActiveWarrior().getHexTile());
+		defender.setSelectedHero(getActiveWarrior());
+	}
+	public void endActiveWarriorTurn() {
+		getActiveWarrior().roundBegin();		
+		battleParticipants.add(battleParticipants.removeFirst());
+		selectActiveWarriorForPlayer();
+		if (getActiveWarrior().getPlayer().isAI()) {
+			runAI();
+		}
+	}
+	private void runAI() {
+		//TODO
+		endActiveWarriorTurn();
+	}
+	public void setHeroTrunOrder() {
+		Collections.shuffle(battleParticipants);
+		Warrior fastest_warrior=battleParticipants.getFirst();
+		int warrior_count=battleParticipants.size();
+		LinkedList<Warrior> sortHelpList= new LinkedList<Warrior>();
+		while(sortHelpList.size()<warrior_count) {
+			fastest_warrior=battleParticipants.getFirst();
+			for (int i = 0; i < battleParticipants.size(); i++) {
+				if (battleParticipants.get(i).getSpeed()>=fastest_warrior.getSpeed()) {
+					if (battleParticipants.get(i).getSpeed()>fastest_warrior.getSpeed()) {
+						fastest_warrior=battleParticipants.get(i);
+					}else {//equal
+						if (fastest_warrior.getStamina()<battleParticipants.get(i).getEndurance()) {
+							fastest_warrior=battleParticipants.get(i);
+						}
+					}
+				}
+			}
+			battleParticipants.remove(fastest_warrior);
+			sortHelpList.add(fastest_warrior);
+		}
+		battleParticipants=sortHelpList;		
+	}
 	//getters and setters
 	public Warrior getActiveWarrior() {
-		return activeWarrior;
-	}
-	public void setActiveWarrior(Warrior activeWarrior) {
-		this.activeWarrior = activeWarrior;
+		return battleParticipants.getFirst();
 	}
 	public Battlefield getBattleField() {
 		return battleField;
