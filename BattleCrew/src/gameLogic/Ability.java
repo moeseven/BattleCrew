@@ -19,6 +19,8 @@ public class Ability {
 	private boolean friendly;
 	private LinkedList<CheckableConditions> conditions;
 	private boolean used;
+	private boolean after_roll_status;
+	private boolean missed;
 	//
 	private Roll offensive_roll,defensive_roll;
 	private int last_range_check=0;
@@ -58,16 +60,19 @@ public class Ability {
 		//pay cost
 		payStaminaCost(origin_warrior);
 		used=true;
+		after_roll_status=true;
 		if (damage_target>0&&has_target&&origin_warrior.isAHit(this, target_warrior)) {
 			offensive_roll=new Roll(origin_warrior, origin_warrior.offensiveRoll());
 			defensive_roll=new Roll(target_warrior, target_warrior.defensiveRoll());
 		}
+		missed=!origin_warrior.isAHit(this, target_warrior);
 		return true;
 	}
-	public boolean applyAbilityAfterRoll(Warrior origin_warrior,Warrior target_warrior) {
-		if (damage_target>0&&has_target) {
-			target_warrior.takeDamage(damage_target+offensive_roll.roll_value-defensive_roll.roll_value);
+	public boolean applyAbilityAfterRoll() {
+		if (damage_target>0&&has_target&&!missed) {
+			defensive_roll.warrior.takeDamage(damage_target+offensive_roll.roll_value-defensive_roll.roll_value);
 		}
+		after_roll_status=false;
 		return true;
 	}
 
@@ -85,6 +90,9 @@ public class Ability {
 	}
 	public boolean checkLegalTarget(Warrior origin_warrior,Warrior target_warrior) {
 		//TODO
+		if (target_warrior.isDead()||origin_warrior.isDead()) {
+			return false;
+		}
 		if (origin_warrior==target_warrior) {
 			if (!self_target_allowed) {
 				return false;
@@ -100,7 +108,13 @@ public class Ability {
 	public void payStaminaCost(Warrior origin_warrior) {
 		origin_warrior.setStamina(origin_warrior.getStamina()-(stamina_cost*origin_warrior.getStaminaCostMultiplier()));
 	}
-	
+	public void refresh() {
+		used=false;
+		missed=false;
+		after_roll_status=false;
+		offensive_roll=null;
+		defensive_roll=null;
+	}
 	
 	//getters and setters
 	public int getDexterity_demand() {
@@ -169,30 +183,50 @@ public class Ability {
 	public void setUsed(boolean used) {
 		this.used = used;
 	}
-	public int getDefensiveRollValue() {
-		if (defensive_roll!=null) {
-			return defensive_roll.roll_value;
-		}
-		return 0;
+	
+	public boolean isAfter_roll_status() {
+		return after_roll_status;
 	}
-	public int getOffensiveRollValue() {
-		if (offensive_roll!=null) {
-			return offensive_roll.roll_value;
-		}
-		return 0;
+	public void setAfter_roll_status(boolean after_roll_status) {
+		this.after_roll_status = after_roll_status;
 	}
-	private class Roll {
+
+	public Roll getOffensive_roll() {
+		return offensive_roll;
+	}
+	public Roll getDefensive_roll() {
+		return defensive_roll;
+	}
+
+	public class Roll {
 		public int roll_value;
 		public Warrior warrior;
+		public boolean rerolled;
 		public Roll(Warrior warrior, int roll_value) {
 			this.roll_value=roll_value;
 			this.warrior=warrior;
-					
+			rerolled=false;
 		}
 		public void reroll() {
 			roll_value=warrior.offensiveRoll();
 		}
 	}
+	public void tryOffesniveReroll() {
+		// TODO Auto-generated method stub
+		if (offensive_roll.warrior.getDexterity()>defensive_roll.warrior.getDexterity()&&!offensive_roll.rerolled) {
+			offensive_roll.reroll();
+			offensive_roll.rerolled=true;
+		} else {
+
+		}
+	}
+	public boolean isMissed() {
+		return missed;
+	}
+	public void setMissed(boolean missed) {
+		this.missed = missed;
+	}
+	
 	
 }
 

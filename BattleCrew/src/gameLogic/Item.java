@@ -9,11 +9,14 @@ public class Item {
 	private int gold_value;
 	public boolean droppable;	
 	private int category;
-	
+	private int weight;
+	private int armor;
+	private int image;
 	private Game game;
 	public Item(String[] stats,Game game) {
 		super();
 		this.game= game;
+		abilities=new LinkedList<Ability>();
 		//generate item out of table
 		//name,abilities,gold_value,droppable,category
 		name=stats[0];
@@ -24,6 +27,9 @@ public class Item {
 		gold_value= Integer.parseInt(stats[2]);
 		droppable= Boolean.parseBoolean(stats[3]);
 		category= Integer.parseInt(stats[4]);
+		weight= Integer.parseInt(stats[5]);
+		armor= Integer.parseInt(stats[6]);
+		image= Integer.parseInt(stats[7]);
 	}
 	public Item() {
 		name= "unknown";
@@ -31,29 +37,29 @@ public class Item {
 
 	public int getCategory() {
 		// TODO Auto-generated method stub
-		return 0;
+		return category;
 	}
 
 	public void mod(Warrior hero) {
-		
+		hero.setArmor(hero.getArmor()+armor);
 	}
 	public void demod(Warrior hero) {
-	
+		hero.setArmor(hero.getArmor()-armor);
 	}
 	public void resetAbilityCooldowns() {
 		for (int i = 0; i < abilities.size(); i++) {
-			abilities.get(i).setUsed(false);
+			abilities.get(i).refresh();
 		}
 	}
 	//getters and setters
 	public int getWeight() {
 		// TODO Auto-generated method stub
-		return 0;
+		return weight;
 	}
 
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 	public LinkedList<Ability> getAbilities() {
 		return abilities;

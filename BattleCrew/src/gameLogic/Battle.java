@@ -38,12 +38,26 @@ public class Battle {
 		defender.setSelectedHero(getActiveWarrior());
 	}
 	public void endActiveWarriorTurn() {
-		getActiveWarrior().roundBegin();		
-		battleParticipants.add(battleParticipants.removeFirst());
-		selectActiveWarriorForPlayer();
-		if (getActiveWarrior().getPlayer().isAI()) {
-			runAI();
+		if (getActiveWarrior().isDead()) {
+			battleParticipants.removeFirst();
+			if (battleParticipants.size()==0) {
+				endBattle();
+			}else {
+				endActiveWarriorTurn();
+			}
+		}else {
+			getActiveWarrior().roundBegin();		
+			battleParticipants.add(battleParticipants.removeFirst());
+			selectActiveWarriorForPlayer();
+			if (getActiveWarrior().getPlayer().isAI()) {
+				runAI();
+			}
 		}
+		
+	}
+	private void endBattle() {
+		// TODO Auto-generated method stub
+		
 	}
 	private void runAI() {
 		//TODO

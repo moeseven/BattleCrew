@@ -37,7 +37,7 @@ public class ControlComponent extends JComponent {
 	public void addAbilities() {
 		int RECT_X_SIZE=190;
 		int RECT_Y_SIZE=120;
-		int ABILITIES_START_X=300;
+		int ABILITIES_START_X=340;
 		rectangle_clicker= new RectangleClicker();
 		ClickableRectangle moveangle= new ClickableRectangle("move", ABILITIES_START_X, 20, RECT_X_SIZE, RECT_Y_SIZE) {			
 			@Override
@@ -64,8 +64,22 @@ public class ControlComponent extends JComponent {
 			}			
 			@Override
 			public void onClick(MouseEvent e) {
-				rectangle_clicker.setSelectedRectangle(this);
-				player.getSelectedUnit().setSelected_ability(player.getSelectedUnit().getWeaponAbility());
+				if (player.getSelectedUnit().getWeaponAbility().isAfter_roll_status()) {
+					if (e.getButton()==1) {
+						player.getSelectedUnit().getWeaponAbility().applyAbilityAfterRoll();
+					}else {
+						if (e.getButton()==3) {
+							// reroll if dexterity is high player.getSelectedUnit().getWeaponAbility().
+							player.getSelectedUnit().getWeaponAbility().tryOffesniveReroll();
+						}
+					}						
+				}else {
+					rectangle_clicker.setSelectedRectangle(this);
+					player.getSelectedUnit().setSelected_ability(player.getSelectedUnit().getWeaponAbility());
+				}
+				
+				
+				
 			}
 		});
 		for (int i = 0; i < player.getSelectedUnit().getAbilities().size(); i++) {
@@ -84,6 +98,7 @@ public class ControlComponent extends JComponent {
 				// TODO Auto-generated method stub
 				//select next active unit
 				battle_window.getGame().getBattle().endActiveWarriorTurn();
+				rectangle_clicker.setSelectedRectangle(this);
 			}
 		});
 		for (int i = 0; i < rectangle_clicker.getRectAngles().size(); i++) {
@@ -92,11 +107,39 @@ public class ControlComponent extends JComponent {
 	}
 	public LinkedList<String> generateAbilityRectangleCaption(Ability ability){
 		LinkedList<String> caption=new LinkedList<String>();
-		caption.add(ability.getName());			
+		caption.add(ability.getName());		
 		if (ability.isUsed()) {
-			if (ability.getDamage_target()>0) {
-				caption.add("damage rolls: "+ability.getDamage_target()+" +"+ability.getOffensiveRollValue()+" -"+ability.getDefensiveRollValue()+" = "+(ability.getDamage_target()+ability.getOffensiveRollValue()-ability.getDefensiveRollValue()));
+			int damage=(ability.getDamage_target()+ability.getOffensive_roll().roll_value-ability.getDefensive_roll().roll_value-ability.getDefensive_roll().warrior.getArmor());
+			if (ability.isAfter_roll_status()) {
+				if (ability.isMissed()) {	
+					caption.add("missed!");
+					caption.add("(hit chance depends on dexterity)");
+				}else {
+					if (ability.getDamage_target()>0) {	
+						String rollString="damage rolls: ("+ability.getDamage_target();
+						if (ability.getOffensive_roll().roll_value>=0) {
+							rollString+=" +"+ability.getOffensive_roll().roll_value;
+						}else {
+							rollString+=ability.getOffensive_roll().roll_value;
+						}
+						rollString+=") -> ("+ability.getDefensive_roll().warrior.getArmor()+" + "+ability.getDefensive_roll().roll_value+")  = "+damage;
+						caption.add(rollString);
+					}
+				}
+				
+			}else {
+				if (ability.getDamage_target()>0&&!ability.isMissed()) {
+						
+					caption.add(Math.max(0,damage)+" damage dealt.");
+					String diceLine = "dice( ";
+					for (int i = 0; i < player.getSelectedUnit().getOffensive_deck().size(); i++) {
+						diceLine+=player.getSelectedUnit().getOffensive_deck().get(i).getModifier()+" ; ";
+					}
+					diceLine+=")";
+					caption.add(diceLine);	
+				}
 			}
+			
 			
 		}else {
 			caption.add("");
@@ -149,14 +192,14 @@ protected void paintComponent(Graphics g){
 //		}
 //		lines.add("");
 //	}
-	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-50,null);	
+	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);	
 	//g.drawImage(MyStaticImageLoader.getImage(player.getSelectedUnit().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
 	//
 	for(int i=0; i<lines.size();i++) {
 		if(i<=height+1) {
-			g.drawString(lines.get(i), 160, 10+12*i);
+			g.drawString(lines.get(i), 200, 10+12*i);
 		}else {
-			g.drawString(lines.get(i), 300, 10+12*(i-height+2));
+			g.drawString(lines.get(i), 340, 10+12*(i-height+2));
 		}
 		
 	}

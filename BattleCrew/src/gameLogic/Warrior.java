@@ -58,7 +58,7 @@ public class Warrior implements HexTileUnit{
 		fist_punch=player.getGame().abilityBuilder.buildAbilitybyName("fistpunch");
 	}
 	private void give_random_starting_stats() {
-		image_number=33;
+		image_number=(int) (381);
 		//lvl 1 stats:
 		offense=defense=strength=dexterity=endurance=vitality=speed=1;
 		addRandomStat(3);
@@ -84,12 +84,12 @@ public class Warrior implements HexTileUnit{
 	public void roundBegin() {
 		round_actions=3;
 		//reset abilities
-		fist_punch.setUsed(false);
+		fist_punch.refresh();
 		for (int i = 0; i < equipment.getAllEquippedItems().size(); i++) {
 			equipment.getAllEquippedItems().get(i).resetAbilityCooldowns();
 		}
 		for (int i = 0; i < abilities.size(); i++) {
-			abilities.get(i).setUsed(false);
+			abilities.get(i).refresh();
 		}
 		///
 		walked_tiles_this_round=0;
@@ -172,7 +172,7 @@ public class Warrior implements HexTileUnit{
 		return false;
 	}
 	public boolean isAHit(Ability ability, Warrior target_warrior) {//miss_chance horrible performance
-		int deficit=dexterity-ability.getDexterity_demand()-player.getGame().getBattle().getBattleField().getDistance(getHexTile(), getHexTile());		
+		int deficit=dexterity-ability.getDexterity_demand()-player.getGame().getBattle().getBattleField().getDistance(getHexTile(), target_warrior.getHexTile());		
 		LinkedList<Boolean> dice= new LinkedList<Boolean>();
 		for (int i = 0; i < 9; i++) {
 			dice.add(true);
@@ -265,10 +265,14 @@ public class Warrior implements HexTileUnit{
 			cards.add(new Card(0,true));//shuffle card
 			int modifier=1;
 			int modifierCount=3;
-			int modifierCounter=0;
-			for (int i = 0; i < defense; i++) {
-				for (modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
-					cards.add(new Card(modifier,false));
+			int addedCards=0;
+			while (addedCards<defense) {
+				for (int modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
+					if (addedCards<defense) {
+						cards.add(new Card(modifier,false));
+						addedCards++;
+					}
+					
 				}
 				modifier++;modifierCount++;	
 			}
@@ -284,14 +288,17 @@ public class Warrior implements HexTileUnit{
 			for (int i = 0; i <offensives.size(); i++) {
 				cards.add(offensives.get(i));
 			}
-			// offesnive deck: 0(shuffle),-3,-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
-			cards.add(new Card(0,true));
-			int modifier=-3;
-			int modifierCount=1;
-			int modifierCounter=0;
-			for (int i = 0; i < offense; i++) {
-				for (modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
-					cards.add(new Card(modifier,false));
+			// offesnive deck: -3(shuffle),-2,-2,-1,-1,-1,0,0,0,0,1,1,1,1,1 ...
+			cards.add(new Card(-3,true));
+			int modifier=-2;
+			int modifierCount=2;
+			int addedCards=0;
+			while(addedCards <offense) {
+				for (int modifierCounter = 0; modifierCounter < modifierCount; modifierCounter++) {
+					if (addedCards<offense) {
+						cards.add(new Card(modifier,false));
+						addedCards++;
+					}					
 				}
 				modifier++;modifierCount++;	
 			}
@@ -365,7 +372,7 @@ public class Warrior implements HexTileUnit{
 	@Override
 	public boolean isReadyToMove() {
 		//TODO
-		if (stamina>getMoveStamina_cost()) {
+		if (stamina>getMoveStamina_cost()*getStaminaCostMultiplier()) {
 			if (player.getGame().getBattle().getActiveWarrior()==this) {
 				return true;
 			}			
@@ -491,6 +498,12 @@ public class Warrior implements HexTileUnit{
 	}
 	public void setEquipment(Equipment equipment) {
 		this.equipment = equipment;
+	}
+	public LinkedList<Card> getOffensive_deck() {
+		return offensive_deck.cards;
+	}
+	public LinkedList<Card> getDefensive_deck() {
+		return defensive_deck.cards;
 	}
 	
 	

@@ -32,6 +32,7 @@ public class Game implements Serializable {
 		lastCaster= null;
 		try {
 			abilityBuilder=new AbilityBuilder();
+			itemBuilder= new ItemBuilder(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
