@@ -17,6 +17,7 @@ public class Warrior implements HexTileUnit{
 	private LinkedList<Card> offensives,defensives;
 	private LinkedList<Ability> abilities;
 	private Ability selected_ability;
+	private Ability fist_punch;
 	private Equipment equipment;
 	private int image_number;
 	private int walked_tiles_this_round;	
@@ -53,8 +54,8 @@ public class Warrior implements HexTileUnit{
 		defensives=new LinkedList<Card>();
 		give_random_starting_stats();
 		initialize();
-		//testability
-		abilities.add(player.getGame().abilityBuilder.buildAbilitybyName("shortsword"));
+		//weapon use ability
+		fist_punch=player.getGame().abilityBuilder.buildAbilitybyName("fistpunch");
 	}
 	private void give_random_starting_stats() {
 		image_number=33;
@@ -63,7 +64,7 @@ public class Warrior implements HexTileUnit{
 		addRandomStat(3);
 		addRandomStat(2);
 		addRandomStat(1);
-		for (int i = 0; i < level; i++) {
+		for (int levels_to_go = level; levels_to_go > 0; levels_to_go--) {
 			lvlUp(false,false);
 		}
 	}
@@ -82,9 +83,15 @@ public class Warrior implements HexTileUnit{
 	}
 	public void roundBegin() {
 		round_actions=3;
+		//reset abilities
+		fist_punch.setUsed(false);
+		for (int i = 0; i < equipment.getAllEquippedItems().size(); i++) {
+			equipment.getAllEquippedItems().get(i).resetAbilityCooldowns();
+		}
 		for (int i = 0; i < abilities.size(); i++) {
 			abilities.get(i).setUsed(false);
 		}
+		///
 		walked_tiles_this_round=0;
 		stamina+=3;
 		if(stamina>calcMaxStamina()) {
@@ -95,7 +102,6 @@ public class Warrior implements HexTileUnit{
 		}		
 	}
 	public void lvlUp(boolean display,boolean manualSkilling) { 		
-		vitality+=1;
 		if(display) {
 			//TODO 
 		}
@@ -105,6 +111,7 @@ public class Warrior implements HexTileUnit{
 		}else {
 			addRandomStat(2);
 		}
+		level++;
 	}
 	public void addRandomStat(int burst) {
 			int random=(int) (Math.random()*7);
@@ -135,13 +142,30 @@ public class Warrior implements HexTileUnit{
 			}
 	}
 	//battle
+	public boolean useMainHand(Battle battle,Tile tile) {
+		if (battle.getActiveWarrior()==this) {
+			if (equipment.getHand1()!=null) {
+				if (equipment.getHand1().getAbilities().get(0)!=null) {
+					equipment.getHand1().getAbilities().get(0).attempt(this, tile.getWarrior());
+					return true;
+				}				
+			}else {
+				fist_punch.attempt(this,tile.getWarrior());
+				return true;
+			}
+		}
+		return false;
+	}
 	public boolean useAbility(Battle battle, Tile tile) {
 		if (battle.getActiveWarrior()==this) { //TODO
 			if (selected_ability==null) {
 				moveOneTile(tile);
 				return true;
 			}else {
-				selected_ability.attempt(this, tile.getWarrior());
+				if (tile.getWarrior()!=null) {
+					selected_ability.attempt(this, tile.getWarrior());
+				}
+				
 			}
 		}
 		
@@ -179,10 +203,10 @@ public class Warrior implements HexTileUnit{
 	}
 	//getters calc
 	public double getStaminaCostMultiplier() {
-		return  Math.max(1,1+(equipment.getTotalWeight()-strength)*0.15);
+		return  Math.max(1,1+(equipment.getTotalWeight()-strength)*0.15)*(1+0.1*walked_tiles_this_round);
 	}
 	public int calcMaxHp() {
-		return vitality+BASE_HP;
+		return vitality+BASE_HP+level;
 	}
 	public int calcMaxStamina() {
 		return endurance+BASE_STAMINA;
@@ -279,7 +303,7 @@ public class Warrior implements HexTileUnit{
 		// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
 		//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
 		//TODO
-		double stamina_cost_movement=2.0+(3.0*walked_tiles_this_round)/(1.0+Math.max(0, speed));
+		double stamina_cost_movement=2.0+(3.0*walked_tiles_this_round)/(1.0+Math.max(0, 2*speed));
 		return stamina_cost_movement;
 	}
 	public boolean moveOneTile(Tile tile) {
@@ -288,6 +312,7 @@ public class Warrior implements HexTileUnit{
 				this.tile.setUnit(null);
 				tile.setUnit(this);
 				this.tile=tile;
+				player.setSelectedTile(tile);
 				walked_tiles_this_round++;
 				return true;
 			}			
@@ -305,6 +330,14 @@ public class Warrior implements HexTileUnit{
 	}
 	public double getModifiedStaminaCost(double cost) {
 		return cost*getStaminaCostMultiplier();
+	}
+	public Ability getWeaponAbility() {
+		if (equipment.getHand1()!=null) {
+			if (equipment.getHand1().getAbilities().get(0)!=null) {
+				return equipment.getHand1().getAbilities().get(0);
+			}		
+		}
+		return fist_punch;
 	}
 	//interface methods
 	@Override
@@ -452,6 +485,12 @@ public class Warrior implements HexTileUnit{
 	}
 	public void setEndurance(int endurance) {
 		this.endurance = endurance;
+	}
+	public Equipment getEquipment() {
+		return equipment;
+	}
+	public void setEquipment(Equipment equipment) {
+		this.equipment = equipment;
 	}
 	
 	

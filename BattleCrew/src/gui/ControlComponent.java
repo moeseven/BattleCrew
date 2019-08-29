@@ -13,6 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.border.LineBorder;
 
 import SpriteSheet.StaticImageLoader;
+import gameLogic.Ability;
 import gameLogic.Player;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
@@ -38,11 +39,39 @@ public class ControlComponent extends JComponent {
 		int RECT_Y_SIZE=120;
 		int ABILITIES_START_X=300;
 		rectangle_clicker= new RectangleClicker();
-		rectangle_clicker.addRect(new MoveRectangle(player, ABILITIES_START_X, 20, RECT_X_SIZE, RECT_Y_SIZE));
+		ClickableRectangle moveangle= new ClickableRectangle("move", ABILITIES_START_X, 20, RECT_X_SIZE, RECT_Y_SIZE) {			
+			@Override
+			public void updateCaption() {
+				setCaption(new LinkedList<String>());
+				getCaption().add(name);
+				getCaption().add(" ");
+				getCaption().add("stamina_cost: "+((int)(10*player.getSelectedUnit().getModifiedStaminaCost(player.getSelectedUnit().getMoveStamina_cost())))/10.0);
+			}
+			
+			@Override
+			public void onClick(MouseEvent arg0) {
+				player.getSelectedUnit().setSelected_ability(null);
+				rectangle_clicker.setSelectedRectangle(this);
+				updateCaption();
+			}
+		};
+		rectangle_clicker.addRect(moveangle);
+		rectangle_clicker.setSelectedRectangle(moveangle);
+		rectangle_clicker.addRect(new ClickableRectangle("use mainhand", ABILITIES_START_X+RECT_X_SIZE*(1), 20, RECT_X_SIZE, RECT_Y_SIZE) {			
+			@Override
+			public void updateCaption() {
+				caption=generateAbilityRectangleCaption(player.getSelectedUnit().getWeaponAbility());
+			}			
+			@Override
+			public void onClick(MouseEvent e) {
+				rectangle_clicker.setSelectedRectangle(this);
+				player.getSelectedUnit().setSelected_ability(player.getSelectedUnit().getWeaponAbility());
+			}
+		});
 		for (int i = 0; i < player.getSelectedUnit().getAbilities().size(); i++) {
-			rectangle_clicker.addRect(new AbilityRectangle(player.getSelectedUnit().getAbilities().get(i),player, ABILITIES_START_X+(1+i)*RECT_X_SIZE, 20, RECT_X_SIZE, RECT_Y_SIZE));
+			rectangle_clicker.addRect(new AbilityRectangle(player.getSelectedUnit().getAbilities().get(i),player, ABILITIES_START_X+(2+i)*RECT_X_SIZE, 20, RECT_X_SIZE, RECT_Y_SIZE));
 		}
-		rectangle_clicker.addRect(new ClickableRectangle("end turn", ABILITIES_START_X+RECT_X_SIZE*(player.getSelectedUnit().getAbilities().size()+1), 20, RECT_X_SIZE, RECT_Y_SIZE) {
+		rectangle_clicker.addRect(new ClickableRectangle("end turn", ABILITIES_START_X+RECT_X_SIZE*(player.getSelectedUnit().getAbilities().size()+2), 20, RECT_X_SIZE, RECT_Y_SIZE) {
 			
 			@Override
 			public void updateCaption() {
@@ -57,6 +86,29 @@ public class ControlComponent extends JComponent {
 				battle_window.getGame().getBattle().endActiveWarriorTurn();
 			}
 		});
+		for (int i = 0; i < rectangle_clicker.getRectAngles().size(); i++) {
+			rectangle_clicker.getRectAngles().get(i).updateCaption();
+		}
+	}
+	public LinkedList<String> generateAbilityRectangleCaption(Ability ability){
+		LinkedList<String> caption=new LinkedList<String>();
+		caption.add(ability.getName());			
+		if (ability.isUsed()) {
+			if (ability.getDamage_target()>0) {
+				caption.add("damage rolls: "+ability.getDamage_target()+" +"+ability.getOffensiveRollValue()+" -"+ability.getDefensiveRollValue()+" = "+(ability.getDamage_target()+ability.getOffensiveRollValue()-ability.getDefensiveRollValue()));
+			}
+			
+		}else {
+			caption.add("");
+			if (ability.getDamage_target()>0) {
+				caption.add("damage: "+ability.getDamage_target());
+			}
+			caption.add("stamina_cost: "+((int)(10*player.getSelectedUnit().getModifiedStaminaCost(ability.getStamina_cost()))/10.0)+"("+ability.getStamina_cost()+")");
+				if (ability.getDexterity_demand()>0) {
+					caption.add("dexterity demand: "+ability.getDexterity_demand());
+				}
+			}
+		return caption;
 	}
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);

@@ -40,7 +40,11 @@ public class Item {
 	public void demod(Warrior hero) {
 	
 	}
-	
+	public void resetAbilityCooldowns() {
+		for (int i = 0; i < abilities.size(); i++) {
+			abilities.get(i).setUsed(false);
+		}
+	}
 	//getters and setters
 	public int getWeight() {
 		// TODO Auto-generated method stub
@@ -51,7 +55,13 @@ public class Item {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public LinkedList<Ability> getAbilities() {
+		return abilities;
+	}
+	public void setAbilities(LinkedList<Ability> abilities) {
+		this.abilities = abilities;
+	}
+	
 	
 
 }
