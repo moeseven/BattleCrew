@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,6 +19,7 @@ import gameLogic.Player;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 import imageloader.MyStaticImageLoader;
+import javafx.scene.layout.Border;
 
 public class ControlComponent extends JComponent {
 	private Player player;
@@ -28,6 +30,8 @@ public class ControlComponent extends JComponent {
 		this.player=player;
 		this.battle_window=bw;
 		height=13;
+		setLayout(new BorderLayout());
+		add(new LogComponent(player.getGame().log),BorderLayout.EAST);
 		setBorder(new LineBorder(Color.GREEN));
 		super.setPreferredSize(new Dimension(440,(height-1)*15));
 		addAbilities();
@@ -108,14 +112,14 @@ public class ControlComponent extends JComponent {
 	public LinkedList<String> generateAbilityRectangleCaption(Ability ability){
 		LinkedList<String> caption=new LinkedList<String>();
 		caption.add(ability.getName());		
-		if (ability.isUsed()) {
-			int damage=(ability.getDamage_target()+ability.getOffensive_roll().roll_value-ability.getDefensive_roll().roll_value-ability.getDefensive_roll().warrior.getArmor());
+		if (ability.isUsed()) {			
 			if (ability.isAfter_roll_status()) {
 				if (ability.isMissed()) {	
 					caption.add("missed!");
 					caption.add("(hit chance depends on dexterity)");
 				}else {
 					if (ability.getDamage_target()>0) {	
+						int damage=(ability.getDamage_target()+ability.getOffensive_roll().roll_value-ability.getDefensive_roll().roll_value-ability.getDefensive_roll().warrior.getArmor());
 						String rollString="damage rolls: ("+ability.getDamage_target();
 						if (ability.getOffensive_roll().roll_value>=0) {
 							rollString+=" +"+ability.getOffensive_roll().roll_value;
@@ -129,7 +133,7 @@ public class ControlComponent extends JComponent {
 				
 			}else {
 				if (ability.getDamage_target()>0&&!ability.isMissed()) {
-						
+					int damage=(ability.getDamage_target()+ability.getOffensive_roll().roll_value-ability.getDefensive_roll().roll_value-ability.getDefensive_roll().warrior.getArmor());
 					caption.add(Math.max(0,damage)+" damage dealt.");
 					String diceLine = "dice( ";
 					for (int i = 0; i < player.getSelectedUnit().getOffensive_deck().size(); i++) {
@@ -192,9 +196,7 @@ protected void paintComponent(Graphics g){
 //		}
 //		lines.add("");
 //	}
-	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);	
-	//g.drawImage(MyStaticImageLoader.getImage(player.getSelectedUnit().getImageNumber()).getScaledInstance(300, 255, 5),200,0,null);	
-	//
+	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);		
 	for(int i=0; i<lines.size();i++) {
 		if(i<=height+1) {
 			g.drawString(lines.get(i), 200, 10+12*i);

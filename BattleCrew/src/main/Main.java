@@ -7,6 +7,7 @@ import gameLogic.Game;
 import gameLogic.Player;
 import gameLogic.Warrior;
 import gui.BattleWindow;
+import gui.CampaignWindow;
 import imageloader.MyStaticImageLoader;
 
 public class Main {
@@ -30,7 +31,7 @@ public class Main {
 		defender.getHeroes().getFirst().getHexTile().setUnit(null);
 		defender.getHeroes().getFirst().setTile(game.getBattle().getBattleField().getTiles().get(25));
 		game.getBattle().getBattleField().getTiles().get(25).setUnit(defender.getHeroes().getFirst());
-		BattleWindow bw = new BattleWindow(game);
+		BattleWindow bw = new BattleWindow(game,new CampaignWindow(game, null));
 	}
 	
 	

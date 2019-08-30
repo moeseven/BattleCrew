@@ -61,11 +61,12 @@ public class Ability {
 		payStaminaCost(origin_warrior);
 		used=true;
 		after_roll_status=true;
-		if (damage_target>0&&has_target&&origin_warrior.isAHit(this, target_warrior)) {
+		missed=!origin_warrior.isAHit(this, target_warrior);
+		if (damage_target>0&&has_target&&!missed) {
 			offensive_roll=new Roll(origin_warrior, origin_warrior.offensiveRoll());
 			defensive_roll=new Roll(target_warrior, target_warrior.defensiveRoll());
 		}
-		missed=!origin_warrior.isAHit(this, target_warrior);
+		
 		return true;
 	}
 	public boolean applyAbilityAfterRoll() {

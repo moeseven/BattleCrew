@@ -79,6 +79,12 @@ public class Game implements Serializable {
 	public void setOpponent(Player opponent) {
 		this.opponent = opponent;
 	}
+	public double getImage_scale() {
+		return image_scale;
+	}
+	public void setImage_scale(double image_scale) {
+		this.image_scale = image_scale;
+	}
 	
 	
 }

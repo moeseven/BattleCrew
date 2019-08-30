@@ -12,6 +12,7 @@ import HexTilePlayground.HexTileUnit;
 public class Player implements HexTilePlayer,Serializable{
 	private Warrior selectedWarrior;
 	private HexTile selectedTile;
+	private Item selectedItem;
 	private boolean AI;
 	private LinkedList<Warrior> availableWarriors;
 	protected LinkedList<Warrior> warriors;
@@ -194,6 +195,12 @@ public class Player implements HexTilePlayer,Serializable{
 	public boolean isAI() {
 		// TODO Auto-generated method stub
 		return AI;
+	}
+	public Item getSelectedItem() {
+		return selectedItem;
+	}
+	public void setSelectedItem(Item selectedItem) {
+		this.selectedItem = selectedItem;
 	}
 
 

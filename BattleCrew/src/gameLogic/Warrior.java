@@ -200,6 +200,11 @@ public class Warrior implements HexTileUnit{
 		if (health<=0) {
 			health=0;
 		}
+		//handle death
+		if (isDead()) {
+			this.tile.setUnit(null);
+			player.getHeroes().remove(this);
+		}
 	}
 	//getters calc
 	public double getStaminaCostMultiplier() {

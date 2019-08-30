@@ -13,6 +13,7 @@ public class Item {
 	private int armor;
 	private int image;
 	private Game game;
+	private LinkedList<String> description;
 	public Item(String[] stats,Game game) {
 		super();
 		this.game= game;
@@ -51,6 +52,19 @@ public class Item {
 			abilities.get(i).refresh();
 		}
 	}
+	public void generateItemDescription() {
+		//TODO
+		description=new LinkedList<String>();
+		description.add("cost: "+gold_value);
+		description.add("weight: "+weight);
+		if (abilities.size()>0) {
+			description.add("damage: "+abilities.get(0).getDamage_target());
+			description.add("dexterity demand: "+ abilities.get(0).getDexterity_demand());
+		}
+		if (armor>0) {
+			description.add("armor: "+armor);
+		}
+	}
 	//getters and setters
 	public int getWeight() {
 		// TODO Auto-generated method stub
@@ -67,6 +81,28 @@ public class Item {
 	public void setAbilities(LinkedList<Ability> abilities) {
 		this.abilities = abilities;
 	}
+	public int getImage() {
+		return image;
+	}
+	public void setImage(int image) {
+		this.image = image;
+	}
+	public LinkedList<String> getDescription() {
+		return description;
+	}
+	public void setDescription(LinkedList<String> description) {
+		this.description = description;
+	}
+	public int getGold_value() {
+		return gold_value;
+	}
+	public void setGold_value(int gold_value) {
+		this.gold_value = gold_value;
+	}
+	public void setCategory(int category) {
+		this.category = category;
+	}
+	
 	
 	
 

@@ -1,7 +1,7 @@
 name,abilities,gold_value,droppable,category,weight,armor,image
-shortsword,shortsword,15,true,1,3,0,1
+shortsword,shortsword,15,true,1,3,0,160
 slingshot,slingshot,13,true,3,1,0,1
-shortbow,shortbow,55,true,3,2,0,1
+shortbow,shortbow,55,true,3,2,0,162
 longbow,longbow,110,true,3,4,0,1
 longsword,longsword,80,true,1,5,0,1
 pike,pike,90,true,3,9,0,1

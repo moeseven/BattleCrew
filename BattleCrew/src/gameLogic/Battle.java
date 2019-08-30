@@ -7,6 +7,7 @@ public class Battle {
 	private LinkedList<Warrior> battleParticipants;
 	private Battlefield battleField;
 	private Player attacker,defender;
+	private Player winner=null;
 	private Game game;
 	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		this.battleField=battlefield;
@@ -40,7 +41,7 @@ public class Battle {
 	public void endActiveWarriorTurn() {
 		if (getActiveWarrior().isDead()) {
 			battleParticipants.removeFirst();
-			if (battleParticipants.size()==0) {
+			if (defender.getHeroes().size()==0||attacker.getHeroes().size()==0) {
 				endBattle();
 			}else {
 				endActiveWarriorTurn();
@@ -57,7 +58,11 @@ public class Battle {
 	}
 	private void endBattle() {
 		// TODO Auto-generated method stub
-		
+		if (attacker.getHeroes().size()==0) {
+			winner=defender;
+		}else {
+			winner=attacker;
+		}
 	}
 	private void runAI() {
 		//TODO
@@ -102,10 +107,12 @@ public class Battle {
 	public void setGame(Game game) {
 		this.game = game;
 	}
+	
 
-
-	public boolean isOver() {
-		// TODO Auto-generated method stub
-		return false;
+	public Player getWinner() {
+		return winner;
+	}
+	public void setWinner(Player winner) {
+		this.winner = winner;
 	}
 }

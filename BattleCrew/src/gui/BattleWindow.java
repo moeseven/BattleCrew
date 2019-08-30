@@ -12,11 +12,12 @@ import gameLogic.Game;
 public class BattleWindow extends JFrame{
 	private Game game;
 	private JScrollPane sp;
-	private String sprite_path="./images";
 	private TableComponent table_component;
 	private ControlComponent control_component;
-	public BattleWindow(Game game){
+	private CampaignWindow campaign_window;
+	public BattleWindow(Game game, CampaignWindow campaign_window){
 		this.game=game;
+		this.campaign_window=campaign_window;
 		setExtendedState(MAXIMIZED_BOTH); 
 		setLayout(new BorderLayout());
 		//sp= new JScrollPane(new TableComponent(game,this));
@@ -27,12 +28,13 @@ public class BattleWindow extends JFrame{
 		setVisible(true);
 	}
 	public void battleOver(){
-		if(game.getBattle().isOver()){
+		if(game.getBattle().getWinner()!=null){
 			dispose();
+			campaign_window.setVisible(true);
 		}
 	}
 	public String get_sprite_path() {
-		return sprite_path;
+		return campaign_window.getSprite_path();
 	}
 	public Game getGame() {
 		return game;
@@ -40,9 +42,9 @@ public class BattleWindow extends JFrame{
 	@Override
 	public void repaint() {
 		// TODO Auto-generated method stub
-		control_component.getRectangleClicker().updateCaptions();
+		control_component.getRectangleClicker().updateCaptions();		
 		super.repaint();
-		
+		battleOver();		
 	}
 	
 }

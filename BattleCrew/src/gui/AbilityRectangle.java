@@ -24,7 +24,7 @@ public class AbilityRectangle extends ClickableRectangle {
 		getCaption().add(ability.getName());			
 		if (ability.isUsed()) {
 			if (ability.getDamage_target()>0) {
-				getCaption().add("damage rolls: "+ability.getDamage_target()+" +"+ability.getOffensiveRollValue()+" -"+ability.getDefensiveRollValue()+" = "+(ability.getDamage_target()+ability.getOffensiveRollValue()-ability.getDefensiveRollValue()));
+				getCaption().add("damage rolls: "+ability.getDamage_target()+" +"+ability.getOffensive_roll().roll_value+" -"+ability.getDefensive_roll().roll_value+" = "+(ability.getDamage_target()+ability.getOffensive_roll().roll_value-ability.getDefensive_roll().roll_value));
 			}
 			
 		}else {
