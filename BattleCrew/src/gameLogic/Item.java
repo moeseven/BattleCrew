@@ -60,6 +60,7 @@ public class Item {
 		if (abilities.size()>0) {
 			description.add("damage: "+abilities.get(0).getDamage_target());
 			description.add("dexterity demand: "+ abilities.get(0).getDexterity_demand());
+			description.add("range: "+abilities.get(0).getRange());
 		}
 		if (armor>0) {
 			description.add("armor: "+armor);

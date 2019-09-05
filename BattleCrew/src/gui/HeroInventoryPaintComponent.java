@@ -26,6 +26,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 		private JScrollPane sp;
 		private CampaignWindow gw;
 		private RectangleClicker rc;
+		private int x_offset=200;
 		public HeroInventoryPaintComponent(CampaignWindow sw){
 			this.gw=sw;
 			setBorder(new LineBorder(Color.YELLOW));
@@ -40,7 +41,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 			//rectangles
 			rc=new RectangleClicker();
 			//Inventory
-			rc.addRect(new ClickableRectangle("search inventory",305,120,110,20) {
+			rc.addRect(new ClickableRectangle("search inventory",305+x_offset,120,110,20) {
 				@Override
 				public void onClick(MouseEvent e) {
 				}
@@ -54,7 +55,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 					}
 				}		
 			});
-			rc.addRect(new ClickableRectangle("<-",415,120,50,20) {
+			rc.addRect(new ClickableRectangle("<-",415+x_offset,120,50,20) {
 				@Override
 				public void onClick(MouseEvent e) {
 					// TODO Auto-generated method stub
@@ -71,7 +72,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				public void updateCaption() {
 				}		
 			});
-			rc.addRect(new ClickableRectangle("->",465,120,50,20) {
+			rc.addRect(new ClickableRectangle("->",465+x_offset,120,50,20) {
 				@Override
 				public void onClick(MouseEvent e) {
 					// TODO Auto-generated method stub
@@ -89,7 +90,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//item description
-			rc.addRect(new ClickableRectangle("description",305,10,300,110) {
+			rc.addRect(new ClickableRectangle("description",305+x_offset,10,300,110) {
 				@Override
 				public void onClick(MouseEvent e) {
 
@@ -116,7 +117,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//item picture
-			rc.addRect(new ClickableRectangle("",515,50,80,70) {
+			rc.addRect(new ClickableRectangle("",515+x_offset,50,80,70) {
 				@Override
 				public void onClick(MouseEvent e) {
 
@@ -131,7 +132,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//use
-			rc.addRect(new ClickableRectangle("use",210,60,55,20) {
+			rc.addRect(new ClickableRectangle("use",210+x_offset,60,55,20) {
 				@Override
 				public void onClick(MouseEvent e) {					
 					if(gw.getGame().getPlayer().getSelectedItem()!=null) {
@@ -151,7 +152,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//equip/unequip
-			rc.addRect(new ClickableRectangle("equip",210,10,55,20) {
+			rc.addRect(new ClickableRectangle("equip",210+x_offset,10,55,20) {
 				@Override
 				public void onClick(MouseEvent e) {
 					// TODO Auto-generated method stub
@@ -181,7 +182,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//gold
-			rc.addRect(new ClickableRectangle("gold",515,120,90,20) {
+			rc.addRect(new ClickableRectangle("gold",515+x_offset,120,90,20) {
 				@Override
 				public void onClick(MouseEvent e) {
 					// TODO Auto-generated method stub
@@ -198,7 +199,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//potion
-			rc.addRect(new ClickableRectangle("potion",60,142,50,34) {
+			rc.addRect(new ClickableRectangle("potion",60+x_offset,142,50,34) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getPotion()!=null) {
@@ -219,7 +220,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//head
-			rc.addRect(new ClickableRectangle("head",60,10,50,50) {
+			rc.addRect(new ClickableRectangle("head",60+x_offset,10,50,50) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
@@ -241,7 +242,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//body
-			rc.addRect(new ClickableRectangle("body",60,70,50,70) {
+			rc.addRect(new ClickableRectangle("body",60+x_offset,70,50,70) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
@@ -264,7 +265,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//hand1
-			rc.addRect(new ClickableRectangle("hand1",5,70,50,70) {
+			rc.addRect(new ClickableRectangle("hand1",5+x_offset,70,50,70) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
@@ -286,7 +287,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//hand2
-			rc.addRect(new ClickableRectangle("hand2",115,70,50,70) {
+			rc.addRect(new ClickableRectangle("hand2",115+x_offset,70,50,70) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
@@ -308,7 +309,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//ring1
-			rc.addRect(new ClickableRectangle("ring1",15,142,30,30) {
+			rc.addRect(new ClickableRectangle("ring1",15+x_offset,142,30,30) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
@@ -329,7 +330,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}		
 			});
 			//ring2
-			rc.addRect(new ClickableRectangle("ring2",125,142,30,30) {
+			rc.addRect(new ClickableRectangle("ring2",125+x_offset,142,30,30) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
@@ -368,6 +369,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 	}
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
+		g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), gw.getGame().getPlayer().getSelectedUnit().getImageNumber(),gw.getGame().getImage_scale()).getScaledInstance(240,204, 2),-30,0,null);
 		for(int i=0; i<rc.rectAngles.size();i++) {
 				if (rc.rectAngles.get(i).getImageNumber()!=1) {
 					g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), rc.rectAngles.get(i).getImageNumber(),gw.getGame().getImage_scale()).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);

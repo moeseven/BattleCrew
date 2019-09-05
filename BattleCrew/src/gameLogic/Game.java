@@ -14,6 +14,7 @@ public class Game implements Serializable {
 	private Battle battle;
 	public double image_scale;
 	protected int maximumGroupSize=5;
+	private Shop shop;
 	//public GeneratorRandom generator;
 	// public MyImageLoader imageLoader;
 	//public CardBuilder cardBuilder;
@@ -37,6 +38,7 @@ public class Game implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		shop= new Shop(this);
 //		cardBuilder = new CardBuilder();
 //		itemBuilder = new ItemBuilder(this,"resources/items.properties");
 //		itemSpecialBuilder = new ItemSpecialBuilder(this,"resources/itemsSpecial.properties");
@@ -84,6 +86,12 @@ public class Game implements Serializable {
 	}
 	public void setImage_scale(double image_scale) {
 		this.image_scale = image_scale;
+	}
+	public Shop getShop() {
+		return shop;
+	}
+	public void setShop(Shop shop) {
+		this.shop = shop;
 	}
 	
 	

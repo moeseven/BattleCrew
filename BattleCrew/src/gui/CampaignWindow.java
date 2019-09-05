@@ -20,6 +20,8 @@ public class CampaignWindow extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		add(new HeroInventoryPaintComponent(this), BorderLayout.CENTER);
+		//add(new ActiveHeroesComponent(this), BorderLayout.NORTH);
+		add(new RectangleCampaignManagementMenu(),BorderLayout.CENTER);
 		setLocation(10, 10);
 		this.setVisible(true);
 	}
