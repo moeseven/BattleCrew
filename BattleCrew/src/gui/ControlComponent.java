@@ -161,41 +161,7 @@ protected void paintComponent(Graphics g){
 	super.paintComponent(g);
 	rectangle_clicker.paintRectangles(g);
 	//paint Hero info all interesting stats about the hero
-	LinkedList<String> lines=new LinkedList<String>();
-	lines.add("");
-	lines.add(player.getSelectedUnit().getName()+"  (Level "+player.getSelectedUnit().getLevel()+")");
-	lines.add("");
-	lines.add("health: "+(int)(player.getSelectedUnit().getHealth())+"/"+player.getSelectedUnit().calcMaxHp());
-	lines.add("stamina: "+(int)(player.getSelectedUnit().getStamina())+"/"+player.getSelectedUnit().calcMaxStamina());
-	//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
-	lines.add("");
-	//main stats
-	lines.add("speed: "+player.getSelectedUnit().getSpeed());
-	lines.add("offesnive skill: "+player.getSelectedUnit().getOffense());
-	lines.add("defensive skill: "+player.getSelectedUnit().getDefense());
-	lines.add("strength: "+player.getSelectedUnit().getStrength());
-	lines.add("dexterity: "+player.getSelectedUnit().getDexterity());
-	lines.add("endurance: "+player.getSelectedUnit().getEndurance());
-	lines.add("vitality: "+player.getSelectedUnit().getVitality());		
-	lines.add("");
-	//defensive
-	lines.add("armor: "+player.getSelectedUnit().getArmor());
-	
-	//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
-	//Quirks
-	lines.add("");
-//TODO if(player.getSelectedHero().getQuirks().size()>0) { 
-//		lines.add("Quirks:");
-//		for(int a=0; a<player.getSelectedHero().getQuirks().size();a++) {
-//			String quirkString=player.getSelectedHero().getQuirks().get(a).getName()+"(";
-//			for(int b=0; b<player.getSelectedHero().getQuirks().get(a).getDescription().size();b++) {
-//				quirkString+=player.getSelectedHero().getQuirks().get(a).getDescription().get(b);
-//			}
-//			quirkString+=")";
-//			lines.add(quirkString);
-//		}
-//		lines.add("");
-//	}
+	LinkedList<String> lines=player.getSelectedUnit().generateStatLines();
 	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);		
 	for(int i=0; i<lines.size();i++) {
 		if(i<=height+1) {

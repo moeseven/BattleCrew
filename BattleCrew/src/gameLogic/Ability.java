@@ -81,12 +81,14 @@ public class Ability {
 		if (origin_warrior.getHexTile().getDistance(target_warrior.getHexTile())<=range) {
 			return true;
 		}
+		origin_warrior.getPlayer().getGame().log.addLine("target is too far away!");
 		return false;
 	}
 	public boolean checkStamina(Warrior origin_warrior) {
 		if(origin_warrior.getStamina()>=origin_warrior.getModifiedStaminaCost(stamina_cost)) {
 			return true;
 		}
+		origin_warrior.getPlayer().getGame().log.addLine("not enough stamina!");
 		return false;
 	}
 	public boolean checkLegalTarget(Warrior origin_warrior,Warrior target_warrior) {
@@ -95,12 +97,14 @@ public class Ability {
 			return false;
 		}
 		if (origin_warrior==target_warrior) {
-			if (!self_target_allowed) {
+			if (!self_target_allowed) {				
+				origin_warrior.getPlayer().getGame().log.addLine("can not target self!");
 				return false;
 			}
 		}
 		if (origin_warrior.getPlayer()==target_warrior.getPlayer()) {
 			if (!friendly) {
+				origin_warrior.getPlayer().getGame().log.addLine("can not target ally!");
 				return false;
 			}
 		}		

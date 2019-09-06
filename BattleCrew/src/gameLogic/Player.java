@@ -14,7 +14,7 @@ public class Player implements HexTilePlayer,Serializable{
 	private HexTile selectedTile;
 	private Item selectedItem;
 	private boolean AI;
-	private LinkedList<Warrior> availableWarriors;
+	//private LinkedList<Warrior> availableWarriors;
 	protected LinkedList<Warrior> warriors;
 	private LinkedList<Item> inventory;
 	protected int inventoryCapacity;
@@ -27,7 +27,7 @@ public class Player implements HexTilePlayer,Serializable{
 		this.game=game;
 		this.AI=AI;
 		warriors=new LinkedList<Warrior>();
-		availableWarriors=new LinkedList<Warrior>();
+//		availableWarriors=new LinkedList<Warrior>();
 		inventoryCapacity=100;
 		inventory=new LinkedList<Item>();
 		gold=100;
@@ -74,12 +74,12 @@ public class Player implements HexTilePlayer,Serializable{
 			return false;
 		}
 	}
-	public void removeHeroFromTavern(Warrior hero) {
-		if(availableWarriors.size()>=1&&availableWarriors.contains(hero)) {
-			availableWarriors.remove(hero);
-			hero.setPlayer(null);
-		}
-	}
+//	public void removeHeroFromTavern(Warrior hero) {
+//		if(availableWarriors.size()>=1&&availableWarriors.contains(hero)) {
+//			availableWarriors.remove(hero);
+//			hero.setPlayer(null);
+//		}
+//	}
 	public void removeDeadHeroesFromRoster() {
 		LinkedList<Warrior> deadHeroes=new LinkedList<Warrior>();
 		for(int i=0; i<warriors.size();i++) {
@@ -173,12 +173,12 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setGame(Game game) {
 		this.game = game;
 	}
-	public LinkedList<Warrior> getAvailableHeroes() {
-		return availableWarriors;
-	}
-	public void setAvailableHeroes(LinkedList<Warrior> availableHeroes) {
-		this.availableWarriors = availableHeroes;
-	}
+//	public LinkedList<Warrior> getAvailableHeroes() {
+//		return availableWarriors;
+//	}
+//	public void setAvailableHeroes(LinkedList<Warrior> availableHeroes) {
+//		this.availableWarriors = availableHeroes;
+//	}
 	public int getGroupSize() {
 		return groupSize;
 	}

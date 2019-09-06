@@ -14,18 +14,34 @@ public class Battle {
 		this.attacker=attacker;
 		this.defender=defender;
 		battleParticipants= new LinkedList<Warrior>();
+		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
+			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
+				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof Warrior) {
+					Warrior warrior= (Warrior) game.getPrepareTable().getTiles().get(i).getUnit();
+					warrior.setBattle_participant(true);
+				}
+				
+			}
+			
+		}
 		//place warriors and add them to battlefield
 		for (int i = 0; i < attacker.getHeroes().size(); i++) {
-			battleParticipants.add(attacker.getHeroes().get(i));
-			attacker.getHeroes().get(i).setTile(battlefield.getTiles().get(i));
-			battlefield.getTiles().get(i).setUnit(attacker.getHeroes().get(i));
-			attacker.getHeroes().get(i).battleBegin();
+			if (attacker.getHeroes().get(i).isBattle_participant()) {
+				battleParticipants.add(attacker.getHeroes().get(i));
+				attacker.getHeroes().get(i).setTile(battlefield.getTiles().get(i));
+				battlefield.getTiles().get(i).setUnit(attacker.getHeroes().get(i));
+				attacker.getHeroes().get(i).battleBegin();
+			}
+			
 		}
 		for (int i = 0; i < defender.getHeroes().size(); i++) {
-			battleParticipants.add(defender.getHeroes().get(i));
-			defender.getHeroes().get(i).setTile(battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)));
-			battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)).setUnit(defender.getHeroes().get(i));
-			defender.getHeroes().get(i).battleBegin();
+			if (defender.getHeroes().get(i).isBattle_participant()) {
+				battleParticipants.add(defender.getHeroes().get(i));
+				defender.getHeroes().get(i).setTile(battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)));
+				battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)).setUnit(defender.getHeroes().get(i));
+				defender.getHeroes().get(i).battleBegin();
+			}
+
 		}
 		
 		//sort 
@@ -62,6 +78,12 @@ public class Battle {
 			winner=defender;
 		}else {
 			winner=attacker;
+		}
+		for (int i = 0; i < attacker.getHeroes().size(); i++) {
+			attacker.getHeroes().get(i).setBattle_participant(false);
+		}
+		for (int i = 0; i < defender.getHeroes().size(); i++) {
+			defender.getHeroes().get(i).setBattle_participant(false);
 		}
 	}
 	private void runAI() {

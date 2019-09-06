@@ -12,6 +12,7 @@ public class Game implements Serializable {
 	private Player player; // change this for multiplayer
 	private Player opponent;
 	private Battle battle;
+	private WarriorsReadyForBattleTable prepareTable;
 	public double image_scale;
 	protected int maximumGroupSize=5;
 	private Shop shop;
@@ -28,7 +29,9 @@ public class Game implements Serializable {
 	private Warrior lastCaster;
 	public Game(double image_scale) {
 		super();
+		log = new MyLog();	
 		this.image_scale=image_scale;
+		prepareTable= new WarriorsReadyForBattleTable(7, 2, 2, this);
 		player = new Player(this,false);
 		lastCaster= null;
 		try {
@@ -44,11 +47,17 @@ public class Game implements Serializable {
 //		itemSpecialBuilder = new ItemSpecialBuilder(this,"resources/itemsSpecial.properties");
 //		itemSuffixBuilder = new ItemSuffixBuilder();
 		//generator = new GeneratorRandom(this);
-		log = new MyLog();		
+			
 		// cardBuilder.printMap();
 	}
-	public void startExampleBattle(Player attacker, Player defender) {
-		battle= new Battle(this, new Battlefield(20, 8, image_scale, this), attacker, defender);		
+	public void startExampleBattle() {
+		
+		Player defender = new Player(this,true);
+		defender.addHero(new Warrior("Koshof", defender, 2));
+		defender.getHeroes().getFirst().getEquipment().equipBody(itemBuilder.buildItembyName("leatherarmor"));
+		defender.getHeroes().getFirst().setBattle_participant(true);
+		battle= new Battle(this, new Battlefield(20, 8, 2, this), player, defender);
+		battle= new Battle(this, new Battlefield(20, 8, image_scale, this), player, defender);		
 	}
 	// getters and setters
 
@@ -92,6 +101,12 @@ public class Game implements Serializable {
 	}
 	public void setShop(Shop shop) {
 		this.shop = shop;
+	}
+	public WarriorsReadyForBattleTable getPrepareTable() {
+		return prepareTable;
+	}
+	public void setPrepareTable(WarriorsReadyForBattleTable prepareTable) {
+		this.prepareTable = prepareTable;
 	}
 	
 	

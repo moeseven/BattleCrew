@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import gameLogic.Ability;
+import gameLogic.Game;
 public class AbilityBuilder {
 	private HashMap<String,String[]> map;
 	public AbilityBuilder() throws IOException {		
-		super();		
+		super();
 		map= new HashMap<String,String[]>();
 		String path ="./resources/Abilities.csv";
 		String row;

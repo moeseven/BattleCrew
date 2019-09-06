@@ -23,7 +23,7 @@ public class Warrior implements HexTileUnit{
 	private int walked_tiles_this_round;	
 	private int round_actions;
 	private HexTile tile;
-
+	private boolean battle_participant;
 	private int level;
 	private int skillpoints;
 	//attributes
@@ -65,6 +65,7 @@ public class Warrior implements HexTileUnit{
 		addRandomStat(2);
 		addRandomStat(1);
 		for (int levels_to_go = level; levels_to_go > 0; levels_to_go--) {
+			level--;
 			lvlUp(false,false);
 		}
 	}
@@ -351,6 +352,45 @@ public class Warrior implements HexTileUnit{
 		}
 		return fist_punch;
 	}
+	public LinkedList<String> generateStatLines(){
+		//paint Hero info all interesting stats about the hero
+		LinkedList<String> lines=new LinkedList<String>();
+		lines.add("");
+		lines.add(player.getSelectedUnit().getName()+"  (Level "+player.getSelectedUnit().getLevel()+")");
+		lines.add("");
+		lines.add("health: "+(int)(player.getSelectedUnit().getHealth())+"/"+player.getSelectedUnit().calcMaxHp());
+		lines.add("stamina: "+(int)(player.getSelectedUnit().getStamina())+"/"+player.getSelectedUnit().calcMaxStamina());
+		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
+		lines.add("");
+		//main stats
+		lines.add("speed: "+player.getSelectedUnit().getSpeed());
+		lines.add("offesnive skill: "+player.getSelectedUnit().getOffense());
+		lines.add("defensive skill: "+player.getSelectedUnit().getDefense());
+		lines.add("strength: "+player.getSelectedUnit().getStrength());
+		lines.add("dexterity: "+player.getSelectedUnit().getDexterity());
+		lines.add("endurance: "+player.getSelectedUnit().getEndurance());
+		lines.add("vitality: "+player.getSelectedUnit().getVitality());		
+		lines.add("");
+		//defensive
+		lines.add("armor: "+player.getSelectedUnit().getArmor());
+		
+		//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
+		//Quirks
+		lines.add("");
+	//TODO if(player.getSelectedHero().getQuirks().size()>0) { 
+//			lines.add("Quirks:");
+//			for(int a=0; a<player.getSelectedHero().getQuirks().size();a++) {
+//				String quirkString=player.getSelectedHero().getQuirks().get(a).getName()+"(";
+//				for(int b=0; b<player.getSelectedHero().getQuirks().get(a).getDescription().size();b++) {
+//					quirkString+=player.getSelectedHero().getQuirks().get(a).getDescription().get(b);
+//				}
+//				quirkString+=")";
+//				lines.add(quirkString);
+//			}
+//			lines.add("");
+//		}
+		return lines;
+	}
 	//interface methods
 	@Override
 	public float getHealth() {
@@ -386,9 +426,12 @@ public class Warrior implements HexTileUnit{
 	}
 	@Override
 	public boolean reachableTile(HexTile tile) {
-		if (tile.getDistance(this.tile)==1&&tile.getUnit()==null) {
-			return true;
+		if (tile!=null) {
+			if (tile.getDistance(this.tile)==1&&tile.getUnit()==null) {
+				return true;
+			}
 		}
+		
 		return false;
 	}
 	@Override
@@ -509,6 +552,12 @@ public class Warrior implements HexTileUnit{
 	}
 	public LinkedList<Card> getDefensive_deck() {
 		return defensive_deck.cards;
+	}
+	public boolean isBattle_participant() {
+		return battle_participant;
+	}
+	public void setBattle_participant(boolean battle_participant) {
+		this.battle_participant = battle_participant;
 	}
 	
 	

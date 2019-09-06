@@ -21,8 +21,7 @@ public class Equipment implements Serializable{
 	}
 	public boolean equipItem(Item item) {
 		boolean success=true;
-		if(true) {
-			switch (item.getCategory()) {
+		switch (item.getCategory()) {
 			case 0:  equipPotion(item);break;
 	        case 1:  equipHand1(item);break;
 	        case 2:  equipHand2(item);break;
@@ -32,9 +31,6 @@ public class Equipment implements Serializable{
 	        case 6:  equipRing(item);break;
 	        default: success=false;
 			}
-		}else {
-			success=false;
-		}		
 		return success;
 	}
 
