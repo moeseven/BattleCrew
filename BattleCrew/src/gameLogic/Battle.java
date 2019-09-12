@@ -10,6 +10,7 @@ public class Battle {
 	private Player winner=null;
 	private Game game;
 	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
+		this.game=game;
 		this.battleField=battlefield;
 		this.attacker=attacker;
 		this.defender=defender;
@@ -25,28 +26,54 @@ public class Battle {
 			
 		}
 		//place warriors and add them to battlefield
-		for (int i = 0; i < attacker.getHeroes().size(); i++) {
-			if (attacker.getHeroes().get(i).isBattle_participant()) {
-				battleParticipants.add(attacker.getHeroes().get(i));
-				attacker.getHeroes().get(i).setTile(battlefield.getTiles().get(i));
-				battlefield.getTiles().get(i).setUnit(attacker.getHeroes().get(i));
-				attacker.getHeroes().get(i).battleBegin();
+//		for (int i = 0; i < attacker.getHeroes().size(); i++) {
+//			if (attacker.getHeroes().get(i).isBattle_participant()) {
+//				battleParticipants.add(attacker.getHeroes().get(i));
+//				attacker.getHeroes().get(i).setTile(battlefield.getTiles().get(i));
+//				battlefield.getTiles().get(i).setUnit(attacker.getHeroes().get(i));
+//				attacker.getHeroes().get(i).battleBegin();
+//			}
+//			
+//		}
+//		for (int i = 0; i < defender.getHeroes().size(); i++) {
+//			if (defender.getHeroes().get(i).isBattle_participant()) {
+//				battleParticipants.add(defender.getHeroes().get(i));
+//				defender.getHeroes().get(i).setTile(battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)));
+//				battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)).setUnit(defender.getHeroes().get(i));
+//				defender.getHeroes().get(i).battleBegin();
+//			}
+//
+//		}
+		placeAttackersOrderly();
+		placeDefendersOrderly();
+		//sort 
+		setHeroTrunOrder();
+		selectActiveWarriorForPlayer();
+	}
+	private void placeAttackersOrderly() {
+		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
+			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
+				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof Warrior) {
+					Warrior warrior =(Warrior) game.getPrepareTable().getTiles().get(i).getUnit();
+					battleParticipants.add(warrior);
+					warrior.setTile(battleField.getTiles().get(game.getPrepareTable().translateTileIndex(battleField.getTable_size_x(), battleField.getTable_size_y(), i)));
+					battleField.getTiles().get(game.getPrepareTable().translateTileIndex(battleField.getTable_size_x(), battleField.getTable_size_y(), i)).setUnit(warrior);
+					warrior.battleBegin();
+				}
+				
 			}
-			
 		}
+	}
+	private void placeDefendersOrderly() {
 		for (int i = 0; i < defender.getHeroes().size(); i++) {
 			if (defender.getHeroes().get(i).isBattle_participant()) {
 				battleParticipants.add(defender.getHeroes().get(i));
-				defender.getHeroes().get(i).setTile(battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)));
-				battlefield.getTiles().get(battlefield.getTiles().size()-(1+i)).setUnit(defender.getHeroes().get(i));
+				defender.getHeroes().get(i).setTile(battleField.getTiles().get(battleField.getTable_size_y()*i));
+				battleField.getTiles().get(battleField.getTable_size_y()*i).setUnit(defender.getHeroes().get(i));
 				defender.getHeroes().get(i).battleBegin();
 			}
 
 		}
-		
-		//sort 
-		setHeroTrunOrder();
-		selectActiveWarriorForPlayer();
 	}
 	private void selectActiveWarriorForPlayer() {
 		attacker.setSelectedTile(getActiveWarrior().getHexTile());
