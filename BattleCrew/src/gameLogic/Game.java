@@ -54,7 +54,11 @@ public class Game implements Serializable {
 		
 		Player defender = new Player(this,true);
 		defender.addHero(new Warrior("Koshof", defender, 2));
-		defender.getHeroes().getFirst().getEquipment().equipBody(itemBuilder.buildItembyName("leatherarmor"));
+		defender.getHeroes().get(0).getEquipment().equipBody(itemBuilder.buildItembyName("leatherarmor"));
+		defender.getHeroes().get(0).getEquipment().equipHand1(itemBuilder.buildItembyName("shortsword"));
+		defender.getHeroes().getFirst().setBattle_participant(true);
+		defender.addHero(new Warrior("Krumof", defender, 2));
+		defender.getHeroes().get(1).getEquipment().equipHand1(itemBuilder.buildItembyName("slingshot"));
 		defender.getHeroes().getFirst().setBattle_participant(true);
 		//battle= new Battle(this, new Battlefield(20, 8, 2, this), player, defender);
 		battle= new Battle(this, new Battlefield(20, 8, image_scale, this), player, defender);		

@@ -3,6 +3,8 @@ package gameLogic;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import HexTilePlayground.HexTile;
+
 public class Battle {
 	private LinkedList<Warrior> battleParticipants;
 	private Battlefield battleField;
@@ -115,6 +117,50 @@ public class Battle {
 	}
 	private void runAI() {
 		//TODO
+		for (int turns = 0; turns <3; turns++) {
+			//get target for attack
+			int smallest_distance=Integer.MAX_VALUE;
+			Warrior target_warrior=null;
+			for (int i = 0; i < battleParticipants.size(); i++) {
+				if (battleParticipants.get(i).getPlayer()!=getActiveWarrior().getPlayer()) {
+					if (getActiveWarrior().getHexTile().getDistance(battleParticipants.get(i).getHexTile())<smallest_distance) {
+						smallest_distance=getActiveWarrior().getHexTile().getDistance(battleParticipants.get(i).getHexTile());
+						target_warrior=battleParticipants.get(i);
+					}
+				}			
+			}
+			if (target_warrior!=null) {
+				//move
+				if (getActiveWarrior().getHexTile().getDistance(target_warrior.getHexTile())>getActiveWarrior().getWeaponAbility().getRange()) {
+					//move towards target here
+					int minimum_distance=Integer.MAX_VALUE;
+					LinkedList<HexTile> tiles= getActiveWarrior().getHexTile().getAdjacentTiles();
+					HexTile bestTile = tiles.getFirst();				
+					for (int i = 0; i < tiles.size(); i++) {
+						if (minimum_distance>tiles.get(i).getDistance(target_warrior.getHexTile())) {
+							minimum_distance=tiles.get(i).getDistance(target_warrior.getHexTile());
+							if (tiles.get(i).getUnit()==null) {
+								bestTile=tiles.get(i);
+							}
+						}
+					}
+					if (bestTile instanceof Tile) {
+						Tile move_tile= (Tile) bestTile;
+						getActiveWarrior().moveOneTile(move_tile);
+					}
+					if (getActiveWarrior().getStamina()<0.8*getActiveWarrior().calcMaxStamina()) {
+						turns=2;
+					}
+				}else {
+					//hit
+					getActiveWarrior().useMainHand(target_warrior);
+					getActiveWarrior().getWeaponAbility().applyAbilityAfterRoll();
+				}				
+				
+			}
+			
+		}
+		
 		endActiveWarriorTurn();
 	}
 	public void setHeroTrunOrder() {

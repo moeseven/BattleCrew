@@ -143,6 +143,18 @@ public class Warrior implements HexTileUnit{
 			}
 	}
 	//battle
+	public boolean useMainHand(Warrior warrior) {
+			if (equipment.getHand1()!=null) {
+				if (equipment.getHand1().getAbilities().get(0)!=null) {
+					equipment.getHand1().getAbilities().get(0).attempt(this, warrior);
+					return true;
+				}				
+			}else {
+				fist_punch.attempt(this,warrior);
+				return true;
+			}
+		return false;
+	}
 	public boolean useMainHand(Battle battle,Tile tile) {
 		if (battle.getActiveWarrior()==this) {
 			if (equipment.getHand1()!=null) {
