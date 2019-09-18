@@ -30,6 +30,8 @@ public class BattleWindow extends JFrame{
 	public void battleOver(){
 		if(game.getBattle().getWinner()!=null){
 			dispose();
+			campaign_window.dispose();
+			campaign_window= new CampaignWindow(game, null);
 			campaign_window.setVisible(true);
 		}
 	}

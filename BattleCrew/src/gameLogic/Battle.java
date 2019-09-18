@@ -86,8 +86,8 @@ public class Battle {
 	public void endActiveWarriorTurn() {
 		if (getActiveWarrior().isDead()) {
 			battleParticipants.removeFirst();
-			if (defender.getHeroes().size()==0||attacker.getHeroes().size()==0) {
-				endBattle();
+			if (tryEndBattle()) {
+				
 			}else {
 				endActiveWarriorTurn();
 			}
@@ -101,19 +101,38 @@ public class Battle {
 		}
 		
 	}
-	private void endBattle() {
+	private boolean tryEndBattle() {
 		// TODO Auto-generated method stub
-		if (attacker.getHeroes().size()==0) {
+		int count_attacker=0;
+		int count_defender=0;
+		for (int i = 0; i < battleParticipants.size(); i++) {
+			if (battleParticipants.get(i).getPlayer()!=attacker) {
+				count_attacker++;
+			}else {
+				count_defender++;
+			}
+		}
+		if (count_attacker==0) {
 			winner=defender;
 		}else {
-			winner=attacker;
+			if (count_defender==0) {
+				winner=attacker;
+			}		
 		}
-		for (int i = 0; i < attacker.getHeroes().size(); i++) {
-			attacker.getHeroes().get(i).setBattle_participant(false);
+		if (winner!=null) {
+			attacker.removeDeadHeroesFromRoster();
+			defender.removeDeadHeroesFromRoster();
+			for (int i = 0; i < attacker.getHeroes().size(); i++) {
+				attacker.getHeroes().get(i).setBattle_participant(false);
+					
+			}
+			for (int i = 0; i < defender.getHeroes().size(); i++) {
+				defender.getHeroes().get(i).setBattle_participant(false);
+			}
+			
+			return true;
 		}
-		for (int i = 0; i < defender.getHeroes().size(); i++) {
-			defender.getHeroes().get(i).setBattle_participant(false);
-		}
+		return false;
 	}
 	private void runAI() {
 		//TODO
@@ -154,7 +173,10 @@ public class Battle {
 				}else {
 					//hit
 					getActiveWarrior().useMainHand(target_warrior);
-					getActiveWarrior().getWeaponAbility().applyAbilityAfterRoll();
+					if (getActiveWarrior().getWeaponAbility().isAfter_roll_status()) {
+						getActiveWarrior().getWeaponAbility().applyAbilityAfterRoll();
+					}
+					
 				}				
 				
 			}

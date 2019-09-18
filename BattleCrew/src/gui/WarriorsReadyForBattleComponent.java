@@ -67,7 +67,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 			setLayout(new BorderLayout());
 			entry_box= new EntryBox();  
 			remakeListEntries();
-			add(entry_box,BorderLayout.CENTER);			
+			add(entry_box,BorderLayout.NORTH);			
 		}
 		public void remakeListEntries() {
 			this.removeAll(); 
@@ -78,7 +78,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		private class EntryBox extends JComponent{
 			public EntryBox() {
 				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-				setPreferredSize(new Dimension(100,40));
+				setPreferredSize(new Dimension(100,100));
 				setVisible(true);
 			}
 		}
@@ -86,14 +86,14 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 	private class HeroListItem extends JComponent{
 		private Warrior warrior;
 		public HeroListItem(Warrior warrior) {
-			setPreferredSize(new Dimension(100,30));
+			setPreferredSize(new Dimension(100,40));
 			setVisible(true);
 			addMouseListener(new HeroListItemMouseListener());
 			this.warrior=warrior;
 		}
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
-			g.drawString(warrior.getName(), 5, 15);
+			g.drawString(warrior.getName()+" ( level "+warrior.getLevel()+")", 5, 15);
 		}
 		private class HeroListItemMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
