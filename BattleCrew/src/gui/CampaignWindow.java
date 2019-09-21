@@ -26,7 +26,7 @@ public class CampaignWindow extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());	
 		add(new WarriorsReadyForBattleComponent(this), BorderLayout.NORTH);
-		//add(new RectangleCampaignManagementMenu(),BorderLayout.CENTER);
+		add(new RectangleCampaignManagementMenu(),BorderLayout.CENTER);
 		setLocation(10, 10);
 		setUpWarriorInspectionPanel();
 		this.setVisible(true);
