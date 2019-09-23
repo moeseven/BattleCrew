@@ -49,8 +49,12 @@ public class Battle {
 		placeAttackersOrderly();
 		placeDefendersOrderly();
 		//sort 
-		setHeroTrunOrder();
+		setHeroTrunOrder();		
+	}
+	public void start() {
+		battleParticipants.addFirst(battleParticipants.removeLast());
 		selectActiveWarriorForPlayer();
+		endActiveWarriorTurn();
 	}
 	private void placeAttackersOrderly() {
 		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
@@ -232,4 +236,5 @@ public class Battle {
 	public void setWinner(Player winner) {
 		this.winner = winner;
 	}
+
 }

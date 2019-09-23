@@ -119,7 +119,7 @@ public class Player implements HexTilePlayer,Serializable{
 			//TODO
 			success=false;
 		}else {
-			game.log.addLine(item.getName()+" added to inventory.");
+			game.log.addLine(item.getName()+" added to the arsenal.");
 			inventory.add(item);
 			success=true;
 		}

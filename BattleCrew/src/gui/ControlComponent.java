@@ -10,6 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.border.LineBorder;
 
@@ -26,22 +30,78 @@ public class ControlComponent extends JComponent {
 	protected int height;
 	private BattleWindow battle_window;
 	private RectangleClicker rectangle_clicker;
+	private LogComponent log;
+	private DefensiveCheckbox def_box;
 	public ControlComponent(Player player,BattleWindow bw){
 		this.player=player;
 		this.battle_window=bw;
 		height=13;
 		setLayout(new BorderLayout());
-		add(new LogComponent(player.getGame().log),BorderLayout.EAST);
+		log=new LogComponent(player.getGame().log);
+		add(log,BorderLayout.EAST);
 		setBorder(new LineBorder(Color.GREEN));
 		super.setPreferredSize(new Dimension(440,(height-1)*15));
 		addAbilities();
 		addMouseListener(new MyMouseListener());
+		def_box=new DefensiveCheckbox();
+		add(def_box,BorderLayout.WEST);
 		setVisible(true);
+	}
+	private class DefensiveCheckbox extends JCheckBox{
+		private ImageIcon icon;
+		public DefensiveCheckbox() {
+			super();
+			//setPreferredSize(new Dimension(300, 300));
+			addMouseListener(new CheckboxMouseListener());
+			//icon= new ImageIcon(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), 17,2));
+			setText("defensive");
+			this.setIcon(icon);
+			refresh();
+		}
+		public DefensiveCheckbox(Action arg0) {
+			super(arg0);
+			// TODO Auto-generated constructor stub
+		}
+		public DefensiveCheckbox(Icon arg0, boolean arg1) {
+			super(arg0, arg1);
+			// TODO Auto-generated constructor stub
+		}
+		public DefensiveCheckbox(Icon arg0) {
+			super(arg0);
+			// TODO Auto-generated constructor stub
+		}
+		public DefensiveCheckbox(String arg0, boolean arg1) {
+			super(arg0, arg1);
+			// TODO Auto-generated constructor stub
+		}
+		public DefensiveCheckbox(String arg0, Icon arg1, boolean arg2) {
+			super(arg0, arg1, arg2);
+			// TODO Auto-generated constructor stub
+		}
+		public DefensiveCheckbox(String arg0, Icon arg1) {
+			super(arg0, arg1);
+			// TODO Auto-generated constructor stub
+		}
+		public DefensiveCheckbox(String arg0) {
+			super(arg0);
+			// TODO Auto-generated constructor stub
+		}
+		public void refresh() {
+			this.setSelected(player.getSelectedUnit().isDefensie());
+		}
+		private class CheckboxMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					player.getGame().getBattle().getActiveWarrior().setDefensie(!player.getGame().getBattle().getActiveWarrior().isDefensie());
+					//refresh();
+				}
+			} 
+		}
 	}
 	public void addAbilities() {
 		int RECT_X_SIZE=190;
 		int RECT_Y_SIZE=120;
-		int ABILITIES_START_X=340;
+		int ABILITIES_START_X=540;
 		rectangle_clicker= new RectangleClicker();
 		ClickableRectangle moveangle= new ClickableRectangle("move", ABILITIES_START_X, 20, RECT_X_SIZE, RECT_Y_SIZE) {			
 			@Override
@@ -159,13 +219,15 @@ public class ControlComponent extends JComponent {
 	}
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);
+	log.refresh();
+	def_box.refresh();
 	rectangle_clicker.paintRectangles(g);
 	//paint Hero info all interesting stats about the hero
 	LinkedList<String> lines=player.getSelectedUnit().generateStatLines();
-	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);		
+	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(300, 255, 5),50,-5,null);		
 	for(int i=0; i<lines.size();i++) {
 		if(i<=height+1) {
-			g.drawString(lines.get(i), 200, 10+12*i);
+			g.drawString(lines.get(i), 300, 10+12*i);
 		}else {
 			g.drawString(lines.get(i), 340, 10+12*(i-height+2));
 		}

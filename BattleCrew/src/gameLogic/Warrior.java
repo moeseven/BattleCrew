@@ -1,7 +1,6 @@
 package gameLogic;
 import java.util.Collections;
 import java.util.LinkedList;
-
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileUnit;
@@ -26,6 +25,7 @@ public class Warrior implements HexTileUnit{
 	private boolean battle_participant;
 	private int level;
 	private int skillpoints;
+	private boolean defensive=false;
 	//attributes
 	private int offense; //~deck size offensive (avg card quality increases with size)
 	private int defense; //~deck size defensive (avg card quality increases with size)
@@ -94,7 +94,7 @@ public class Warrior implements HexTileUnit{
 		}
 		///
 		walked_tiles_this_round=0;
-		stamina+=3;
+		stamina+=6;
 		if(stamina>calcMaxStamina()) {
 			stamina=calcMaxStamina();
 		}
@@ -185,6 +185,18 @@ public class Warrior implements HexTileUnit{
 		return false;
 	}
 	public boolean isAHit(Ability ability, Warrior target_warrior) {//miss_chance horrible performance
+		boolean hit=miss(ability,target_warrior);
+		if (!hit) {
+			player.getGame().log.addLine("miss!");
+		}	
+		if (target_warrior.getHexTile().getDistance(tile)<=2&&hit) {
+			if (target_warrior.meeleDeflect(this)) {
+				hit=false;
+			}
+		}
+		return hit;
+	}
+	public boolean miss(Ability ability, Warrior target_warrior) {
 		int deficit=dexterity-ability.getDexterity_demand()-player.getGame().getBattle().getBattleField().getDistance(getHexTile(), target_warrior.getHexTile());		
 		LinkedList<Boolean> dice= new LinkedList<Boolean>();
 		for (int i = 0; i < 9; i++) {
@@ -202,14 +214,27 @@ public class Warrior implements HexTileUnit{
 		}
 		Collections.shuffle(dice);
 		Boolean hit= dice.getFirst();
-		if (!hit) {
-			player.getGame().log.addLine("miss!");
-		}		
 		return hit;
+	}
+	public boolean meeleDeflect(Warrior attacking_warrior) {
+		int deflect_cost=3;
+		boolean deflect=false;
+		if (stamina>this.getModifiedStaminaCost(deflect_cost)&&isDefensie()) {//enough stamina?
+			//pay stamina
+			payModifiedStaminaCost(deflect_cost);
+			//attack defense function
+			if (Math.random()>((attacking_warrior.getOffense()+1.0)/(Math.max(1.0, getDefense()+attacking_warrior.getOffense()+1.0)))) {
+				deflect=true;
+				player.getGame().log.addLine(name+" deflected an Attack!");
+			}
+		}
+		
+		return deflect;
 	}
 	public void takeDamage(int damage) {
 		int after_armor_damage=Math.max(damage-armor,0);		
 		this.setHealth(health-(after_armor_damage));
+		player.getGame().log.addLine(name+" took "+after_armor_damage+" points of damage!");
 		if (health<=0) {
 			health=0;
 		}
@@ -217,6 +242,7 @@ public class Warrior implements HexTileUnit{
 		if (isDead()) {
 			this.tile.setUnit(null);
 			player.getHeroes().remove(this);
+			player.getGame().log.addLine(name+" died!");
 		}
 	}
 	//getters calc
@@ -333,7 +359,7 @@ public class Warrior implements HexTileUnit{
 	}
 	public boolean moveOneTile(Tile tile) {
 		if(isReadyToMove()&&reachableTile(tile)) {			
-			if(payStaminaCost(getMoveStamina_cost())) {
+			if(payModifiedStaminaCost(getMoveStamina_cost())) {
 				this.tile.setUnit(null);
 				tile.setUnit(this);
 				this.tile=tile;
@@ -344,7 +370,7 @@ public class Warrior implements HexTileUnit{
 		}
 		return false;
 	}
-	public boolean payStaminaCost(double cost) {
+	public boolean payModifiedStaminaCost(double cost) {
 		double modified_cost=getModifiedStaminaCost(cost);
 		if (modified_cost>stamina) {
 			return false;
@@ -368,23 +394,23 @@ public class Warrior implements HexTileUnit{
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=new LinkedList<String>();
 		lines.add("");
-		lines.add(player.getSelectedUnit().getName()+"  (Level "+player.getSelectedUnit().getLevel()+")");
+		lines.add(name+"  (Level "+getLevel()+")");
 		lines.add("");
-		lines.add("health: "+(int)(player.getSelectedUnit().getHealth())+"/"+player.getSelectedUnit().calcMaxHp());
-		lines.add("stamina: "+(int)(player.getSelectedUnit().getStamina())+"/"+player.getSelectedUnit().calcMaxStamina());
+		lines.add("health: "+(int)(getHealth())+"/"+calcMaxHp());
+		lines.add("stamina: "+(int)(getStamina())+"/"+calcMaxStamina());
 		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
 		lines.add("");
 		//main stats
-		lines.add("speed: "+player.getSelectedUnit().getSpeed());
-		lines.add("offesnive skill: "+player.getSelectedUnit().getOffense());
-		lines.add("defensive skill: "+player.getSelectedUnit().getDefense());
-		lines.add("strength: "+player.getSelectedUnit().getStrength());
-		lines.add("dexterity: "+player.getSelectedUnit().getDexterity());
-		lines.add("endurance: "+player.getSelectedUnit().getEndurance());
-		lines.add("vitality: "+player.getSelectedUnit().getVitality());		
+		lines.add("speed: "+getSpeed());
+		lines.add("offesnive skill: "+getOffense());
+		lines.add("defensive skill: "+getDefense());
+		lines.add("strength: "+getStrength());
+		lines.add("dexterity: "+getDexterity());
+		lines.add("endurance: "+getEndurance());
+		lines.add("vitality: "+getVitality());		
 		lines.add("");
 		//defensive
-		lines.add("armor: "+player.getSelectedUnit().getArmor());
+		lines.add("armor: "+getArmor());
 		
 		//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
 		//Quirks
@@ -570,6 +596,18 @@ public class Warrior implements HexTileUnit{
 	}
 	public void setBattle_participant(boolean battle_participant) {
 		this.battle_participant = battle_participant;
+	}
+	public LinkedList<Card> getDefensives() {
+		return defensives;
+	}
+	public void setDefensives(LinkedList<Card> defensives) {
+		this.defensives = defensives;
+	}
+	public boolean isDefensie() {
+		return defensive;
+	}
+	public void setDefensie(boolean defensie) {
+		this.defensive = defensie;
 	}
 	
 	

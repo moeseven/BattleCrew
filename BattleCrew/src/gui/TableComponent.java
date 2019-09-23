@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 
@@ -14,6 +15,7 @@ public class TableComponent extends HexTileTableComponent {
 	public TableComponent(HexTilePlayer player, HexTileTable table, BattleWindow gf) {
 		super(player, table, gf, gf.get_sprite_path());
 		this.bw=gf;
+		this.setBackground(Color.green);
 	}
 	
 }

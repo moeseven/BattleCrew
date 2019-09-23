@@ -25,4 +25,7 @@ public class LogComponent extends JComponent{
 			super.setPreferredSize(new Dimension(300,220));
 			setVisible(true);
 	}
+	public void refresh() {
+		text.setText(combatLog.getLog());
+	}
 }

@@ -10,7 +10,11 @@ public class Item {
 	public boolean droppable;	
 	private int category;
 	private int weight;
+	//mods
 	private int armor;
+	private int offense;
+	private int defense;
+	//
 	private int image;
 	private Game game;
 	private LinkedList<String> description;
@@ -31,6 +35,8 @@ public class Item {
 		weight= Integer.parseInt(stats[5]);
 		armor= Integer.parseInt(stats[6]);
 		image= Integer.parseInt(stats[7]);
+		defense=Integer.parseInt(stats[8]);
+		offense=Integer.parseInt(stats[9]);
 	}
 	public Item() {
 		name= "unknown";
@@ -43,10 +49,15 @@ public class Item {
 
 	public void mod(Warrior hero) {
 		hero.setArmor(hero.getArmor()+armor);
+		hero.setDefense(hero.getDefense()+defense);
+		hero.setOffense(hero.getOffense()+offense);
 	}
 	public void demod(Warrior hero) {
 		hero.setArmor(hero.getArmor()-armor);
+		hero.setDefense(hero.getDefense()-defense);
+		hero.setOffense(hero.getOffense()-offense);
 	}
+	
 	public void resetAbilityCooldowns() {
 		for (int i = 0; i < abilities.size(); i++) {
 			abilities.get(i).refresh();
@@ -58,12 +69,24 @@ public class Item {
 		description.add("cost: "+gold_value);
 		description.add("weight: "+weight);
 		if (abilities.size()>0) {
-			description.add("damage: "+abilities.get(0).getDamage_target());
-			description.add("dexterity demand: "+ abilities.get(0).getDexterity_demand());
-			description.add("range: "+abilities.get(0).getRange());
+			if (abilities.get(0).getDamage_target()>0) {
+				description.add("damage: "+abilities.get(0).getDamage_target());
+			}
+			if (abilities.get(0).getRange()>0) {
+				description.add("range: "+abilities.get(0).getRange());			
+						}
+			if (abilities.get(0).getDexterity_demand()>0) {
+				description.add("dexterity demand: "+ abilities.get(0).getDexterity_demand());
+			}
 		}
 		if (armor>0) {
-			description.add("armor: "+armor);
+			description.add("armor: +"+armor);
+		}
+		if(defense>0) {
+			description.add("defense: +"+defense);
+		}
+		if (offense>0) {
+			description.add("offense: +"+offense);
 		}
 	}
 	//getters and setters
