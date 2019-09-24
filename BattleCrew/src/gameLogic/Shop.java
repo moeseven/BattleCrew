@@ -16,6 +16,8 @@ public class Shop {
 		items.add(game.itemBuilder.buildItembyName("broadsword"));
 		items.add(game.itemBuilder.buildItembyName("helebard"));
 		items.add(game.itemBuilder.buildItembyName("leathercap"));
+		items.add(game.itemBuilder.buildItembyName("buckler"));
+		items.add(game.itemBuilder.buildItembyName("shield"));
 	}
 	public LinkedList<Item> getItems() {
 		return items;
