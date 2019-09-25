@@ -1,6 +1,10 @@
 package gameLogic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Item {
 	private String name;
@@ -10,6 +14,7 @@ public class Item {
 	public boolean droppable;	
 	private int category;
 	private int weight;
+	private boolean attack_ability;
 	//mods
 	private int armor;
 	private int offense;
@@ -27,7 +32,9 @@ public class Item {
 		name=stats[0];
 		String[] ability_names = stats[1].split(";");
 		for (int i = 0; i < ability_names.length; i++) {
-			abilities.add(game.abilityBuilder.buildAbilitybyName(ability_names[i]));
+			if (!ability_names[i].equals("")) {
+				abilities.add(game.abilityBuilder.buildAbilitybyName(ability_names[i]));
+			}			
 		}
 		gold_value= Integer.parseInt(stats[2]);
 		droppable= Boolean.parseBoolean(stats[3]);
@@ -37,6 +44,18 @@ public class Item {
 		image= Integer.parseInt(stats[7]);
 		defense=Integer.parseInt(stats[8]);
 		offense=Integer.parseInt(stats[9]);
+		attack_ability=Boolean.parseBoolean(stats[10]);
+		if (attack_ability) {
+			List<String> subArray = new ArrayList<String>();
+			subArray.add(name);
+			subArray.addAll(Arrays.asList(stats).subList(11, stats.length));
+			String[] ability_stats = subArray.toArray(new String[0]);
+//			for (Iterator iterator = subArray.iterator(); iterator.hasNext();) {
+//				String string = (String) iterator.next();
+//				System.out.println(string);
+//			}			
+			abilities.add(new Ability(ability_stats));
+		}
 	}
 	public Item() {
 		name= "unknown";

@@ -19,7 +19,7 @@ public class Warrior implements HexTileUnit{
 	private Ability fist_punch;
 	private Equipment equipment;
 	private int image_number;
-	private int walked_tiles_this_round;	
+	private int actions_this_round;	
 	private int round_actions;
 	private HexTile tile;
 	private boolean battle_participant;
@@ -93,7 +93,7 @@ public class Warrior implements HexTileUnit{
 			abilities.get(i).refresh();
 		}
 		///
-		walked_tiles_this_round=0;
+		actions_this_round=0;
 		stamina+=6;
 		if(stamina>calcMaxStamina()) {
 			stamina=calcMaxStamina();
@@ -247,7 +247,7 @@ public class Warrior implements HexTileUnit{
 	}
 	//getters calc
 	public double getStaminaCostMultiplier() {
-		return  Math.max(1,1+(equipment.getTotalWeight()-strength)*0.15)*(1+0.1*walked_tiles_this_round);
+		return  Math.max(1,1+(equipment.getTotalWeight()-strength)*0.15)*(1+0.1*actions_this_round);
 	}
 	public int calcMaxHp() {
 		return vitality+BASE_HP+level;
@@ -354,7 +354,7 @@ public class Warrior implements HexTileUnit{
 		// number of 1 in this increasing movement endurance drain (example of speed=5) 1,1,1,1,1,2,2,2,2,3,3,3,4,4,5,6,7,8
 		//endurance drain per tile moved increases with every tile walked and decreases with speed ...1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,5....
 		//TODO
-		double stamina_cost_movement=2.0+(3.0*walked_tiles_this_round)/(1.0+Math.max(0, 2*speed));
+		double stamina_cost_movement=2.0+(3.0*actions_this_round)/(1.0+Math.max(0, 2*speed));
 		return stamina_cost_movement;
 	}
 	public boolean moveOneTile(Tile tile) {
@@ -364,7 +364,7 @@ public class Warrior implements HexTileUnit{
 				tile.setUnit(this);
 				this.tile=tile;
 				player.setSelectedTile(tile);
-				walked_tiles_this_round++;
+				actions_this_round++;
 				return true;
 			}			
 		}
@@ -609,6 +609,13 @@ public class Warrior implements HexTileUnit{
 	public void setDefensie(boolean defensie) {
 		this.defensive = defensie;
 	}
+	public int getActions_this_round() {
+		return actions_this_round;
+	}
+	public void setActions_this_round(int actions_this_round) {
+		this.actions_this_round = actions_this_round;
+	}
+
 	
 	
 }

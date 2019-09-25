@@ -60,7 +60,7 @@ public class Ability {
 	public boolean use(Warrior origin_warrior, Warrior target_warrior) {
 		//TODO
 		
-		
+		origin_warrior.setActions_this_round(origin_warrior.getActions_this_round()+1);//increase stamina cost of further actions this turn
 		//pay cost
 		payStaminaCost(origin_warrior);
 		used=true;
