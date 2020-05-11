@@ -40,7 +40,7 @@ public class ControlComponent extends JComponent {
 		log=new LogComponent(player.getGame().log);
 		add(log,BorderLayout.EAST);
 		setBorder(new LineBorder(Color.GREEN));
-		super.setPreferredSize(new Dimension(440,(height-1)*15));
+		super.setPreferredSize(new Dimension(440,(height-1)*10));
 		addAbilities();
 		addMouseListener(new MyMouseListener());
 		def_box=new DefensiveCheckbox();

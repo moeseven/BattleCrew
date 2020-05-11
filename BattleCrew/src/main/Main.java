@@ -12,7 +12,7 @@ import imageloader.MyStaticImageLoader;
 
 public class Main {
 	public static void main(String[] args) {				
-		Game game = new Game(2);
+		Game game = new Game(1);
 		StaticImageLoader.prepareImage("./images",game.image_scale);
 		Player player = game.getPlayer();		
 		player.addItemtoInventory(game.itemBuilder.buildItembyName("shortsword"));
