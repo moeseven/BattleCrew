@@ -2,6 +2,7 @@ package gameLogic;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 import HexTilePlayground.HexTile;
 
@@ -99,9 +100,8 @@ public class Battle {
 			getActiveWarrior().roundBegin();		
 			battleParticipants.add(battleParticipants.removeFirst());
 			selectActiveWarriorForPlayer();
-			if (getActiveWarrior().getPlayer().isAI()) {
-				runAI();
-			}
+			
+			runAI();
 		}
 		
 	}
@@ -184,6 +184,7 @@ public class Battle {
 				}				
 				
 			}
+			
 			
 		}
 		
