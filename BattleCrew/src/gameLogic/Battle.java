@@ -7,11 +7,12 @@ import java.util.concurrent.TimeUnit;
 import HexTilePlayground.HexTile;
 
 public class Battle {
-	private LinkedList<Warrior> battleParticipants;
-	private Battlefield battleField;
-	private Player attacker,defender;
-	private Player winner=null;
-	private Game game;
+	protected LinkedList<Warrior> battleParticipants;
+	protected Battlefield battleField;
+	protected Player attacker,defender;
+	protected Player winner=null;
+	protected Game game;
+	public boolean started = false;
 	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		this.game=game;
 		this.battleField=battlefield;
@@ -23,8 +24,7 @@ public class Battle {
 				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof Warrior) {
 					Warrior warrior= (Warrior) game.getPrepareTable().getTiles().get(i).getUnit();
 					warrior.setBattle_participant(true);
-				}
-				
+				}				
 			}
 			
 		}
@@ -50,14 +50,14 @@ public class Battle {
 		placeAttackersOrderly();
 		placeDefendersOrderly();
 		//sort 
-		setHeroTrunOrder();		
+		setHeroTrunOrder();	
+		attacker.setSelectedTile(battleParticipants.getFirst().getHexTile());
+		defender.setSelectedTile(battleParticipants.getFirst().getHexTile());
 	}
 	public void start() {
-		battleParticipants.addFirst(battleParticipants.removeLast());
-		selectActiveWarriorForPlayer();
-		endActiveWarriorTurn();
+		started = true;
 	}
-	private void placeAttackersOrderly() {
+	protected void placeAttackersOrderly() {
 		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
 			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
 				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof Warrior) {
@@ -71,7 +71,7 @@ public class Battle {
 			}
 		}
 	}
-	private void placeDefendersOrderly() {
+	protected void placeDefendersOrderly() {
 		for (int i = 0; i < defender.getHeroes().size(); i++) {
 			if (defender.getHeroes().get(i).isBattle_participant()) {
 				battleParticipants.add(defender.getHeroes().get(i));
@@ -105,7 +105,7 @@ public class Battle {
 		}
 		
 	}
-	private boolean tryEndBattle() {
+	public boolean tryEndBattle() {
 		// TODO Auto-generated method stub
 		int count_attacker=0;
 		int count_defender=0;
@@ -217,6 +217,7 @@ public class Battle {
 	public Warrior getActiveWarrior() {
 		return battleParticipants.getFirst();
 	}
+	
 	public Battlefield getBattleField() {
 		return battleField;
 	}

@@ -1,15 +1,20 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 
 import gameLogic.Game;
 
 
-public class BattleWindow extends JFrame{
+public class BattleWindow extends JFrame implements ActionListener{
+	private int battle_tick_time = 1000;
+	private Timer battle_tick_timer = new Timer(battle_tick_time, this);
 	private Game game;
 	private JScrollPane sp;
 	private TableComponent table_component;
@@ -26,6 +31,7 @@ public class BattleWindow extends JFrame{
 		add(table_component,BorderLayout.CENTER);
 		add(control_component,BorderLayout.SOUTH);
 		setVisible(true);
+		battle_tick_timer.start();
 	}
 	public void battleOver(){
 		if(game.getBattle().getWinner()!=null){
@@ -33,6 +39,8 @@ public class BattleWindow extends JFrame{
 			campaign_window.dispose();
 			campaign_window= new CampaignWindow(game, null);
 			campaign_window.setVisible(true);
+			battle_tick_timer.stop();
+			campaign_window.destory_battle_window();
 		}
 	}
 	public String get_sprite_path() {
@@ -46,7 +54,17 @@ public class BattleWindow extends JFrame{
 		// TODO Auto-generated method stub
 		control_component.getRectangleClicker().updateCaptions();		
 		super.repaint();
-		battleOver();		
+	
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub	
+		if (game.getBattle().started) {
+			game.getBattle().battle_tick();		
+		}
+		battle_tick_timer.restart();
+		repaint();
+		battleOver();
 	}
 	
 }

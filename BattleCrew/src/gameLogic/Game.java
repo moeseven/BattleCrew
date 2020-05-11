@@ -12,7 +12,7 @@ import builders.ItemBuilder;
 public class Game implements Serializable {
 	private Player player; // change this for multiplayer
 	private Player opponent;
-	private Battle battle;
+	private BattleTicked battle;
 	private WarriorsReadyForBattleTable prepareTable;
 	public double image_scale;
 	protected int maximumGroupSize=5;
@@ -63,7 +63,7 @@ public class Game implements Serializable {
 			defender.getHeroes().get(i).setBattle_participant(true);
 		}
 		//battle= new Battle(this, new Battlefield(20, 8, 2, this), player, defender);
-		battle= new Battle(this, new Battlefield(20, 8, image_scale, this), player, defender);		
+		battle= new BattleTicked(this, new Battlefield(20, 8, image_scale, this), player, defender);		
 		battle.start();
 	}
 	// getters and setters
@@ -85,10 +85,10 @@ public class Game implements Serializable {
 	public void setLastCaster(Warrior lastCaster) {
 		this.lastCaster = lastCaster;
 	}
-	public Battle getBattle() {
+	public BattleTicked getBattle() {
 		return battle;
 	}
-	public void setBattle(Battle battle) {
+	public void setBattle(BattleTicked battle) {
 		this.battle = battle;
 	}
 	public Player getOpponent() {

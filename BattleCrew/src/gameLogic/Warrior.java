@@ -156,7 +156,6 @@ public class Warrior implements HexTileUnit{
 		return false;
 	}
 	public boolean useMainHand(Battle battle,Tile tile) {
-		if (battle.getActiveWarrior()==this) {
 			if (equipment.getHand1()!=null) {
 				if (equipment.getHand1().getAbilities().get(0)!=null) {
 					equipment.getHand1().getAbilities().get(0).attempt(this, tile.getWarrior());
@@ -166,11 +165,9 @@ public class Warrior implements HexTileUnit{
 				fist_punch.attempt(this,tile.getWarrior());
 				return true;
 			}
-		}
 		return false;
 	}
 	public boolean useAbility(Battle battle, Tile tile) {
-		if (battle.getActiveWarrior()==this) { //TODO
 			if (selected_ability==null) {
 				moveOneTile(tile);
 				return true;
@@ -179,9 +176,7 @@ public class Warrior implements HexTileUnit{
 					selected_ability.attempt(this, tile.getWarrior());
 				}
 				
-			}
-		}
-		
+			}	
 		return false;
 	}
 	public boolean isAHit(Ability ability, Warrior target_warrior) {//miss_chance horrible performance
@@ -456,9 +451,7 @@ public class Warrior implements HexTileUnit{
 	public boolean isReadyToMove() {
 		//TODO
 		if (stamina>getMoveStamina_cost()*getStaminaCostMultiplier()) {
-			if (player.getGame().getBattle().getActiveWarrior()==this) {
-				return true;
-			}			
+				return true;		
 		}
 		return false;
 	}

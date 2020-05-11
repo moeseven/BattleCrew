@@ -95,5 +95,7 @@ public class CampaignWindow extends JFrame{
 	public void setState(int state) {
 		this.state = state;
 	}
-	
+	public void destory_battle_window() {
+		bw = null;
+	}
 }
