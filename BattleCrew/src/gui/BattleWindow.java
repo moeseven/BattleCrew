@@ -13,6 +13,7 @@ import gameLogic.Game;
 
 
 public class BattleWindow extends JFrame implements ActionListener{
+	private boolean paused = false;
 	private int battle_tick_time = 1000;
 	private Timer battle_tick_timer = new Timer(battle_tick_time, this);
 	private Game game;
@@ -29,7 +30,7 @@ public class BattleWindow extends JFrame implements ActionListener{
 		control_component=new ControlComponent(game.getPlayer(), this);
 		table_component= new TableComponent(game.getPlayer(),game.getBattle().getBattleField(),this);
 		add(table_component,BorderLayout.CENTER);
-		add(control_component,BorderLayout.SOUTH);
+		add(control_component,BorderLayout.EAST);
 		setVisible(true);
 		battle_tick_timer.start();
 	}
@@ -65,6 +66,17 @@ public class BattleWindow extends JFrame implements ActionListener{
 		battle_tick_timer.restart();
 		repaint();
 		battleOver();
+	}
+	public void pause() {
+		paused=true;
+		battle_tick_timer.stop();
+	}
+	public void unpause() {
+		paused=false;
+		battle_tick_timer.restart();
+	}
+	public boolean isPaused() {
+		return paused;
 	}
 	
 }

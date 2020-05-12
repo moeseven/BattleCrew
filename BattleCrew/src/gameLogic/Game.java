@@ -63,7 +63,7 @@ public class Game implements Serializable {
 			defender.getHeroes().get(i).setBattle_participant(true);
 		}
 		//battle= new Battle(this, new Battlefield(20, 8, 2, this), player, defender);
-		battle= new BattleTicked(this, new Battlefield(40, 20, image_scale, this), player, defender);		
+		battle= new BattleTicked(this, new Battlefield(38, 19, image_scale, this), player, defender);		
 		battle.start();
 	}
 	// getters and setters
