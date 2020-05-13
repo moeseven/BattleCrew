@@ -1,11 +1,13 @@
 package gameLogic;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTileTable;
+import pathfinding.*;
 
-public class Battlefield extends HexTileTable {
+public class Battlefield extends HexTileTable implements PathfinderWorld{
 	private Game g;
 	public Battlefield(int table_size_x, int table_size_y, double hex_size,Game game) {
 		//size 30 is standard
@@ -21,5 +23,16 @@ public class Battlefield extends HexTileTable {
 	}
 	public Game getGame() {
 		return g;
+	}
+
+	@Override
+	public ArrayList<PathfinderField> get_immediatly_accessable_fields(PathfinderField arg0) {
+		HexTile tile = (HexTile) arg0;
+		LinkedList<HexTile> list = tile.getAdjacentTiles();
+		ArrayList<PathfinderField> retVal = new ArrayList<PathfinderField>();
+		for (int i = 0; i < list.size(); i++) {
+			retVal.add((PathfinderField) list.get(i));
+		}
+		return retVal;
 	}
 }

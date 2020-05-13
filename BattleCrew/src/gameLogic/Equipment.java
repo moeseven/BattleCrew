@@ -194,6 +194,17 @@ public class Equipment implements Serializable{
 			
 	}
 	//unequip
+	public void unequipAll() {
+		//!!! update this if a new item type is added
+		unequipBiHand();
+		unequipBody();
+		unequipHand1();
+		unequipHand2();
+		unequipHead();
+		unequipPotion();
+		unequipRing1();
+		unequipRing2();
+	}
 	public void unequipPotion() {
 		if(potion!=null) {
 			hero.getPlayer().getInventory().add(potion);

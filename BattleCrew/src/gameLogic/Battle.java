@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import HexTilePlayground.HexTile;
+import pathfinding.Pathfinder;
 
 public class Battle {
 	protected LinkedList<Warrior> battleParticipants;
@@ -13,11 +14,13 @@ public class Battle {
 	protected Player winner=null;
 	protected Game game;
 	public boolean started = false;
+	public Pathfinder pathfinder;
 	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		this.game=game;
 		this.battleField=battlefield;
 		this.attacker=attacker;
 		this.defender=defender;
+		pathfinder = new Pathfinder(battlefield);
 		battleParticipants= new LinkedList<Warrior>();
 		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
 			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {

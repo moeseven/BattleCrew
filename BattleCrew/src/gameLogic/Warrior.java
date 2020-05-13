@@ -5,9 +5,13 @@ import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileUnit;
 import builders.AbilityBuilder;
+import gameLogic.Behaviour.Behaviour_type;
+import gameLogic.Behaviour.Movespeed;
 import javafx.scene.control.skin.TitledPaneSkin;
 
 public class Warrior implements HexTileUnit{
+	private Warrior target;
+	private Behaviour_type behaviour;
 	private static int BASE_HP=10;
 	private static int BASE_STAMINA=20;
 	private Player player;
@@ -144,6 +148,7 @@ public class Warrior implements HexTileUnit{
 	}
 	//battle
 	public boolean useMainHand(Warrior warrior) {
+		//TODO
 			if (equipment.getHand1()!=null) {
 				if (equipment.getHand1().getAbilities().get(0)!=null) {
 					equipment.getHand1().getAbilities().get(0).attempt(this, warrior);
@@ -235,10 +240,14 @@ public class Warrior implements HexTileUnit{
 		}
 		//handle death
 		if (isDead()) {
-			this.tile.setUnit(null);
-			player.getHeroes().remove(this);
-			player.getGame().log.addLine(name+" died!");
+			die();
 		}
+	}
+	private void die() {
+		this.tile.setUnit(null);
+		equipment.unequipAll();
+		player.getHeroes().remove(this);
+		player.getGame().log.addLine(name+" died!");
 	}
 	//getters calc
 	public double getStaminaCostMultiplier() {
@@ -469,6 +478,20 @@ public class Warrior implements HexTileUnit{
 	public void setTile(HexTile tile) {
 		this.tile= tile;		
 	}
+	
+	
+	public int get_movepoints_from_movement_mode(Movespeed ms) {
+		switch (ms) {
+		case SLOW:
+			return 1;
+		case WALK:
+			return speed;
+		case CHARGE:
+			return speed + 1;
+		default:
+			return speed;
+		}
+	}
 	//////////////////////////////////////////
 	//getters and setters
 	public Player getPlayer() {
@@ -608,7 +631,19 @@ public class Warrior implements HexTileUnit{
 	public void setActions_this_round(int actions_this_round) {
 		this.actions_this_round = actions_this_round;
 	}
-
+	public Warrior getTarget() {
+		return target;
+	}
+	public void setTarget(Warrior target) {
+		this.target = target;
+	}
+	public Behaviour_type getBehaviour() {
+		return behaviour;
+	}
+	public void setBehaviour(Behaviour_type behaviour) {
+		this.behaviour = behaviour;
+	}
+	
 	
 	
 }

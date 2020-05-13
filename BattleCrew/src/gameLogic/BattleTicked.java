@@ -18,7 +18,12 @@ public class BattleTicked  extends Battle{
 	public void battle_tick() {
 		// TODO Auto-generated method stub
 		for (int w = 0; w < battleParticipants.size(); w++) {
-			run_ai(battleParticipants.get(w));
+			Warrior warrior = battleParticipants.get(w);
+			if (!deathCheck(warrior)) {
+				warrior.roundBegin();
+				Behaviour.behave(warrior, this);
+			}			
+			//run_ai(battleParticipants.get(w));
 		}
 		tryEndBattle();
 	}

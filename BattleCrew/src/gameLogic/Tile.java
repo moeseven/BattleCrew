@@ -3,8 +3,9 @@ package gameLogic;
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileTable;
+import pathfinding.PathfinderField;
 
-public class Tile extends HexTile {
+public class Tile extends HexTile implements PathfinderField {
 	private Battlefield battleField;
 	public Tile(Battlefield table, int x, int y, double hex_size, String ground) {
 		super(table, x, y, hex_size, ground);
@@ -36,6 +37,22 @@ public class Tile extends HexTile {
 	public Warrior getWarrior() {
 		// TODO Auto-generated method stub
 		return (Warrior) getUnit();
+	}
+
+	@Override
+	public int get_path_cost() {
+		// TODO Auto-generated method stub
+		if (getWarrior() == null) {
+			return 1;
+		}else {
+			return 10000;
+		}
+	}
+
+	@Override
+	public boolean is_pathable() {
+		return true;
+		
 	}
 	
 
