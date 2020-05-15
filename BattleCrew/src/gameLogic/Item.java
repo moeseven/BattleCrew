@@ -15,17 +15,19 @@ public class Item {
 	private int category;
 	private int weight;
 	private boolean attack_ability;
+	private int damage;
+	private int range;
+	private int block;
+	private int precision;
 	//mods
 	private int armor;
 	private int offense;
 	private int defense;
 	//
 	private int image;
-	private Game game;
 	private LinkedList<String> description;
 	public Item(String[] stats,Game game) {
 		super();
-		this.game= game;
 		abilities=new LinkedList<Ability>();
 		//generate item out of table
 		//name,abilities,gold_value,droppable,category
@@ -44,6 +46,11 @@ public class Item {
 		image= Integer.parseInt(stats[7]);
 		defense=Integer.parseInt(stats[8]);
 		offense=Integer.parseInt(stats[9]);
+		damage = Integer.parseInt(stats[11]);
+		range = Integer.parseInt(stats[12]);
+		precision = Integer.parseInt(stats[13]);
+		block = Integer.parseInt(stats[14]);
+		
 		attack_ability=Boolean.parseBoolean(stats[10]);
 		if (attack_ability) {
 			List<String> subArray = new ArrayList<String>();
@@ -87,9 +94,15 @@ public class Item {
 		description=new LinkedList<String>();
 		description.add("cost: "+gold_value);
 		description.add("weight: "+weight);
+		if (damage > 0) {
+			description.add("damage: "+damage);
+		}
+		if (range > 0) {
+			description.add("range: "+range);
+		}
 		if (abilities.size()>0) {
 			if (abilities.get(0).getDamage_target()>0) {
-				description.add("damage: "+abilities.get(0).getDamage_target());
+				description.add("damage: "+damage);
 			}
 			if (abilities.get(0).getRange()>0) {
 				description.add("range: "+abilities.get(0).getRange());			
@@ -101,10 +114,10 @@ public class Item {
 		if (armor>0) {
 			description.add("armor: +"+armor);
 		}
-		if(defense>0) {
+		if(defense!=0) {
 			description.add("defense: +"+defense);
 		}
-		if (offense>0) {
+		if (offense!=0) {
 			description.add("offense: +"+offense);
 		}
 	}
@@ -144,6 +157,21 @@ public class Item {
 	}
 	public void setCategory(int category) {
 		this.category = category;
+	}
+	public int getDamage() {
+		return damage;
+	}
+	public int getRange() {
+		return range;
+	}
+	public int getArmor() {
+		return armor;
+	}
+	public int getBlock() {
+		return block;
+	}
+	public int getPrecision() {
+		return precision;
 	}
 	
 	

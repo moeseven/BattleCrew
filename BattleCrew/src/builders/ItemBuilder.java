@@ -28,7 +28,7 @@ public class ItemBuilder {
 		if (map.containsKey(name)) {
 			return new Item(map.get(name),game); //all parameters needed to genarate an item
 		}else {
-			System.out.println("create item error");
+			System.out.println("there is no item with the name "+name);
 			return new Item();
 		}
 		
