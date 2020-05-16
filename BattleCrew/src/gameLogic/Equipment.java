@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 public class Equipment implements Serializable{
-	private Warrior hero;
+	private BattleUnit hero;
 	private Item potion=null;
 	private Item hand1=null;
 	private Item hand2=null;
@@ -16,7 +16,7 @@ public class Equipment implements Serializable{
 	private Item ring1=null;
 	private Item ring2=null;
 	//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring //0: Consumable
-	public Equipment(Warrior hero) {
+	public Equipment(BattleUnit hero) {
 		this.hero=hero;
 	}
 	public boolean equipItem(Item item) {
@@ -269,10 +269,10 @@ public class Equipment implements Serializable{
 		ring2=null;
 	}
 	//
-	public Warrior getHero() {
+	public BattleUnit getHero() {
 		return hero;
 	}
-	public void setHero(Warrior hero) {
+	public void setHero(BattleUnit hero) {
 		this.hero = hero;
 	}
 	public Item getHand1() {

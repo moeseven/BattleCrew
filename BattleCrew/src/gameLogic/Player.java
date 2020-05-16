@@ -10,28 +10,28 @@ import HexTilePlayground.HexTileUnit;
 
 
 public class Player implements HexTilePlayer,Serializable{
-	private Warrior selectedWarrior;
+	private BattleUnit selectedWarrior;
 	private HexTile selectedTile;
 	private Item selectedItem;
 	private boolean AI;
 	//private LinkedList<Warrior> availableWarriors;
-	protected LinkedList<Warrior> warriors;
+	protected LinkedList<BattleUnit> warriors;
 	private LinkedList<Item> inventory;
 	protected int inventoryCapacity;
 	
-	protected int groupSize;
+	protected int groupSize;//level this up by spending money
 	private Game game;
 	private int gold;
 	private boolean cheat=false;
 	public Player(Game game, Boolean AI) {
 		this.game=game;
 		this.AI=AI;
-		warriors=new LinkedList<Warrior>();
+		warriors=new LinkedList<BattleUnit>();
 //		availableWarriors=new LinkedList<Warrior>();
 		inventoryCapacity=100;
 		inventory=new LinkedList<Item>();
 		gold=100;
-		groupSize=3;
+		groupSize=6;
 	}
 	public void gainGold(int g) {
 		gold+=g;
@@ -44,7 +44,7 @@ public class Player implements HexTilePlayer,Serializable{
 		}
 		
 	}
-	public boolean addSummon(Warrior hero) {
+	public boolean addSummon(BattleUnit hero) {
 		for(int a=0; a<warriors.size();a++) {// prevent equal names
 			for(int b=0; b<warriors.size();b++) {
 				if(warriors.get(b).getName().equals(hero.getName())) {
@@ -56,7 +56,7 @@ public class Player implements HexTilePlayer,Serializable{
 		hero.setPlayer(this);
 		return true;
 	}
-	public boolean addHero(Warrior hero) {// do not exeed maximum size
+	public boolean addHero(BattleUnit hero) {// do not exeed maximum size
 		if(warriors.size()<groupSize) {
 			for(int a=0; a<warriors.size();a++) {// prevent equal names
 				for(int b=0; b<warriors.size();b++) {
@@ -81,7 +81,7 @@ public class Player implements HexTilePlayer,Serializable{
 //		}
 //	}
 	public void removeDeadHeroesFromRoster() {
-		LinkedList<Warrior> deadHeroes=new LinkedList<Warrior>();
+		LinkedList<BattleUnit> deadHeroes=new LinkedList<BattleUnit>();
 		for(int i=0; i<warriors.size();i++) {
 			if(warriors.get(i).isDead()) {
 				deadHeroes.add(warriors.get(i));
@@ -91,7 +91,7 @@ public class Player implements HexTilePlayer,Serializable{
 			warriors.remove(deadHeroes.get(i));
 		}
 	}
-	public void removeHero(Warrior hero) {
+	public void removeHero(BattleUnit hero) {
 		if(warriors.size()>=1&&warriors.contains(hero)) {
 			warriors.remove(hero);
 			//hero.setPlayer(null);
@@ -132,14 +132,14 @@ public class Player implements HexTilePlayer,Serializable{
 		return selectedTile;
 	}
 	@Override
-	public Warrior getSelectedUnit() {
+	public BattleUnit getSelectedUnit() {
 		// TODO Auto-generated method stub
 		return selectedWarrior;
 	}
 	@Override
 	public void setSelectedUnit(HexTileUnit unit) {
 		// TODO Auto-generated method stub
-		selectedWarrior=(Warrior) unit;
+		selectedWarrior=(BattleUnit) unit;
 	}	
 	@Override
 	public void setSelectedTile(HexTile tile) {
@@ -148,13 +148,13 @@ public class Player implements HexTilePlayer,Serializable{
 	}
 	///////////////////////////////	
 
-	public void setSelectedHero(Warrior selectedHero) {
+	public void setSelectedHero(BattleUnit selectedHero) {
 		this.selectedWarrior = selectedHero;
 	}
-	public LinkedList<Warrior> getHeroes() {
+	public LinkedList<BattleUnit> getHeroes() {
 		return warriors;
 	}
-	public void setHeroes(LinkedList<Warrior> heroes) {
+	public void setHeroes(LinkedList<BattleUnit> heroes) {
 		this.warriors = heroes;
 	}
 	public LinkedList<Item> getInventory() {

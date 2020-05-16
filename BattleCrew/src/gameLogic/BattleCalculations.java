@@ -50,33 +50,44 @@ public class BattleCalculations {
 	}
 	
 	public static boolean calc_attack_meele_hit(BattleUnit attacker, BattleUnit defender) {
-		if (Math.random()>defender.getDefense()/(attacker.getOffense()+defender.getDefense())) {
+		double chance = get_fatigue_corrected_defense(defender)/((get_fatigue_corrected_offense(attacker))+get_fatigue_corrected_defense(defender));
+		if (Math.random()>chance) {
 			return true;
 		}
 		return false;
 	}
 	
 	public static boolean shield_hit(BattleUnit defender, boolean ranged) {
-		double block_chance = defender.getEquipment().getHand2().getBlock();
-		if (ranged) {
-			block_chance *= 1.5; // shields have + 50 % effectiveness vs ranged
-		}
-		if (Math.random() < block_chance/100.0) {
-			return true;
-		}
+		if (defender.getEquipment().getHand2()!=null) {
+			double block_chance = defender.getEquipment().getHand2().getBlock();
+			if (ranged) {
+				block_chance *= 1.5; // shields have + 50 % effectiveness vs ranged
+			}
+			if (Math.random() < block_chance/100.0) {
+				defender.getPlayer().getGame().log.addLine("Blocked!");
+				return true;
+				
+			}
+		}		
 		return false;
 	}
 	
-	public static double calc_damage(BattleUnit attacker, BattleUnit defender) {
-		double damage = attacker.getBase_damage();
-		if (attacker.getEquipment().getHand1() != null) {
-			damage = attacker.getEquipment().getHand1().getDamage();
+	public static double calc_damage(BattleUnit warrior) {
+		double damage = warrior.getBase_damage();
+		if (warrior.getEquipment().getHand1() != null) {
+			damage = warrior.getEquipment().getHand1().getDamage();
 		}
-		damage *= attacker.getStrength()/10;
+		damage *= warrior.getStrength()/10.0;
+		return damage;
+	}
+	
+	public static double roll_damage(BattleUnit attacker, BattleUnit defender) {
+		double damage = calc_damage(attacker);
 		double reduction = 0;
 		if (Math.random() < attacker.getDexterity()/100.0) {
 			//Head hit
-			damage *= 2;			
+			damage *= 2;		
+			defender.getPlayer().getGame().log.addLine("hit on the head!");
 			if (defender.getEquipment().getHead() != null) {
 				reduction = defender.getEquipment().getHead().getArmor()/100.0;
 			}			
@@ -86,8 +97,45 @@ public class BattleCalculations {
 			}
 		}
 		damage *=  (1-reduction);
-		damage = damage/defender.getVitality();
+		damage = 10 * damage /defender.getVitality();
 		return damage;
 	}
-
+	
+	public static void perform_ranged_attack(BattleUnit attacker, BattleUnit defender) {
+		defender.getPlayer().getGame().log.addLine(attacker.getName()+" takes a shot at "+defender.getName());
+		attacker.exhaust(calc_attack_exhaustion(attacker));
+		if (calc_attack_ranged_hit(attacker, defender)) {
+			if (!shield_hit(defender, true)) {
+				defender.take_damage(roll_damage(attacker, defender));
+			}
+		}
+	}
+	
+	public static void perform_meele_attack(BattleUnit attacker, BattleUnit defender) {
+		defender.getPlayer().getGame().log.addLine(attacker.getName()+" engages in meele with "+defender.getName());
+		defender.get_attacked_meele(attacker);
+		attacker.exhaust(calc_attack_exhaustion(attacker));
+		defender.exhaust(getting_attacked_exhaustion(attacker, defender));
+		if (calc_attack_meele_hit(attacker, defender)) {
+			defender.getPlayer().getGame().log.addLine(attacker.getName()+" strikes at "+defender.getName());
+			if (!shield_hit(defender, false)) {			
+				defender.take_damage(roll_damage(attacker, defender));
+			}
+		}
+	}
+	
+	public static double get_fatigue_corrected_offense(BattleUnit warrior) {
+		if (warrior.getFatigue()>50) {
+			return  (warrior.getOffense()*(1-(150.0-warrior.getFatigue())/100.0));
+		}else {
+			return warrior.getOffense();
+		}
+	}
+	public static double get_fatigue_corrected_defense(BattleUnit warrior) {
+		if (warrior.getFatigue()>40) {
+			return (warrior.getDefense()*(1-(140.0-warrior.getFatigue())/100.0));
+		}else {
+			return warrior.getDefense();
+		}
+	}
 }

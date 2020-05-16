@@ -46,23 +46,23 @@ public class Item {
 		image= Integer.parseInt(stats[7]);
 		defense=Integer.parseInt(stats[8]);
 		offense=Integer.parseInt(stats[9]);
-		damage = Integer.parseInt(stats[11]);
-		range = Integer.parseInt(stats[12]);
-		precision = Integer.parseInt(stats[13]);
-		block = Integer.parseInt(stats[14]);
+		damage = Integer.parseInt(stats[10]);
+		range = Integer.parseInt(stats[11]);
+		precision = Integer.parseInt(stats[12]);
+		block = Integer.parseInt(stats[13]);
 		
-		attack_ability=Boolean.parseBoolean(stats[10]);
-		if (attack_ability) {
-			List<String> subArray = new ArrayList<String>();
-			subArray.add(name);
-			subArray.addAll(Arrays.asList(stats).subList(11, stats.length));
-			String[] ability_stats = subArray.toArray(new String[0]);
-//			for (Iterator iterator = subArray.iterator(); iterator.hasNext();) {
-//				String string = (String) iterator.next();
-//				System.out.println(string);
-//			}			
-			abilities.add(new Ability(ability_stats));
-		}
+//		attack_ability=Boolean.parseBoolean(stats[10]);
+//		if (attack_ability) {
+//			List<String> subArray = new ArrayList<String>();
+//			subArray.add(name);
+//			subArray.addAll(Arrays.asList(stats).subList(11, stats.length));
+//			String[] ability_stats = subArray.toArray(new String[0]);
+////			for (Iterator iterator = subArray.iterator(); iterator.hasNext();) {
+////				String string = (String) iterator.next();
+////				System.out.println(string);
+////			}			
+//			abilities.add(new Ability(ability_stats));
+//		}
 	}
 	public Item() {
 		name= "unknown";
@@ -73,12 +73,12 @@ public class Item {
 		return category;
 	}
 
-	public void mod(Warrior hero) {
+	public void mod(BattleUnit hero) {
 		hero.setArmor(hero.getArmor()+armor);
 		hero.setDefense(hero.getDefense()+defense);
 		hero.setOffense(hero.getOffense()+offense);
 	}
-	public void demod(Warrior hero) {
+	public void demod(BattleUnit hero) {
 		hero.setArmor(hero.getArmor()-armor);
 		hero.setDefense(hero.getDefense()-defense);
 		hero.setOffense(hero.getOffense()-offense);
@@ -100,16 +100,11 @@ public class Item {
 		if (range > 0) {
 			description.add("range: "+range);
 		}
-		if (abilities.size()>0) {
-			if (abilities.get(0).getDamage_target()>0) {
-				description.add("damage: "+damage);
-			}
-			if (abilities.get(0).getRange()>0) {
-				description.add("range: "+abilities.get(0).getRange());			
-						}
-			if (abilities.get(0).getDexterity_demand()>0) {
-				description.add("dexterity demand: "+ abilities.get(0).getDexterity_demand());
-			}
+		if(precision > 0) {
+			description.add("precision: "+precision);
+		}
+		if (block > 0) {
+			description.add("block: "+block);
 		}
 		if (armor>0) {
 			description.add("armor: +"+armor);

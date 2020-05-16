@@ -20,7 +20,7 @@ import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileTable;
 import HexTilePlayground.GUI.HexTileTableComponent;
 import SpriteSheet.StaticImageLoader;
-import gameLogic.Warrior;
+import gameLogic.BattleUnit;
 import gameLogic.WarriorsReadyForBattleTable;
 
 
@@ -84,8 +84,8 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		}
 	}
 	private class HeroListItem extends JComponent{
-		private Warrior warrior;
-		public HeroListItem(Warrior warrior) {
+		private BattleUnit warrior;
+		public HeroListItem(BattleUnit warrior) {
 			setPreferredSize(new Dimension(100,40));
 			setVisible(true);
 			addMouseListener(new HeroListItemMouseListener());
@@ -93,7 +93,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		}
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
-			g.drawString(warrior.getName()+" ( level "+warrior.getLevel()+")", 5, 15);
+			g.drawString(warrior.getName(), 5, 15);
 		}
 		private class HeroListItemMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	

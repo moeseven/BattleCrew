@@ -44,7 +44,7 @@ public class Ability {
 		ground_target=Boolean.parseBoolean(stats[9]);
 		friendly=Boolean.parseBoolean(stats[10]);
 	}
-	public boolean attempt(Warrior origin_warrior, Warrior target_warrior) {
+	public boolean attempt(BattleUnit origin_warrior, BattleUnit target_warrior) {
 		//TODO
 		if (checkStamina(origin_warrior)&&!used) {
 			if (checkRange(origin_warrior, target_warrior)) {
@@ -57,7 +57,7 @@ public class Ability {
 		}
 		return true;
 	}
-	public boolean use(Warrior origin_warrior, Warrior target_warrior) {
+	public boolean use(BattleUnit origin_warrior, BattleUnit target_warrior) {
 		//TODO
 		
 		origin_warrior.setActions_this_round(origin_warrior.getActions_this_round()+1);//increase stamina cost of further actions this turn

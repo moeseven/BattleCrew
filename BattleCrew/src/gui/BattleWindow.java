@@ -52,8 +52,7 @@ public class BattleWindow extends JFrame implements ActionListener{
 	}
 	@Override
 	public void repaint() {
-		// TODO Auto-generated method stub
-		control_component.getRectangleClicker().updateCaptions();		
+		// TODO Auto-generated method stub	
 		super.repaint();
 	
 	}

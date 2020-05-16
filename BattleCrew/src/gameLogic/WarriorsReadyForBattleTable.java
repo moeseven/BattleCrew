@@ -33,9 +33,9 @@ public class WarriorsReadyForBattleTable extends HexTileTable{
 			}
 		}
 
-		public Warrior getWarrior() {
+		public BattleUnit getWarrior() {
 			// TODO Auto-generated method stub
-			return (Warrior) getUnit();
+			return (BattleUnit) getUnit();
 		}
 
 		@Override

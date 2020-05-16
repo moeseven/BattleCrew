@@ -8,7 +8,7 @@ import HexTilePlayground.HexTile;
 import pathfinding.Pathfinder;
 
 public class Battle {
-	protected LinkedList<Warrior> battleParticipants;
+	protected LinkedList<BattleUnit> battleParticipants;
 	protected Battlefield battleField;
 	protected Player attacker,defender;
 	protected Player winner=null;
@@ -21,11 +21,11 @@ public class Battle {
 		this.attacker=attacker;
 		this.defender=defender;
 		pathfinder = new Pathfinder(battlefield);
-		battleParticipants= new LinkedList<Warrior>();
+		battleParticipants= new LinkedList<BattleUnit>();
 		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
 			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
-				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof Warrior) {
-					Warrior warrior= (Warrior) game.getPrepareTable().getTiles().get(i).getUnit();
+				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
+					BattleUnit warrior= (BattleUnit) game.getPrepareTable().getTiles().get(i).getUnit();
 					warrior.setBattle_participant(true);
 				}				
 			}
@@ -63,12 +63,12 @@ public class Battle {
 	protected void placeAttackersOrderly() {
 		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
 			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
-				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof Warrior) {
-					Warrior warrior =(Warrior) game.getPrepareTable().getTiles().get(i).getUnit();
+				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
+					BattleUnit warrior =(BattleUnit) game.getPrepareTable().getTiles().get(i).getUnit();
 					battleParticipants.add(warrior);
 					warrior.setTile(battleField.getTiles().get(game.getPrepareTable().translateTileIndex(battleField.getTable_size_x(), battleField.getTable_size_y(), i)));
 					battleField.getTiles().get(game.getPrepareTable().translateTileIndex(battleField.getTable_size_x(), battleField.getTable_size_y(), i)).setUnit(warrior);
-					warrior.battleBegin();
+					warrior.battle_begin();
 				}
 				
 			}
@@ -80,7 +80,7 @@ public class Battle {
 				battleParticipants.add(defender.getHeroes().get(i));
 				defender.getHeroes().get(i).setTile(battleField.getTiles().get(battleField.getTable_size_y()*i));
 				battleField.getTiles().get(battleField.getTable_size_y()*i).setUnit(defender.getHeroes().get(i));
-				defender.getHeroes().get(i).battleBegin();
+				defender.getHeroes().get(i).battle_begin();
 			}
 
 		}
@@ -100,11 +100,9 @@ public class Battle {
 				endActiveWarriorTurn();
 			}
 		}else {
-			getActiveWarrior().roundBegin();		
+			getActiveWarrior().round_begin();		
 			battleParticipants.add(battleParticipants.removeFirst());
 			selectActiveWarriorForPlayer();
-			
-			runAI();
 		}
 		
 	}
@@ -141,71 +139,20 @@ public class Battle {
 		}
 		return false;
 	}
-	private void runAI() {
-		//TODO
-		for (int turns = 0; turns <3; turns++) {
-			//get target for attack
-			int smallest_distance=Integer.MAX_VALUE;
-			Warrior target_warrior=null;
-			for (int i = 0; i < battleParticipants.size(); i++) {
-				if (battleParticipants.get(i).getPlayer()!=getActiveWarrior().getPlayer()) {
-					if (getActiveWarrior().getHexTile().getDistance(battleParticipants.get(i).getHexTile())<smallest_distance) {
-						smallest_distance=getActiveWarrior().getHexTile().getDistance(battleParticipants.get(i).getHexTile());
-						target_warrior=battleParticipants.get(i);
-					}
-				}			
-			}
-			if (target_warrior!=null) {
-				//move
-				if (getActiveWarrior().getHexTile().getDistance(target_warrior.getHexTile())>getActiveWarrior().getWeaponAbility().getRange()) {
-					//move towards target here
-					int minimum_distance=Integer.MAX_VALUE;
-					LinkedList<HexTile> tiles= getActiveWarrior().getHexTile().getAdjacentTiles();
-					HexTile bestTile = tiles.getFirst();				
-					for (int i = 0; i < tiles.size(); i++) {
-						if (minimum_distance>tiles.get(i).getDistance(target_warrior.getHexTile())) {
-							minimum_distance=tiles.get(i).getDistance(target_warrior.getHexTile());
-							if (tiles.get(i).getUnit()==null) {
-								bestTile=tiles.get(i);
-							}
-						}
-					}
-					if (bestTile instanceof Tile) {
-						Tile move_tile= (Tile) bestTile;
-						getActiveWarrior().moveOneTile(move_tile);
-					}
-					if (getActiveWarrior().getStamina()<0.8*getActiveWarrior().calcMaxStamina()) {
-						turns=2;
-					}
-				}else {
-					//hit
-					getActiveWarrior().useMainHand(target_warrior);
-					if (getActiveWarrior().getWeaponAbility().isAfter_roll_status()) {
-						getActiveWarrior().getWeaponAbility().applyAbilityAfterRoll();
-					}
-					
-				}				
-				
-			}
-			
-			
-		}
-		
-		endActiveWarriorTurn();
-	}
+
 	public void setHeroTrunOrder() {
 		Collections.shuffle(battleParticipants);
-		Warrior fastest_warrior=battleParticipants.getFirst();
+		BattleUnit fastest_warrior=battleParticipants.getFirst();
 		int warrior_count=battleParticipants.size();
-		LinkedList<Warrior> sortHelpList= new LinkedList<Warrior>();
+		LinkedList<BattleUnit> sortHelpList= new LinkedList<BattleUnit>();
 		while(sortHelpList.size()<warrior_count) {
 			fastest_warrior=battleParticipants.getFirst();
 			for (int i = 0; i < battleParticipants.size(); i++) {
-				if (battleParticipants.get(i).getSpeed()>=fastest_warrior.getSpeed()) {
-					if (battleParticipants.get(i).getSpeed()>fastest_warrior.getSpeed()) {
+				if (battleParticipants.get(i).getMove_speed()>=fastest_warrior.getMove_speed()) {
+					if (battleParticipants.get(i).getMove_speed()>fastest_warrior.getMove_speed()) {
 						fastest_warrior=battleParticipants.get(i);
 					}else {//equal
-						if (fastest_warrior.getStamina()<battleParticipants.get(i).getEndurance()) {
+						if (fastest_warrior.getFatigue()>battleParticipants.get(i).getFatigue()) {
 							fastest_warrior=battleParticipants.get(i);
 						}
 					}
@@ -217,7 +164,7 @@ public class Battle {
 		battleParticipants=sortHelpList;		
 	}
 	//getters and setters
-	public Warrior getActiveWarrior() {
+	public BattleUnit getActiveWarrior() {
 		return battleParticipants.getFirst();
 	}
 	

@@ -1,0 +1,16 @@
+name,abilities,gold_value,droppable,category,weight,armor,image,defense,offense,attack_ability,stamina_cost,damage_target,heal_target,stamina_damage,range,dexterity_demand,self_target_allowed,has_target,ground_target,friendly
+shortsword,,15,true,1,3,0,160,5,8,true,4,6,0,1,1,1,false,true,false,false
+slingshot,,13,true,3,1,0,204,0,1,true,4,4,0,1,7,2,false,true,false,false
+shortbow,,55,true,3,2,0,162,0,1,true,4,7,0,0,9,3,false,true,false,false
+longbow,,110,true,3,4,0,163,0,1,true,6,12,0,0,12,7,false,true,false,false
+longsword,,80,true,1,5,0,161,7,10,true,5,9,0,1,1,2,false,true,false,false
+pike,,90,true,3,9,0,165,9,16,true,7,10,0,1,2,3,false,true,false,false
+helebard,,140,true,3,14,0,169,6,22,true,9,17,0,3,2,5,false,true,false,false
+broadsword,,115,true,3,10,0,161,12,14,true,8,16,0,2,1,4,false,true,false,false
+quickBandage,,55,true,0,1,0,222,0,0,true,5,0,5,1,1,0,true,true,false,true
+club,,10,true,1,5,0,164,4,6,true,6,5,0,3,1,0,false,true,false,false
+mace,,50,true,1,7,0,167,5,9,true,8,7,0,5,1,0,false,true,false,false
+leatherarmor,,100,true,4,6,1,180,0,0,false,,,,,,,,,,
+leathercap,,70,true,5,2,1,223,0,0,false,,,,,,,,,,
+buckler,,55,true,2,5,1,200,10,1,false,,,,,,,,,,
+shield,,160,true,2,9,2,201,20,0,false,,,,,,,,,,

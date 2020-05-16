@@ -1,9 +1,12 @@
 package gameLogic;
 
+import java.util.LinkedList;
+
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileUnit;
 import gameLogic.Behaviour.Behaviour_type;
+import gameLogic.Behaviour.Movespeed;
 
 public class BattleUnit implements HexTileUnit{
 	
@@ -54,7 +57,49 @@ public class BattleUnit implements HexTileUnit{
 	
 	//other things
 	private Behaviour_type behaviour;
+	private boolean battle_participant;
+	private BattleUnit target;
 	
+	public BattleUnit(String[] stats,Game game, Player player) {
+		super();
+		this.player = player;
+		equipment = new Equipment(this);
+		health = 100;
+		name=stats[0];
+		image_number =Integer.parseInt(stats[1]);
+		
+		//stats
+		vitality = Integer.parseInt(stats[2]);
+		strength = Integer.parseInt(stats[3]);
+		dexterity = Integer.parseInt(stats[4]);
+		
+		size = Integer.parseInt(stats[5]);
+		
+		move_speed = Integer.parseInt(stats[6]);
+		
+		protection = Integer.parseInt(stats[7]);
+		endurance = Integer.parseInt(stats[8]);
+		wisdom = Integer.parseInt(stats[9]);
+		spell_power = Integer.parseInt(stats[10]);
+		offense = Integer.parseInt(stats[11]);
+		defense = Integer.parseInt(stats[12]);
+		precision = Integer.parseInt(stats[13]);
+		courage = Integer.parseInt(stats[14]);
+		
+		resist_cold = Integer.parseInt(stats[15]);
+		resist_heat = Integer.parseInt(stats[16]);
+		resist_bleed = Integer.parseInt(stats[17]);
+		resist_mind = Integer.parseInt(stats[18]);
+		resist_stun = Integer.parseInt(stats[19]);
+		resist_poison = Integer.parseInt(stats[20]);
+		resist_bash = Integer.parseInt(stats[21]);
+		resist_slash = Integer.parseInt(stats[22]);
+        resist_pirce = Integer.parseInt(stats[23]);
+	}
+	
+	public BattleUnit() {
+		super();
+	}
 	//
 	
 	/*
@@ -106,12 +151,25 @@ public class BattleUnit implements HexTileUnit{
 		
 	}
 	
+	public void exhaust(double e) {
+		fatigue+=e;
+	}
 	
 	/*
 	 * attack enemy with main Hand weapon
 	 */
-	public boolean basic_attack_meele(BattleUnit target) {
-		//TODO
+	public boolean basic_attack(BattleUnit target) {
+		if (equipment.getHand1()!=null) {
+			if (equipment.getHand1().getRange()>2) {
+				//this is a ranged attack
+				BattleCalculations.perform_ranged_attack(this, target);
+				return true;
+			}
+			//this is a meele attack
+			BattleCalculations.perform_meele_attack(this, target);
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -120,9 +178,91 @@ public class BattleUnit implements HexTileUnit{
 		return false;
 	}
 	
+	public void take_damage(double damage) {
+		if (damage > 0) {
+			health -= damage;
+			player.getGame().log.addLine(name+" took "+damage+" damage!");
+			if (isDead()) {
+				die();
+			}
+		}
+	}
 	
+	private void die() {
+		this.tile.setUnit(null);
+		equipment.unequipAll();		
+		player.getGame().log.addLine(name+" died!");
+		player.getHeroes().remove(this);
+	}
+	
+	public boolean isDead() {
+		// TODO Auto-generated method stub
+		if (this.getHealth()<=0) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public int get_movepoints_from_movement_mode(Movespeed ms) {
+		switch (ms) {
+		case SLOW:
+			return 1;
+		case WALK:
+			return move_speed;
+		case CHARGE:
+			return move_speed + 1;
+		default:
+			return move_speed;
+		}
+	}
+	
+	
+	
+	public LinkedList<String> generateStatLines(){
+		//paint Hero info all interesting stats about the hero
+		LinkedList<String> lines=new LinkedList<String>();
+		lines.add("");
+		lines.add(name);
+		lines.add("");
+		lines.add("health/vitality: "+(int)(getHealth())+"%/"+getVitality());
+		lines.add("fatigue/enduracne: "+(int)(getFatigue())+"%/"+getEndurance());
+		lines.add("fear/courage: "+(int)getFear()+"%/"+getCourage());
+		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
+		lines.add("");
+		//main stats
+		lines.add("speed: "+getMove_speed());
+		lines.add("offesnive: "+getOffense());
+		lines.add("defensive: "+getDefense());
+		lines.add("strength: "+getStrength());
+		lines.add("dexterity: "+getDexterity());		
+		lines.add("vitality: "+getVitality());
+		lines.add("endurance: "+getEndurance());	
+		lines.add("damage: "+(int) BattleCalculations.calc_damage(this));
+		//defensive
+		lines.add("armor: "+getArmor());
+		
+		//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
+		//Quirks
+		lines.add("");
+	//TODO if(player.getSelectedHero().getQuirks().size()>0) { 
+//			lines.add("Quirks:");
+//			for(int a=0; a<player.getSelectedHero().getQuirks().size();a++) {
+//				String quirkString=player.getSelectedHero().getQuirks().get(a).getName()+"(";
+//				for(int b=0; b<player.getSelectedHero().getQuirks().get(a).getDescription().size();b++) {
+//					quirkString+=player.getSelectedHero().getQuirks().get(a).getDescription().get(b);
+//				}
+//				quirkString+=")";
+//				lines.add(quirkString);
+//			}
+//			lines.add("");
+//		}
+		return lines;
+	}
 	
 	//HexTile_unit
+	
+	
 	
 	@Override
 	public int getImageNumber() {
@@ -130,7 +270,7 @@ public class BattleUnit implements HexTileUnit{
 	}
 
 	@Override
-	public HexTilePlayer getPlayer() {	
+	public Player getPlayer() {	
 		return player;
 	}
 
@@ -246,11 +386,11 @@ public class BattleUnit implements HexTileUnit{
 		this.move_speed = move_speed;
 	}
 
-	public int getProtection() {
+	public int getArmor() {
 		return protection;
 	}
 
-	public void setProtection(int protection) {
+	public void setArmor(int protection) {
 		this.protection = protection;
 	}
 
@@ -466,7 +606,17 @@ public class BattleUnit implements HexTileUnit{
 		this.health = health;
 	}
 	
-	
-	
+	public boolean isBattle_participant() {
+		return battle_participant;
+	}
+	public void setBattle_participant(boolean battle_participant) {
+		this.battle_participant = battle_participant;
+	}
+	public BattleUnit getTarget() {
+		return target;
+	}
+	public void setTarget(BattleUnit target) {
+		this.target = target;
+	}
 	
 }

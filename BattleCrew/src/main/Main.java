@@ -5,7 +5,6 @@ import gameLogic.Battle;
 import gameLogic.Battlefield;
 import gameLogic.Game;
 import gameLogic.Player;
-import gameLogic.Warrior;
 import gui.BattleWindow;
 import gui.CampaignWindow;
 import imageloader.MyStaticImageLoader;
@@ -16,9 +15,10 @@ public class Main {
 		StaticImageLoader.prepareImage("./images",game.image_scale);
 		Player player = game.getPlayer();		
 		player.addItemtoInventory(game.itemBuilder.buildItembyName("shortsword"));
-		player.addHero(new Warrior("Herbert", player, 1));
-		player.addHero(new Warrior("Wumpus", player, 7));
-		player.addHero(new Warrior("Jüdel", player, 2));
+		player.gainGold(1000);
+		for(int i=0; i<6 ;i++) {
+			player.addHero(game.unitBuilder.buildUnitbyName("dwarf", player));
+		}
 		player.getHeroes().getFirst().getEquipment().equipHand1(game.itemBuilder.buildItembyName("longsword"));
 		player.getHeroes().get(1).getEquipment().equipHand1(game.itemBuilder.buildItembyName("shortbow"));
 

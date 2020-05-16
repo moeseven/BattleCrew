@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import builders.AbilityBuilder;
+import builders.BattleUnitBuilder;
 import builders.ItemBuilder;
 
 public class Game implements Serializable {
@@ -22,12 +23,13 @@ public class Game implements Serializable {
 	//public CardBuilder cardBuilder;
 	public ItemBuilder itemBuilder;
 	public AbilityBuilder abilityBuilder;
+	public BattleUnitBuilder unitBuilder;
 	//public ItemSpecialBuilder itemSpecialBuilder;
 	//public ItemSuffixBuilder itemSuffixBuilder;
 	public MyLog log;
 	//private LinkedList<Quest> availableQuests;
 	private int idleStressRelief = 10;
-	private Warrior lastCaster;
+	private BattleUnit lastCaster;
 	public Game(double image_scale) {
 		super();
 		log = new MyLog();	
@@ -38,6 +40,7 @@ public class Game implements Serializable {
 		try {
 			abilityBuilder=new AbilityBuilder();
 			itemBuilder= new ItemBuilder(this);
+			unitBuilder= new BattleUnitBuilder(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,8 +57,10 @@ public class Game implements Serializable {
 	public void startExampleBattle() {
 		
 		Player defender = new Player(this,true);
-		defender.addHero(new Warrior("Koshof", defender, 2));			
-		defender.addHero(new Warrior("Krumof", defender, 10));
+		for (int i = 0; i < 7; i++) {
+			defender.addHero(unitBuilder.buildUnitbyName("human", defender));	
+		}			
+		
 		defender.getHeroes().get(1).getEquipment().equipHand1(itemBuilder.buildItembyName("slingshot"));
 		defender.getHeroes().get(0).getEquipment().equipBody(itemBuilder.buildItembyName("leatherarmor"));
 		defender.getHeroes().get(0).getEquipment().equipHand1(itemBuilder.buildItembyName("shortsword"));
@@ -79,10 +84,10 @@ public class Game implements Serializable {
 	public int getMaximumGroupSize() {
 		return maximumGroupSize;
 	}
-	public Warrior getLastCaster() {
+	public BattleUnit getLastCaster() {
 		return lastCaster;
 	}
-	public void setLastCaster(Warrior lastCaster) {
+	public void setLastCaster(BattleUnit lastCaster) {
 		this.lastCaster = lastCaster;
 	}
 	public BattleTicked getBattle() {
