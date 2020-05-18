@@ -45,11 +45,13 @@ public class BattleCalculations {
 		if (attacker.getEquipment().getHand1() != null) {
 			chance = attacker.getEquipment().getHand1().getPrecision()/100.0;
 		}
-		chance *= attacker.getPrecision()/10.0;
-		chance *= defender.getSize()/10.0;
 		chance -= attacker.getTile().getDistance(defender.getTile())/200.0;
+		chance *= defender.getSize()/10.0;	
+		chance *= get_fatigue_corrected_precision(attacker)/10.0;			
 		return chance;
 	}
+	
+	
 	
 	public static boolean calc_attack_meele_hit(BattleUnit attacker, BattleUnit defender) {
 		double chance = get_fatigue_corrected_defense_skill(defender)/(Math.max(1, (get_fatigue_corrected_offense_skill(attacker))+get_fatigue_corrected_defense_skill(defender)));
@@ -131,18 +133,26 @@ public class BattleCalculations {
 	
 	public static double get_fatigue_corrected_offense_skill(BattleUnit warrior) {
 		if (warrior.getFatigue()>50) {
-			return  (get_meele_attack_skill(warrior)*(1-(150.0-warrior.getFatigue())/100.0));
+			return  (get_meele_attack_skill(warrior)*(1-((warrior.getFatigue()-50))/50.0));
 		}else {
 			return get_meele_attack_skill(warrior);
 		}
 	}
 	public static double get_fatigue_corrected_defense_skill(BattleUnit warrior) {
 		if (warrior.getFatigue()>40) {
-			return (get_meele_defense_skill(warrior)*(1-(140.0-warrior.getFatigue())/100.0));
+			return (get_meele_defense_skill(warrior)*(1-((warrior.getFatigue()-40))/60.0));
 		}else {
 			return get_meele_defense_skill(warrior);
 		}
 	}
+	public static double get_fatigue_corrected_precision(BattleUnit warrior) {
+		if (warrior.getFatigue()>40) {
+			return (warrior.getPrecision()*(1-((warrior.getFatigue()-40))/60.0));
+		}else {
+			return warrior.getPrecision();
+		}
+	}
+	
 	
 	public static int get_meele_attack_skill(BattleUnit warrior) {
 		return (int) (warrior.getOffense()*(warrior.getMeele_skill()/10.0));

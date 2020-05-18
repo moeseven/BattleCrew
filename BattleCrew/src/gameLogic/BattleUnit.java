@@ -1,5 +1,6 @@
 package gameLogic;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import HexTilePlayground.HexTile;
@@ -138,21 +139,17 @@ public class BattleUnit implements HexTileUnit{
 	 * reset sats for new round
 	 */
 	public void round_begin() {
-		exhaustion();
+		//gain fatigue modified by weight and already performed actions
+		exhaust(BattleCalculations.calc_movement_exhaustion(this));
 		tiles_moved_this_round = 0;
 	}
 	
-	/*
-	 * gain fatigue modified by weight and already performed actions
-	 */
-	public void exhaustion() {
-		//TODO
-		fatigue += BattleCalculations.calc_movement_exhaustion(this);
-		
-	}
 	
 	public void exhaust(double e) {
 		fatigue+=e;
+		if (fatigue>100) {
+			fatigue = 100;
+		}
 	}
 	
 	/*
@@ -161,8 +158,14 @@ public class BattleUnit implements HexTileUnit{
 	public boolean basic_attack(BattleUnit target) {
 		if (equipment.getHand1()!=null) {
 			if (equipment.getHand1().getRange()>2) {
-				//this is a ranged attack
-				BattleCalculations.perform_ranged_attack(this, target);
+				//this is a ranged weapon
+				ArrayList<BattleUnit> adjacent_enemies = get_adjacent_enemies();
+				if (adjacent_enemies.size()>0) {
+					target = adjacent_enemies.get(0);
+					BattleCalculations.perform_meele_attack(this, target);
+				}else {
+					BattleCalculations.perform_ranged_attack(this, target);
+				}			
 				return true;
 			}
 			//this is a meele attack
@@ -171,6 +174,20 @@ public class BattleUnit implements HexTileUnit{
 		}
 		
 		return false;
+	}
+	
+	public ArrayList<BattleUnit> get_adjacent_enemies(){
+		ArrayList<BattleUnit> adjacent_enemies = new ArrayList<BattleUnit>();
+		LinkedList<HexTile> adjacent_tiles = tile.getAdjacentTiles();
+		for (int i = 0; i < adjacent_tiles.size(); i++) {
+			BattleUnit tested_unit = (BattleUnit) adjacent_tiles.get(i).getUnit();
+			if (tested_unit!=null) {
+				if (tested_unit.getPlayer()!=player) {
+					adjacent_enemies.add(tested_unit);
+				}
+			}
+		}
+		return adjacent_enemies;
 	}
 
 	public boolean get_attacked_meele(BattleUnit attacker) {
@@ -234,6 +251,7 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("damage: "+(int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this));
 		lines.add("offese: "+(int) BattleCalculations.get_fatigue_corrected_offense_skill(this)+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
 		lines.add("defense: "+(int) BattleCalculations.get_fatigue_corrected_defense_skill(this)+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
+		lines.add("precision: "+ (int) BattleCalculations.get_fatigue_corrected_precision(this)  +"("+precision+")");
 		lines.add("");
 		lines.add("armor: "+getArmor());
 		lines.add("");
