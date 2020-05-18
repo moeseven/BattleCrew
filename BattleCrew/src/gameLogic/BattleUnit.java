@@ -52,7 +52,6 @@ public class BattleUnit implements HexTileUnit{
 	private double mana;
 	private double fear;
 	private boolean stunned;
-	private int attacks_used_this_round;
 	private int tiles_moved_this_round;
 	private HexTile tile;
 	
@@ -113,7 +112,6 @@ public class BattleUnit implements HexTileUnit{
 		fatigue = 0;
 		mana = 100;
 		fear = 0;
-		attacks_used_this_round = 0;
 		tiles_moved_this_round = 0;
 	}
 	
@@ -141,7 +139,6 @@ public class BattleUnit implements HexTileUnit{
 	 */
 	public void round_begin() {
 		exhaustion();
-		attacks_used_this_round = 0;
 		tiles_moved_this_round = 0;
 	}
 	
@@ -184,7 +181,7 @@ public class BattleUnit implements HexTileUnit{
 	public void take_damage(double damage) {
 		if (damage > 0) {
 			health -= damage;
-			player.getGame().log.addLine(name+" took "+damage+" damage!");
+			player.getGame().log.addLine(name+" took "+(int) damage+"% damage!");
 			if (isDead()) {
 				die();
 			}
@@ -234,7 +231,7 @@ public class BattleUnit implements HexTileUnit{
 		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
 		lines.add("");
 		//main stats
-		lines.add("damage: "+(int) BattleCalculations.calc_damage(this));
+		lines.add("damage: "+(int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this));
 		lines.add("offese: "+BattleCalculations.get_meele_attack_skill(this));
 		lines.add("defense: "+BattleCalculations.get_meele_defense_skill(this));
 		lines.add("");
@@ -577,14 +574,6 @@ public class BattleUnit implements HexTileUnit{
 
 	public void setStunned(boolean stunned) {
 		this.stunned = stunned;
-	}
-
-	public int getAttacks_used_this_round() {
-		return attacks_used_this_round;
-	}
-
-	public void setAttacks_used_this_round(int attacks_used_this_round) {
-		this.attacks_used_this_round = attacks_used_this_round;
 	}
 
 	public int getTiles_moved_this_round() {

@@ -2,7 +2,8 @@ package gameLogic;
 
 public class BattleCalculations {
 	
-	
+	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
+	public static double MAXIMUM_DAMAGE_FACTOR = 1;
 	
 	public static double calc_movement_exhaustion(BattleUnit unit) {
 		double exhaustion;
@@ -14,7 +15,7 @@ public class BattleCalculations {
 	}
 	
 	public static double calc_attack_exhaustion(BattleUnit unit) {
-		double exhaustion = 3 * unit.getAttacks_used_this_round();
+		double exhaustion = 3;
 		int weight = unit.getEquipment().getTotalWeight();
 		if (unit.getEquipment().getHand1() != null) {
 			weight += 2 * unit.getEquipment().getHand1().getWeight();
@@ -73,17 +74,20 @@ public class BattleCalculations {
 		return false;
 	}
 	
-	public static double calc_damage(BattleUnit warrior) {
-		double damage = warrior.getBase_damage();
+	public static double calc_maximum_damage(BattleUnit warrior) {
+		double damage = warrior.getBase_damage()*MAXIMUM_DAMAGE_FACTOR;
 		if (warrior.getEquipment().getHand1() != null) {
 			damage = warrior.getEquipment().getHand1().getDamage();
 		}
 		damage *= warrior.getStrength()/10.0;
 		return damage;
 	}
+	public static double calc_minimum_damage(BattleUnit warrior) {
+		return calc_maximum_damage(warrior)*MINIMUM_DAMAGE_FACTOR;
+	}
 	
 	public static double roll_damage(BattleUnit attacker, BattleUnit defender) {
-		double damage = calc_damage(attacker);
+		double damage = calc_maximum_damage(attacker)*(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
 		double reduction = 0;
 		if (Math.random() < attacker.getDexterity()/100.0) {
 			//Head hit
