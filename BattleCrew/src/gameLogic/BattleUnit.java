@@ -42,6 +42,7 @@ public class BattleUnit implements HexTileUnit{
 	private int resist_slash;
 	private int resist_pirce;
 	
+	private int meele_skill;
 	private int base_damage = 10;
 	
 	private Equipment equipment;
@@ -95,6 +96,8 @@ public class BattleUnit implements HexTileUnit{
 		resist_bash = Integer.parseInt(stats[21]);
 		resist_slash = Integer.parseInt(stats[22]);
         resist_pirce = Integer.parseInt(stats[23]);
+        
+        meele_skill = Integer.parseInt(stats[24]);
 	}
 	
 	public BattleUnit() {
@@ -225,22 +228,28 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("");
 		lines.add(name);
 		lines.add("");
-		lines.add("health/vitality: "+(int)(getHealth())+"%/"+getVitality());
-		lines.add("fatigue/enduracne: "+(int)(getFatigue())+"%/"+getEndurance());
-		lines.add("fear/courage: "+(int)getFear()+"%/"+getCourage());
+		lines.add("health: "+(int)(getHealth())+"%");
+		lines.add("fatigue: "+(int)(getFatigue())+"%");
+		lines.add("fear: "+(int)getFear()+"%");
 		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
 		lines.add("");
 		//main stats
+		lines.add("damage: "+(int) BattleCalculations.calc_damage(this));
+		lines.add("offese: "+BattleCalculations.get_meele_attack_skill(this));
+		lines.add("defense: "+BattleCalculations.get_meele_defense_skill(this));
+		lines.add("");
+		lines.add("armor: "+getArmor());
+		lines.add("");
 		lines.add("speed: "+getMove_speed());
-		lines.add("offesnive: "+getOffense());
-		lines.add("defensive: "+getDefense());
+		lines.add("endurance: "+getEndurance());
+		lines.add("");
 		lines.add("strength: "+getStrength());
 		lines.add("dexterity: "+getDexterity());		
 		lines.add("vitality: "+getVitality());
-		lines.add("endurance: "+getEndurance());	
-		lines.add("damage: "+(int) BattleCalculations.calc_damage(this));
+			
+		
 		//defensive
-		lines.add("armor: "+getArmor());
+		
 		
 		//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
 		//Quirks
@@ -325,7 +334,7 @@ public class BattleUnit implements HexTileUnit{
 	}
 	/////////////////////////////////////////////////////////////////
 
-	
+
 
 	//getters and setters
 	
@@ -617,6 +626,14 @@ public class BattleUnit implements HexTileUnit{
 	}
 	public void setTarget(BattleUnit target) {
 		this.target = target;
+	}
+
+	public int getMeele_skill() {
+		return meele_skill;
+	}
+
+	public void setMeele_skill(int meele_skill) {
+		this.meele_skill = meele_skill;
 	}
 	
 }

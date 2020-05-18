@@ -19,6 +19,7 @@ public class Item {
 	private int range;
 	private int block;
 	private int precision;
+	private String amunition;
 	//mods
 	private int armor;
 	private int offense;
@@ -50,7 +51,7 @@ public class Item {
 		range = Integer.parseInt(stats[11]);
 		precision = Integer.parseInt(stats[12]);
 		block = Integer.parseInt(stats[13]);
-		
+		amunition = stats[1];
 //		attack_ability=Boolean.parseBoolean(stats[10]);
 //		if (attack_ability) {
 //			List<String> subArray = new ArrayList<String>();

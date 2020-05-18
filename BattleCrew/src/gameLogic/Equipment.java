@@ -2,6 +2,7 @@ package gameLogic;
 
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Equipment implements Serializable{
@@ -15,9 +16,11 @@ public class Equipment implements Serializable{
 	private Item head=null;
 	private Item ring1=null;
 	private Item ring2=null;
+	private HashMap<Item, Integer> amunition;
 	//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring //0: Consumable
 	public Equipment(BattleUnit hero) {
 		this.hero=hero;
+		amunition = new HashMap<Item, Integer>(); //TODO use amunition when using ranged attack
 	}
 	public boolean equipItem(Item item) {
 		boolean success=true;

@@ -57,8 +57,8 @@ public class Game implements Serializable {
 	public void startExampleBattle() {
 		
 		Player defender = new Player(this,true);
-		for (int i = 0; i < 7; i++) {
-			defender.addHero(unitBuilder.buildUnitbyName("human", defender));	
+		for (int i = 0; i < 9; i++) {
+			defender.addHero(unitBuilder.buildUnitbyName("zombie", defender));	
 		}			
 		
 		defender.getHeroes().get(1).getEquipment().equipHand1(itemBuilder.buildItembyName("slingshot"));
