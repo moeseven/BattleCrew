@@ -232,8 +232,8 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("");
 		//main stats
 		lines.add("damage: "+(int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this));
-		lines.add("offese: "+BattleCalculations.get_meele_attack_skill(this));
-		lines.add("defense: "+BattleCalculations.get_meele_defense_skill(this));
+		lines.add("offese: "+(int) BattleCalculations.get_fatigue_corrected_offense_skill(this)+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
+		lines.add("defense: "+(int) BattleCalculations.get_fatigue_corrected_defense_skill(this)+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
 		lines.add("");
 		lines.add("armor: "+getArmor());
 		lines.add("");

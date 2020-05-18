@@ -201,9 +201,9 @@ public class Equipment implements Serializable{
 		//!!! update this if a new item type is added
 		unequipBiHand();
 		unequipBody();
-		unequipHand1();
-		unequipHand2();
 		unequipHead();
+		unequipHand1();
+		unequipHand2();		
 		unequipPotion();
 		unequipRing1();
 		unequipRing2();
@@ -236,12 +236,13 @@ public class Equipment implements Serializable{
 		hand2=null;
 	}
 	public void unequipBiHand() {
-		if(hand2!=null) {
+		if(hand2!=null && hand2.equals(hand2)) {
 			hand2.demod(hero);
 			hero.getPlayer().getInventory().add(hand2);
+			hand1=null;		
+			hand2=null;
 		}
-		hand1=null;		
-		hand2=null;
+		
 	}
 	public void unequipBody() {
 		if(body!=null) {
