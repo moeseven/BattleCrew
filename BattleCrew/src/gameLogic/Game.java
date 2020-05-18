@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import builders.AbilityBuilder;
 import builders.BattleUnitBuilder;
 import builders.ItemBuilder;
+import builders.NameGenerator;
 
 public class Game implements Serializable {
 	private Player player; // change this for multiplayer
@@ -24,6 +25,7 @@ public class Game implements Serializable {
 	public ItemBuilder itemBuilder;
 	public AbilityBuilder abilityBuilder;
 	public BattleUnitBuilder unitBuilder;
+	public NameGenerator name_generator;
 	//public ItemSpecialBuilder itemSpecialBuilder;
 	//public ItemSuffixBuilder itemSuffixBuilder;
 	public MyLog log;
@@ -41,6 +43,7 @@ public class Game implements Serializable {
 			abilityBuilder=new AbilityBuilder();
 			itemBuilder= new ItemBuilder(this);
 			unitBuilder= new BattleUnitBuilder(this);
+			name_generator = new NameGenerator(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

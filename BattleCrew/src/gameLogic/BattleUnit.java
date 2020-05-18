@@ -14,6 +14,7 @@ public class BattleUnit implements HexTileUnit{
 	//other
 	private Player player;
 	private String name;
+	private String type;
 	private int image_number;
 
 	//stats
@@ -66,7 +67,7 @@ public class BattleUnit implements HexTileUnit{
 		this.player = player;
 		equipment = new Equipment(this);
 		health = 100;
-		name=stats[0];
+		type=stats[0];
 		image_number =Integer.parseInt(stats[1]);
 		
 		//stats
@@ -98,6 +99,7 @@ public class BattleUnit implements HexTileUnit{
         resist_pirce = Integer.parseInt(stats[23]);
         
         meele_skill = Integer.parseInt(stats[24]);
+        name = player.getGame().name_generator.generate_name(type);
 	}
 	
 	public BattleUnit() {
@@ -240,7 +242,7 @@ public class BattleUnit implements HexTileUnit{
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=new LinkedList<String>();
 		lines.add("");
-		lines.add(name);
+		lines.add(name+" ("+type+")");
 		lines.add("");
 		lines.add("health: "+(int)(getHealth())+"%");
 		lines.add("fatigue: "+(int)(getFatigue())+"%");
@@ -641,6 +643,14 @@ public class BattleUnit implements HexTileUnit{
 
 	public void setMeele_skill(int meele_skill) {
 		this.meele_skill = meele_skill;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }
