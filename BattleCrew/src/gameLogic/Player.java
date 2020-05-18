@@ -61,7 +61,7 @@ public class Player implements HexTilePlayer,Serializable{
 			for(int a=0; a<warriors.size();a++) {// prevent equal names
 				for(int b=0; b<warriors.size();b++) {
 					if(warriors.get(b).getName().equals(hero.getName())) {
-						hero.setName(hero.getName()+" I");
+						hero.setName(hero.getName()+"I");
 					}
 				}
 			}
