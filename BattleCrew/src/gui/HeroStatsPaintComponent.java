@@ -75,6 +75,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHead());
+						if (e.isMetaDown()) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipHead();
+						}
+						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipHead(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -97,6 +103,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getBody());
+						if (e.getButton() == 3) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipBody();
+						}
+						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipBody(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -120,6 +132,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand1());
+						if (e.getButton() == 3) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipHand1();
+						}
+						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipHand1(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -142,6 +160,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2());
+						if (e.getButton() == 3) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipHand2();
+						}
+						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipHand2(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -150,7 +174,11 @@ public class HeroStatsPaintComponent extends JComponent{
 						caption.removeFirst();	
 						caption.addFirst("");
 						//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHand2().getName());
-						this.setImageNumber(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2().getImage());
+						if (! (gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2().getCategory()==3)) {
+							//not a two handed weapon
+							this.setImageNumber(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2().getImage());
+						}
+						
 					}else {
 						this.setImageNumber(1);
 						caption.removeFirst();
@@ -164,6 +192,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing1());
+						if (e.getButton() == 3) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipRing1();
+						}
+						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipRing(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -185,6 +219,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing2());
+						if (e.getButton() == 3) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipRing2();
+						}
+						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipRing(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -208,6 +248,11 @@ public class HeroStatsPaintComponent extends JComponent{
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
 						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0));
+						if (e.getButton() == 3) {
+							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipAmunition();
+						}						
+					}else {
+						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipAmunition(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override

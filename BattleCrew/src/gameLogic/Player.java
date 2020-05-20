@@ -28,7 +28,12 @@ public class Player implements HexTilePlayer,Serializable{
 		warriors=new LinkedList<BattleUnit>();
 		inventory=new Inventory();
 		gold=100;
-		groupSize=6;
+		if (AI) {
+			groupSize=20;
+		}else {
+			groupSize=6;
+		}
+		
 	}
 	public void gainGold(int g) {
 		gold+=g;

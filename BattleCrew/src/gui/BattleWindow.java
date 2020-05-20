@@ -50,6 +50,9 @@ public class BattleWindow extends JFrame implements ActionListener{
 	public Game getGame() {
 		return game;
 	}
+	public void refresh() {
+		control_component.refresh();
+	}
 	@Override
 	public void repaint() {
 		// TODO Auto-generated method stub	

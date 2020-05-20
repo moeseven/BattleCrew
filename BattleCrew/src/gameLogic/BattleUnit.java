@@ -102,6 +102,7 @@ public class BattleUnit implements HexTileUnit{
         
         meele_skill = Integer.parseInt(stats[24]);
         name = player.getGame().name_generator.generate_name(type);
+        equipment.equipItem(player.getGame().itemBuilder.buildItembyName("stone"));
 	}
 	
 	public BattleUnit() {
