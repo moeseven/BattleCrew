@@ -63,6 +63,9 @@ public class BattleWindow extends JFrame implements ActionListener{
 			game.getBattle().battle_tick();		
 		}
 		battle_tick_timer.restart();
+		control_component.refresh();
+		control_component.repaint();
+		
 		repaint();
 		battleOver();
 	}
@@ -76,6 +79,9 @@ public class BattleWindow extends JFrame implements ActionListener{
 	}
 	public boolean isPaused() {
 		return paused;
+	}
+	public CampaignWindow getCampaign_window() {
+		return campaign_window;
 	}
 	
 }

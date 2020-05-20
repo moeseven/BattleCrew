@@ -16,8 +16,7 @@ public class Player implements HexTilePlayer,Serializable{
 	private boolean AI;
 	//private LinkedList<Warrior> availableWarriors;
 	protected LinkedList<BattleUnit> warriors;
-	private LinkedList<Item> inventory;
-	protected int inventoryCapacity;
+	private Inventory inventory;
 	
 	protected int groupSize;//level this up by spending money
 	private Game game;
@@ -27,9 +26,7 @@ public class Player implements HexTilePlayer,Serializable{
 		this.game=game;
 		this.AI=AI;
 		warriors=new LinkedList<BattleUnit>();
-//		availableWarriors=new LinkedList<Warrior>();
-		inventoryCapacity=100;
-		inventory=new LinkedList<Item>();
+		inventory=new Inventory();
 		gold=100;
 		groupSize=6;
 	}
@@ -98,33 +95,17 @@ public class Player implements HexTilePlayer,Serializable{
 //			hero.setInventory(new LinkedList<Item>());
 		}
 	}
-	public void addMultipleItemsToInventory(LinkedList<Item> items) {
-		//remove items form source and add to player inventory if there is space
-		LinkedList<Item> itemsTaken=new LinkedList<Item>();
-		for(int a=0;a<items.size();a++) {
-			addItemtoInventory(items.get(a));	
-			itemsTaken.add(items.get(a));
-		}
-		for(int a=0;a<itemsTaken.size();a++) {
-			items.remove(itemsTaken.get(a));
-		}
-	}
-	public boolean addItemtoInventory(Item item) {
-		boolean success;
-		int totalWeight=item.getWeight();
-		for(int i=0; i<inventory.size();i++) {
-			totalWeight+=inventory.get(i).getWeight();
-		}
-		if(totalWeight>inventoryCapacity) {
-			//TODO
-			success=false;
-		}else {
-			game.log.addLine(item.getName()+" added to the arsenal.");
-			inventory.add(item);
-			success=true;
-		}
-		return success;
-	}
+//	public void addMultipleItemsToInventory(LinkedList<Item> items) {
+//		//remove items form source and add to player inventory if there is space
+//		LinkedList<Item> itemsTaken=new LinkedList<Item>();
+//		for(int a=0;a<items.size();a++) {
+//			addItemtoInventory(items.get(a));	
+//			itemsTaken.add(items.get(a));
+//		}
+//		for(int a=0;a<itemsTaken.size();a++) {
+//			items.remove(itemsTaken.get(a));
+//		}
+//	}
 	//////////////////HEXTILEPLAYER
 	@Override
 	public HexTile getSelectedTile() {
@@ -157,10 +138,10 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setHeroes(LinkedList<BattleUnit> heroes) {
 		this.warriors = heroes;
 	}
-	public LinkedList<Item> getInventory() {
+	public Inventory getInventory() {
 		return inventory;
 	}
-	public void setInventory(LinkedList<Item> inventory) {
+	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
 	public int getGold() {

@@ -46,8 +46,10 @@ public class BattleUnit implements HexTileUnit{
 	
 	private int meele_skill;
 	private int base_damage = 10;
+	private boolean equippable = true; //TODO
 	
 	private Equipment equipment;
+	
 	//dynamic stats
 	private double health;
 	private double fatigue;
@@ -56,7 +58,7 @@ public class BattleUnit implements HexTileUnit{
 	private boolean stunned;
 	private int tiles_moved_this_round;
 	private HexTile tile;
-	
+	private double damage_dealt=0;
 	//other things
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
@@ -111,7 +113,6 @@ public class BattleUnit implements HexTileUnit{
 	 * initialize for battle
 	 */
 	public void battle_begin() {
-		health = 100;
 		fatigue = 0;
 		mana = 100;
 		fear = 0;
@@ -158,24 +159,14 @@ public class BattleUnit implements HexTileUnit{
 	 * attack enemy with main Hand weapon
 	 */
 	public boolean basic_attack(BattleUnit target) {
-		if (equipment.getHand1()!=null) {
-			if (equipment.getHand1().getRange()>2) {
-				//this is a ranged weapon
-				ArrayList<BattleUnit> adjacent_enemies = get_adjacent_enemies();
-				if (adjacent_enemies.size()>0) {
-					target = adjacent_enemies.get(0);
-					BattleCalculations.perform_meele_attack(this, target);
-				}else {
-					BattleCalculations.perform_ranged_attack(this, target);
-				}			
-				return true;
-			}
-			//this is a meele attack
-			BattleCalculations.perform_meele_attack(this, target);
-			return true;
+		if (BattleCalculations.calc_actual_attack_range(this)>2) {
+			//ranged
+			BattleCalculations.perform_ranged_attack(this, target);
+		}else {
+			//meele
+			BattleCalculations.perform_meele_attack(this, target);			
 		}
-		
-		return false;
+		return true;
 	}
 	
 	public ArrayList<BattleUnit> get_adjacent_enemies(){
@@ -197,8 +188,9 @@ public class BattleUnit implements HexTileUnit{
 		return false;
 	}
 	
-	public void take_damage(double damage) {
+	public void take_damage(double damage,BattleUnit attacker) {
 		if (damage > 0) {
+			attacker.add_to_damage_dealt(damage*vitality/10);
 			health -= damage;
 			player.getGame().log.addLine(name+" took "+(int) damage+"% damage!");
 			if (isDead()) {
@@ -241,7 +233,6 @@ public class BattleUnit implements HexTileUnit{
 	public LinkedList<String> generateStatLines(){
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=new LinkedList<String>();
-		lines.add("");
 		lines.add(name+" ("+type+")");
 		lines.add("");
 		lines.add("health: "+(int)(getHealth())+"%");
@@ -253,7 +244,16 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("damage: "+(int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this));
 		lines.add("offese: "+(int) BattleCalculations.get_fatigue_corrected_offense_skill(this)+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
 		lines.add("defense: "+(int) BattleCalculations.get_fatigue_corrected_defense_skill(this)+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
-		lines.add("precision: "+ (int) BattleCalculations.get_fatigue_corrected_precision(this)  +"("+precision+")");
+		
+		//precison and accuracy
+		String concat_string = ""+(int) BattleCalculations.get_fatigue_corrected_accuracy(this);
+		if (equipment.getHand1()!=null) {
+			if (equipment.getHand1().getRange()>2) {
+				concat_string = (int)(BattleCalculations.calc_attack_ranged_base_hit_chance(this)*100)+"% ("+concat_string+")";
+			}
+		}
+		lines.add("precision: "+concat_string);
+		
 		lines.add("");
 		lines.add("armor: "+getArmor());
 		lines.add("");
@@ -263,8 +263,8 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("strength: "+getStrength());
 		lines.add("dexterity: "+getDexterity());		
 		lines.add("vitality: "+getVitality());
-			
-		
+		lines.add("");
+		lines.add("damage dealt: "+(int)damage_dealt);
 		//defensive
 		
 		
@@ -351,7 +351,9 @@ public class BattleUnit implements HexTileUnit{
 	}
 	/////////////////////////////////////////////////////////////////
 
-
+	public void add_to_damage_dealt(double damage) {
+		damage_dealt+= damage;
+	}
 
 	//getters and setters
 	
@@ -652,5 +654,5 @@ public class BattleUnit implements HexTileUnit{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 }

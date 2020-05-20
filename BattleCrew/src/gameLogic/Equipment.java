@@ -2,8 +2,11 @@ package gameLogic;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 public class Equipment implements Serializable{
 	private BattleUnit hero;
@@ -16,11 +19,11 @@ public class Equipment implements Serializable{
 	private Item head=null;
 	private Item ring1=null;
 	private Item ring2=null;
-	private HashMap<Item, Integer> amunition;
-	//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring //0: Consumable
+	private ArrayList<Item> amunition;
+	//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring  //7: Amunition //0: Consumable
 	public Equipment(BattleUnit hero) {
 		this.hero=hero;
-		amunition = new HashMap<Item, Integer>(); //TODO use amunition when using ranged attack
+		amunition = new ArrayList<Item>(); //TODO use amunition when using ranged attack
 	}
 	public boolean equipItem(Item item) {
 		boolean success=true;
@@ -32,6 +35,7 @@ public class Equipment implements Serializable{
 	        case 4:  equipBody(item);break;
 	        case 5:  equipHead(item);break;
 	        case 6:  equipRing(item);break;
+	        case 7:  equipAmunition(item);break;
 	        default: success=false;
 			}
 		return success;
@@ -50,7 +54,8 @@ public class Equipment implements Serializable{
 					unequipRing1();
 				}else if (ring2==item) {
 					unequipRing2();
-				}break;      
+				}break;    
+        case 7: unequipAmunition(); break;
         default: success=false;break;
 		}
 		return success;
@@ -93,6 +98,9 @@ public class Equipment implements Serializable{
 		if(ring2!=null&&ring2.droppable) {
 			allItems.add(ring2);
 		}
+		if(amunition.size()>0) {
+			allItems.addAll(amunition);
+		}
 		return allItems;
 	}
 	public boolean drinkPotion() {
@@ -122,6 +130,19 @@ public class Equipment implements Serializable{
 		}		
 	}
 	//equip
+	public void equipAmunition(Item item) {
+		//only one type of amuntion can be carried
+		if(item.getCategory()==7) {
+			if (amunition.size()>0) {
+				if (!amunition.get(0).getName().equals(item.getName())) {
+					unequipAmunition();
+				}
+			}
+			amunition.add(item);
+			hero.getPlayer().getInventory().remove(item);						
+		}
+	}
+	
 	public void equipPotion(Item item) {
 		if(item.getCategory()==0) {
 			unequipPotion();
@@ -272,6 +293,15 @@ public class Equipment implements Serializable{
 		}	
 		ring2=null;
 	}
+	public void unequipAmunition() {
+		if (amunition.size()>0) {
+			Iterator<Item> it = amunition.iterator();
+			while (it.hasNext()) {
+				hero.getPlayer().getInventory().add(it.next());
+			}
+			amunition = new ArrayList<Item>();
+		}
+	}
 	//
 	public BattleUnit getHero() {
 		return hero;
@@ -321,5 +351,12 @@ public class Equipment implements Serializable{
 	public void setPotion(Item potion) {
 		this.potion = potion;
 	}
+	public ArrayList<Item> getAmunition() {
+		return amunition;
+	}
+	public void setAmunition(ArrayList<Item> amunition) {
+		this.amunition = amunition;
+	}
+	
 	
 }

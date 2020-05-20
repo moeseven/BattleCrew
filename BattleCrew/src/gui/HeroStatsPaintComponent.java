@@ -26,23 +26,30 @@ public class HeroStatsPaintComponent extends JComponent{
 		private JScrollPane sp;
 		private CampaignWindow gw;
 		public RectangleClicker rc;
-		private int x_offset=200;
+		private int offset=200;
+		private int offset_horizontal=0;
+		private boolean vertical = true;
 		private int component_height_lines=16;
-		public HeroStatsPaintComponent(CampaignWindow sw){
+		public HeroStatsPaintComponent(CampaignWindow sw, int offset, boolean vertical){
 			this.gw=sw;
+			this.vertical=true;
+			this.offset = offset;
+			if (!vertical) {
+				offset_horizontal = 200;
+			}
 			setBorder(new LineBorder(Color.YELLOW));
-			super.setPreferredSize(new Dimension(700,200));
+			super.setPreferredSize(new Dimension(700,200+offset_horizontal));
 			MyMouseListener ml = new MyMouseListener();
 			super.addMouseListener(ml);
 			setLayout(new BorderLayout());
 			setVisible(true);
-			if(gw.getGame().getPlayer().getInventory().size()>0) {
-				gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getInventory().getFirst());
+			if(gw.getGame().getPlayer().getInventory().getInventory_list().size()>0) {
+				gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getInventory().getInventory_list().getFirst().get(0));
 			}
 			//rectangles
 			rc=new RectangleClicker();
 			//potion
-			rc.addRect(new ClickableRectangle("potion",60+x_offset,142,50,34) {
+			rc.addRect(new ClickableRectangle("potion",60+offset,142+offset_horizontal,50,34) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getPotion()!=null) {
@@ -63,7 +70,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				}		
 			});
 			//head
-			rc.addRect(new ClickableRectangle("head",60+x_offset,10,50,50) {
+			rc.addRect(new ClickableRectangle("head",60+offset,10+offset_horizontal,50,50) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
@@ -85,7 +92,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				}		
 			});
 			//body
-			rc.addRect(new ClickableRectangle("body",60+x_offset,70,50,70) {
+			rc.addRect(new ClickableRectangle("body",60+offset,70+offset_horizontal,50,70) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
@@ -108,7 +115,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				}		
 			});
 			//hand1
-			rc.addRect(new ClickableRectangle("hand1",5+x_offset,70,50,70) {
+			rc.addRect(new ClickableRectangle("hand1",5+offset,60+offset_horizontal,50,80) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
@@ -130,7 +137,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				}		
 			});
 			//hand2
-			rc.addRect(new ClickableRectangle("hand2",115+x_offset,70,50,70) {
+			rc.addRect(new ClickableRectangle("hand2",115+offset,60+offset_horizontal,50,80) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
@@ -152,7 +159,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				}		
 			});
 			//ring1
-			rc.addRect(new ClickableRectangle("ring1",15+x_offset,142,30,30) {
+			rc.addRect(new ClickableRectangle("ring1",15+offset,142+offset_horizontal,30,30) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
@@ -173,7 +180,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				}		
 			});
 			//ring2
-			rc.addRect(new ClickableRectangle("ring2",125+x_offset,142,30,30) {
+			rc.addRect(new ClickableRectangle("ring2",125+offset,142+offset_horizontal,30,30) {
 				@Override
 				public void onClick(MouseEvent e) {
 					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
@@ -186,6 +193,29 @@ public class HeroStatsPaintComponent extends JComponent{
 						caption.removeFirst();
 						caption.addFirst("");					
 						this.setImageNumber(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getRing2().getImage());
+					}else {
+						this.setImageNumber(1);
+						caption.removeFirst();
+						caption.addFirst(name);
+					}					
+				}		
+			});
+			rc.updateCaptions();
+			
+			//amunition
+			rc.addRect(new ClickableRectangle("amo",115+offset,10+offset_horizontal,50,40) {
+				@Override
+				public void onClick(MouseEvent e) {
+					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
+						gw.getGame().getPlayer().setSelectedItem(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0));
+					}
+				}
+				@Override
+				public void updateCaption() {
+					if(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
+						caption.removeFirst();
+						caption.addFirst(""+gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().size());					
+						this.setImageNumber(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0).getImage());
 					}else {
 						this.setImageNumber(1);
 						caption.removeFirst();
@@ -214,15 +244,25 @@ public class HeroStatsPaintComponent extends JComponent{
 		super.paintComponent(g);
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=gw.getGame().getPlayer().getSelectedUnit().generateStatLines();
-		//g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), gw.getGame().getPlayer().getSelectedUnit().getImageNumber(), gw.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);		
-		for(int i=0; i<lines.size();i++) {
-			if(i<=component_height_lines+1) {
-				g.drawString(lines.get(i), x_offset+200, 10+12*i);
-			}else {
-				g.drawString(lines.get(i), x_offset+340, 10+12*(i-component_height_lines+2));
+		//g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), gw.getGame().getPlayer().getSelectedUnit().getImageNumber(), gw.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);	
+		int y_offset;
+		int x_offset;
+		if (vertical) {
+			y_offset = 0;
+			x_offset = 200;
+			for(int i=0; i<lines.size();i++) {
+				if(i<=component_height_lines+1) {
+					g.drawString(lines.get(i), offset+x_offset, y_offset+10+12*i);
+				}else {
+					g.drawString(lines.get(i), offset+x_offset+140, y_offset+10+12*(i-component_height_lines+2));
+				}			
 			}
-			
+		}else {
+			for(int i=0; i<lines.size();i++) {
+				g.drawString(lines.get(i), 10, 200 + 10+12*i);		
+			}
 		}
+		
 		g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), gw.getGame().getPlayer().getSelectedUnit().getImageNumber(),gw.getGame().getImage_scale()).getScaledInstance(240,204, 2),-30,0,null);
 		for(int i=0; i<rc.rectAngles.size();i++) {
 				if (rc.rectAngles.get(i).getImageNumber()!=1) {

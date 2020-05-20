@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -38,8 +39,8 @@ public class HeroInventoryPaintComponent extends JComponent{
 			addMouseListener(new MyMouseListener());
 			setLayout(new BorderLayout());
 			setVisible(true);
-			if(game.getPlayer().getInventory().size()>0) {
-				game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getFirst());
+			if(game.getPlayer().getInventory().getInventory_map().size()>0) {
+				game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getInventory_list().getFirst().get(0));
 			}
 			//rectangles
 			rc=new RectangleClicker();
@@ -51,7 +52,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 				@Override
 				public void updateCaption() {
 					caption=new LinkedList<>();
-					if (game.getPlayer().getInventory().size()<1) {
+					if (game.getPlayer().getInventory().getInventory_map().size()<1) {
 						caption.add("empty inventory");
 					}else {
 						caption.add(this.name);
@@ -62,12 +63,11 @@ public class HeroInventoryPaintComponent extends JComponent{
 				@Override
 				public void onClick(MouseEvent e) {
 					// TODO Auto-generated method stub
-					if(game.getPlayer().getInventory().size()>0) {
-						game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getFirst());
-						if(game.getPlayer().getInventory().size()>1) {
-							game.getPlayer().getInventory().addLast(game.getPlayer().getInventory().removeFirst());
-							game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getFirst());
+					if(game.getPlayer().getInventory().getInventory_list().size()>0) {						
+						if(game.getPlayer().getInventory().getInventory_list().size()>1) {
+							game.getPlayer().getInventory().getInventory_list().addLast(game.getPlayer().getInventory().getInventory_list().removeFirst());
 						}
+						game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getInventory_list().getFirst().get(0));
 					}					
 						
 				}
@@ -79,12 +79,11 @@ public class HeroInventoryPaintComponent extends JComponent{
 				@Override
 				public void onClick(MouseEvent e) {
 					// TODO Auto-generated method stub
-					if(game.getPlayer().getInventory().size()>0) {
-						game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getFirst());
-						if(game.getPlayer().getInventory().size()>1) {
-							game.getPlayer().getInventory().addFirst(game.getPlayer().getInventory().removeLast());
-							game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getFirst());
+					if(game.getPlayer().getInventory().getInventory_list().size()>0) {						
+						if(game.getPlayer().getInventory().getInventory_list().size()>1) {
+							game.getPlayer().getInventory().getInventory_list().addFirst(game.getPlayer().getInventory().getInventory_list().removeLast());
 						}
+						game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getInventory_list().getFirst().get(0));
 					}					
 						
 				}
@@ -102,18 +101,23 @@ public class HeroInventoryPaintComponent extends JComponent{
 				public void updateCaption() {
 					setFirstLineColor(Color.black);
 					if(game.getPlayer().getSelectedItem()!=null) {
-						game.getPlayer().getSelectedItem().generateItemDescription();						
-						caption=game.getPlayer().getSelectedItem().getDescription();
-						caption.addFirst(game.getPlayer().getSelectedItem().getName());
-//						if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>0) {
-//							setFirstLineColor(Color.blue);
-//							if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>1) {
-//								setFirstLineColor(Color.orange);
-//								if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>2) {
-//									setFirstLineColor(Color.PINK);
-//								}
-//							}
-//						}
+						if (game.getPlayer().getInventory().contains(game.getPlayer().getSelectedItem())) {
+							game.getPlayer().getSelectedItem().generateItemDescription();						
+							caption=game.getPlayer().getSelectedItem().getDescription();
+							String composite = game.getPlayer().getSelectedItem().getName();
+							
+							caption.addFirst(composite+"(x"+game.getPlayer().getInventory().getInventory_map().get(game.getPlayer().getSelectedItem().getName()).size()+")");
+	//						if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>0) {
+	//							setFirstLineColor(Color.blue);
+	//							if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>1) {
+	//								setFirstLineColor(Color.orange);
+	//								if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>2) {
+	//									setFirstLineColor(Color.PINK);
+	//								}
+	//							}
+	//						}
+							}
+						
 					}else {
 						caption=new LinkedList<String>();
 					}					
@@ -142,10 +146,10 @@ public class HeroInventoryPaintComponent extends JComponent{
 						Item itemUsable=game.getPlayer().getSelectedItem();
 						if(game.getPlayer().getInventory().contains(itemUsable)) {
 							//TODO
-//							if (itemUsable instanceof ItemConsumable) {
-//								itemUsable.mod(gw.getGame().getPlayer().getSelectedUnit());
-//								gw.getGame().getPlayer().getInventory().remove(itemUsable);								
-//							}
+							if (itemUsable.getCategory() == 0) {
+								itemUsable.mod(gw.getGame().getPlayer().getSelectedUnit());
+								gw.getGame().getPlayer().getInventory().remove(itemUsable);								
+							}
 						}			
 					}
 				}
@@ -168,8 +172,8 @@ public class HeroInventoryPaintComponent extends JComponent{
 							game.getPlayer().getSelectedUnit().getEquipment().unequipItem(game.getPlayer().getSelectedItem());
 						}				
 					}
-					if(game.getPlayer().getInventory().size()>0) {
-						game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getFirst());
+					if(game.getPlayer().getInventory().getInventory_list().size()>0) {
+						game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getInventory_list().getFirst().get(0));
 					}
 					
 				}

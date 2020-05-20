@@ -32,6 +32,7 @@ public class ControlComponent extends JComponent {
 	private BattleWindow battle_window;
 	private LogComponent log;
 	private PauseButton pause_button;
+	private HeroStatsPaintComponent hero_stat;
 	public ControlComponent(Player player,BattleWindow bw){
 		this.player=player;
 		this.battle_window=bw;
@@ -41,8 +42,11 @@ public class ControlComponent extends JComponent {
 		add(log,BorderLayout.SOUTH);
 		pause_button = new PauseButton();
 		add(pause_button, BorderLayout.NORTH);
+		hero_stat = new HeroStatsPaintComponent(bw.getCampaign_window(), 0, false);
+		add(hero_stat, BorderLayout.CENTER);
 		setBorder(new LineBorder(Color.GREEN));
-		super.setPreferredSize(new Dimension(190,(height-1)*15));
+		super.setPreferredSize(new Dimension(190,(height-1)*15+500));
+		
 		//addAbilities();
 		addMouseListener(new MyMouseListener());
 		setVisible(true);
@@ -70,6 +74,9 @@ public class ControlComponent extends JComponent {
 				}
 			} 
 		}
+	}
+	public void refresh() {
+		hero_stat.rc.updateCaptions();
 	}
 //	public void addAbilities() {
 //		int RECT_X_SIZE=190;
@@ -197,15 +204,8 @@ protected void paintComponent(Graphics g){
 	//rectangle_clicker.paintRectangles(g);
 	//paint Hero info all interesting stats about the hero
 	LinkedList<String> lines=player.getSelectedUnit().generateStatLines();
-	g.drawImage(StaticImageLoader.getScaledImage(battle_window.get_sprite_path(), player.getSelectedUnit().getImageNumber(), battle_window.getGame().image_scale).getScaledInstance(240, 204, 4),-50,10,null);		
 	for(int i=0; i<lines.size();i++) {
-		g.drawString(lines.get(i), 10, 200 + 10+12*i);
-//		if(i<=height+1) {
-//			g.drawString(lines.get(i), 0, 300 + 10+12*i);
-//		}else {
-//			g.drawString(lines.get(i), 0, 10+12*(i-height+2));
-//		}
-		
+		g.drawString(lines.get(i), 30, 420 + 10+12*i);		
 	}
 	
 	

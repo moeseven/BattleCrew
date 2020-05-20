@@ -14,7 +14,7 @@ public class Main {
 		Game game = new Game(1);
 		StaticImageLoader.prepareImage("./images",game.image_scale);
 		Player player = game.getPlayer();		
-		player.addItemtoInventory(game.itemBuilder.buildItembyName("shortsword"));
+		player.getInventory().add(game.itemBuilder.buildItembyName("shortsword"));
 		player.gainGold(1000);
 		for(int i=0; i<6 ;i++) {
 			player.addHero(game.unitBuilder.buildUnitbyName("dwarf", player));

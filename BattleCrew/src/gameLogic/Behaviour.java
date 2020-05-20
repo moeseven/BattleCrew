@@ -77,14 +77,8 @@ public class Behaviour {
 	}
 	
 	private static boolean in_range_for_attack(BattleUnit active_warrior) {
-		if (active_warrior.getEquipment().getHand1()==null) {
-			if (1 >= active_warrior.getHexTile().getDistance(active_warrior.getTarget().getHexTile())) {
+		if ( BattleCalculations.calc_actual_attack_range(active_warrior) >= active_warrior.getHexTile().getDistance(active_warrior.getTarget().getHexTile())) {
 				return true;
-			}
-		}else {
-			if (active_warrior.getEquipment().getHand1().getRange() >= active_warrior.getHexTile().getDistance(active_warrior.getTarget().getHexTile())) {
-				return true;
-			}
 		}		
 		return false;
 	}

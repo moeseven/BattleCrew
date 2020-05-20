@@ -50,7 +50,7 @@ public class CampaignWindow extends JFrame{
 		repaint();
 	}
 	private void setUpWarriorInspectionPanel() {
-		warrior_stats= new HeroStatsPaintComponent(this);
+		warrior_stats= new HeroStatsPaintComponent(this,200,true);
 		warrior_inventory= new HeroInventoryPaintComponent(this);
 		warrior_inspection= new JPanel();
 		warrior_inspection.setLayout(new BorderLayout());

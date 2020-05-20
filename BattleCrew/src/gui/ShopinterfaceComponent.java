@@ -41,15 +41,16 @@ public class ShopinterfaceComponent extends JComponent{
 		public void updateCaption() {					
 		}		
 	});
+	
+	
 	rc.addRect(new ClickableRectangle("<-",375,100,45,20) {
 		@Override
 		public void onClick(MouseEvent e) {
-			if(campaign_window.getGame().getPlayer().getInventory().size()>0) {
-				campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getFirst());
-				if(campaign_window.getGame().getPlayer().getInventory().size()>1) {
-					campaign_window.getGame().getPlayer().getInventory().addLast(campaign_window.getGame().getPlayer().getInventory().removeFirst());
-					campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getFirst());
+			if(campaign_window.getGame().getPlayer().getInventory().getInventory_list().size()>0) {				
+				if(campaign_window.getGame().getPlayer().getInventory().getInventory_list().size()>1) {
+					campaign_window.getGame().getPlayer().getInventory().getInventory_list().addLast(campaign_window.getGame().getPlayer().getInventory().getInventory_list().removeFirst());
 				}
+				campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getInventory_list().getFirst().get(0));
 			}					
 				
 		}
@@ -60,12 +61,11 @@ public class ShopinterfaceComponent extends JComponent{
 	rc.addRect(new ClickableRectangle("->",420,100,45,20) {
 		@Override
 		public void onClick(MouseEvent e) {
-			if(campaign_window.getGame().getPlayer().getInventory().size()>0) {
-				campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getFirst());
-				if(campaign_window.getGame().getPlayer().getInventory().size()>1) {
-					campaign_window.getGame().getPlayer().getInventory().addFirst(campaign_window.getGame().getPlayer().getInventory().removeLast());
-					campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getFirst());
+			if(campaign_window.getGame().getPlayer().getInventory().getInventory_list().size()>0) {				
+				if(campaign_window.getGame().getPlayer().getInventory().getInventory_list().size()>1) {
+					campaign_window.getGame().getPlayer().getInventory().getInventory_list().addFirst(campaign_window.getGame().getPlayer().getInventory().getInventory_list().removeLast());
 				}
+				campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getInventory_list().getFirst().get(0));
 			}					
 				
 		}
@@ -87,11 +87,11 @@ public class ShopinterfaceComponent extends JComponent{
 		@Override
 		public void onClick(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(shop.getItems().size()>0) {
-				campaign_window.getGame().getPlayer().setSelectedItem(shop.getItems().getFirst());
-				if(shop.getItems().size()>1) {
-					shop.getItems().addLast(shop.getItems().removeFirst());
-					campaign_window.getGame().getPlayer().setSelectedItem(shop.getItems().getFirst());					}
+			if(shop.getInventory().getInventory_list().size()>0) {
+				if(shop.getInventory().getInventory_list().size()>1) {
+					shop.getInventory().getInventory_list().addLast(shop.getInventory().getInventory_list().removeFirst());								
+				}
+				campaign_window.getGame().getPlayer().setSelectedItem(shop.getInventory().getInventory_list().getFirst().get(0));	
 			}					
 				
 		}
@@ -104,11 +104,11 @@ public class ShopinterfaceComponent extends JComponent{
 		@Override
 		public void onClick(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(shop.getItems().size()>0) {
-				campaign_window.getGame().getPlayer().setSelectedItem(shop.getItems().getFirst());
-				if(shop.getItems().size()>1) {
-					shop.getItems().addFirst(shop.getItems().removeLast());
-					campaign_window.getGame().getPlayer().setSelectedItem(shop.getItems().getFirst());					}
+			if(shop.getInventory().getInventory_list().size()>0) {			
+				if(shop.getInventory().getInventory_list().size()>1) {
+					shop.getInventory().getInventory_list().addFirst(shop.getInventory().getInventory_list().removeLast());		
+					}
+				campaign_window.getGame().getPlayer().setSelectedItem(shop.getInventory().getInventory_list().getFirst().get(0));
 			}					
 				
 		}
@@ -157,11 +157,11 @@ public class ShopinterfaceComponent extends JComponent{
 				Item item=campaign_window.getGame().getPlayer().getSelectedItem();
 				if(campaign_window.getGame().getPlayer().getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 					//sell
-					shop.getItems().add(item);
+					shop.getInventory().add(item);
 					campaign_window.getGame().getPlayer().getInventory().remove(item);
 					campaign_window.getGame().getPlayer().gainGold((int) (item.getGold_value()/5.0));
-					if(campaign_window.getGame().getPlayer().getInventory().size()>0) {
-						campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getFirst());
+					if(campaign_window.getGame().getPlayer().getInventory().getInventory_list().size()>0) {
+						campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getInventory_list().getFirst().get(0));
 					}
 				}	
 			}
@@ -173,7 +173,7 @@ public class ShopinterfaceComponent extends JComponent{
 			if(campaign_window.getGame().getPlayer().getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 				this.setFirstLineColor(Color.black);
 			}else {
-				if(shop.getItems().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
+				if(shop.getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 					this.setFirstLineColor(Color.GRAY);
 				}			
 			}					
@@ -186,16 +186,16 @@ public class ShopinterfaceComponent extends JComponent{
 			if(campaign_window.getGame().getPlayer().getSelectedItem()!=null) {
 				Item item=campaign_window.getGame().getPlayer().getSelectedItem();
 				if(!campaign_window.getGame().getPlayer().getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
-					if(shop.getItems().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
+					if(shop.getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 						//buy
 						if(campaign_window.getGame().getPlayer().getGold()>=campaign_window.getGame().getPlayer().getSelectedItem().getGold_value()) {
-							if(campaign_window.getGame().getPlayer().addItemtoInventory(campaign_window.getGame().getPlayer().getSelectedItem())) {
+							if(campaign_window.getGame().getPlayer().getInventory().add(campaign_window.getGame().getPlayer().getSelectedItem())) {
 								campaign_window.getGame().getPlayer().gainGold(-campaign_window.getGame().getPlayer().getSelectedItem().getGold_value());
-								shop.getItems().remove(campaign_window.getGame().getPlayer().getSelectedItem());
+								shop.getInventory().remove(campaign_window.getGame().getPlayer().getSelectedItem());
 							}								
 						}
-						if(shop.getItems().size()>0) {
-							campaign_window.getGame().getPlayer().setSelectedItem(shop.getItems().getFirst());
+						if(shop.getInventory().getInventory_list().size()>0) {
+							campaign_window.getGame().getPlayer().setSelectedItem(shop.getInventory().getInventory_list().getFirst().get(0));
 						}
 					}
 				}				
@@ -208,7 +208,7 @@ public class ShopinterfaceComponent extends JComponent{
 			if(campaign_window.getGame().getPlayer().getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 				this.setFirstLineColor(Color.GRAY);
 			}else {
-				if(shop.getItems().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
+				if(shop.getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 					this.setFirstLineColor(Color.black);
 				}			
 			}					
@@ -224,7 +224,7 @@ public class ShopinterfaceComponent extends JComponent{
 		public void updateCaption() {
 			// TODO Auto-generated method stub	
 			if(campaign_window.getGame().getPlayer().getSelectedItem()!=null) {
-				if(shop.getItems().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
+				if(shop.getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 					caption.removeFirst();
 					caption.addFirst("gold: "+campaign_window.getGame().getPlayer().getGold()+" ("+campaign_window.getGame().getPlayer().getSelectedItem().getGold_value()+")");	
 				}else {
@@ -244,6 +244,7 @@ private class MyMouseListener extends MouseAdapter{
 			//get equipment position from click
 			rc.triggerClick(e);
 			rc.updateCaptions();
+			//campaign_window.refresh();
 			revalidate();
 			repaint();			
 		}else{

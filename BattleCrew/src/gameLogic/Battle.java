@@ -134,7 +134,14 @@ public class Battle {
 			for (int i = 0; i < defender.getHeroes().size(); i++) {
 				defender.getHeroes().get(i).setBattle_participant(false);
 			}
-			
+			for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
+				if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
+					if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
+						game.getPrepareTable().getTiles().get(i).setUnit(null);					
+					}
+					
+				}
+			}
 			return true;
 		}
 		return false;
