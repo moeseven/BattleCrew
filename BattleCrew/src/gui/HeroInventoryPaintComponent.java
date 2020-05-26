@@ -166,7 +166,16 @@ public class HeroInventoryPaintComponent extends JComponent{
 					if(game.getPlayer().getSelectedItem()!=null) {
 						if(game.getPlayer().getInventory().contains(game.getPlayer().getSelectedItem())) {
 							//equip
-							game.getPlayer().getSelectedUnit().getEquipment().equipItem(game.getPlayer().getSelectedItem());
+							game.getPlayer().getSelectedUnit().equip(game.getPlayer().getSelectedItem());
+							if (game.getPlayer().getSelectedItem().getCategory()==7 && game.getPlayer().getInventory().getInventory_map().containsKey(game.getPlayer().getSelectedItem().getName())) { //x10 if ammunition
+								if (game.getPlayer().getInventory().getInventory_map().get(game.getPlayer().getSelectedItem().getName()).size()>10) {
+									for (int i = 0; i < 9; i++) {
+										game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getInventory_map().get(game.getPlayer().getSelectedItem().getName()).get(0));
+										game.getPlayer().getSelectedUnit().equip(game.getPlayer().getSelectedItem());
+									}
+								}
+																
+							}
 						}else {
 							//unequip
 							game.getPlayer().getSelectedUnit().getEquipment().unequipItem(game.getPlayer().getSelectedItem());

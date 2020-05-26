@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class BattleCalculations {
 	
-	private static double MINIMUM_DAMAGE_FACTOR = 0.7;
-	private static double MAXIMUM_DAMAGE_FACTOR = 1;
+	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
+	public static double MAXIMUM_DAMAGE_FACTOR = 1;
 	private static double MEELE_STRIKE_CHANCE_FACTOR = 0.5;
 	private static double WEIGHT_EXHAUSTION_FACTOR = 0.001;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
@@ -56,7 +56,7 @@ public class BattleCalculations {
 	public static double calc_attack_ranged_base_hit_chance(BattleUnit warrior) {
 		double chance = 0;
 		if (warrior.getEquipment().getHand1() != null) {
-			chance = warrior.getEquipment().getHand1().getPrecision()/100.0*get_fatigue_corrected_accuracy(warrior)/10.0;
+			chance = warrior.getEquipment().getHand1().getPrecision()/100.0*get_fatigue_fear_corrected_accuracy(warrior)/10.0;
 		}
 		return chance;
 	}
@@ -64,7 +64,7 @@ public class BattleCalculations {
 	
 	
 	public static boolean calc_attack_meele_hit(BattleUnit attacker, BattleUnit defender) {
-		double chance = MEELE_STRIKE_CHANCE_FACTOR*get_fatigue_corrected_defense_skill(defender)/(Math.max(1, (get_fatigue_corrected_offense_skill(attacker))+get_fatigue_corrected_defense_skill(defender)));
+		double chance = MEELE_STRIKE_CHANCE_FACTOR*get_fatigue_fear_corrected_defense_skill(defender)/(Math.max(1, (get_fatigue_fear_corrected_offense_skill(attacker))+get_fatigue_fear_corrected_defense_skill(defender)));
 		if (Math.random()>chance) {
 			return true;
 		}
@@ -121,8 +121,8 @@ public class BattleCalculations {
 		return damage;
 	}
 	
-	public static double roll_ranged_damage(BattleUnit attacker, BattleUnit defender, Item amunition) {
-		double damage = amunition.getDamage()*(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
+	public static double roll_ranged_damage(BattleUnit attacker, BattleUnit defender) {
+		double damage = calc_amunition_damage(attacker) *(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
 		double reduction = 0;
 		if (Math.random() < attacker.getDexterity()/100.0) {
 			//Head hit
@@ -139,6 +139,14 @@ public class BattleCalculations {
 		damage *=  (1-reduction);
 		damage = 10 * damage /defender.getVitality();
 		return damage;
+	}
+	public static double calc_amunition_damage(BattleUnit warrior) {
+		if (warrior.getEquipment().getAmunition().size()>0) {
+			return warrior.getEquipment().getAmunition().get(0).getDamage();
+		}else {
+			return 0;
+		}
+		
 	}
 	
 	public static int calc_actual_attack_range(BattleUnit warrior) {
@@ -178,13 +186,12 @@ public class BattleCalculations {
 	
 	public static void perform_ranged_attack(BattleUnit attacker, BattleUnit defender) {
 		if (amunition_ready(attacker)) {
-			Item amo= attacker.getEquipment().getAmunition().get(0);
 			use_amunition(attacker);
 			defender.getPlayer().getGame().log.addLine(attacker.getName()+" takes a shot at "+defender.getName());
 			attacker.exhaust(calc_attack_exhaustion(attacker));
 			if (calc_attack_ranged_hit(attacker, defender)) {
 				if (!shield_hit(defender, true)) {
-					defender.take_damage(roll_ranged_damage(attacker, defender, amo),attacker);
+					defender.take_damage(roll_ranged_damage(attacker, defender),attacker);
 					
 				}
 			}
@@ -205,34 +212,36 @@ public class BattleCalculations {
 		}
 	}
 	
-	public static double get_fatigue_corrected_offense_skill(BattleUnit warrior) {
+	public static double get_fatigue_fear_corrected_offense_skill(BattleUnit warrior) {
+		double ret_val = get_meele_attack_skill(warrior);
 		if (warrior.getFatigue()>50) {
-			return  (get_meele_attack_skill(warrior)*(1-((warrior.getFatigue()-50))/50.0));
-		}else {
-			return get_meele_attack_skill(warrior);
+			ret_val *= (1-((warrior.getFatigue()-50))/50.0);
 		}
+		ret_val *= Math.max(1-(warrior.getFear()/100.0),0);
+		return ret_val;
 	}
-	public static double get_fatigue_corrected_defense_skill(BattleUnit warrior) {
+	public static double get_fatigue_fear_corrected_defense_skill(BattleUnit warrior) {
 		if (warrior.getFatigue()>40) {
 			return (get_meele_defense_skill(warrior)*(1-((warrior.getFatigue()-40))/60.0));
 		}else {
 			return get_meele_defense_skill(warrior);
 		}
 	}
-	public static double get_fatigue_corrected_accuracy(BattleUnit warrior) {
+	public static double get_fatigue_fear_corrected_accuracy(BattleUnit warrior) {
+		double ret_val = warrior.getPrecision();
 		if (warrior.getFatigue()>40) {
-			return (warrior.getPrecision()*(1-((warrior.getFatigue()-40))/60.0));
-		}else {
-			return warrior.getPrecision();
+			ret_val *= (1-((warrior.getFatigue()-40))/60.0);
 		}
+		ret_val *= Math.max(1-(warrior.getFear()/100.0),0);
+		return ret_val;
 	}
 	
 	
 	public static int get_meele_attack_skill(BattleUnit warrior) {
-		return (int) (warrior.getOffense()*(warrior.getMeele_skill()/10.0));
+		return (int) (warrior.getOffense()*(warrior.getWeapon_skill()/10.0))+warrior.getBase_offense();
 	}
 	
 	public static int get_meele_defense_skill(BattleUnit warrior) {
-		return (int) (warrior.getDefense()*(warrior.getMeele_skill()/10.0));
+		return (int) (warrior.getDefense()*(warrior.getWeapon_skill()/10.0))+warrior.getBase_defense();
 	}
 }

@@ -15,6 +15,7 @@ public class Battle {
 	protected Game game;
 	public boolean started = false;
 	public Pathfinder pathfinder;
+
 	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		this.game=game;
 		this.battleField=battlefield;

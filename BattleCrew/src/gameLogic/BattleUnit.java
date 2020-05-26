@@ -11,6 +11,8 @@ import gameLogic.Behaviour.Movespeed;
 
 public class BattleUnit implements HexTileUnit{
 	
+	
+
 	//other
 	private Player player;
 	private String name;
@@ -29,8 +31,8 @@ public class BattleUnit implements HexTileUnit{
 	private int endurance;
 	private int wisdom;
 	private int spell_power;
-	private int offense;
-	private int defense;
+	private int offense,base_offense;
+	private int defense, base_defense;
 	private int precision;
 	private int courage;
 	
@@ -44,7 +46,7 @@ public class BattleUnit implements HexTileUnit{
 	private int resist_slash;
 	private int resist_pirce;
 	
-	private int meele_skill;
+	private int weapon_skill;
 	private int base_damage = 10;
 	private boolean equippable = true; //TODO
 	
@@ -58,7 +60,10 @@ public class BattleUnit implements HexTileUnit{
 	private boolean stunned;
 	private int tiles_moved_this_round;
 	private HexTile tile;
+	private HexTile retreat_tile;
+	private boolean fled;
 	private double damage_dealt=0;
+	
 	//other things
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
@@ -85,8 +90,12 @@ public class BattleUnit implements HexTileUnit{
 		endurance = Integer.parseInt(stats[8]);
 		wisdom = Integer.parseInt(stats[9]);
 		spell_power = Integer.parseInt(stats[10]);
-		offense = Integer.parseInt(stats[11]);
-		defense = Integer.parseInt(stats[12]);
+		base_offense = Integer.parseInt(stats[11]);
+		base_defense = Integer.parseInt(stats[12]);
+		//
+		offense=0;
+		defense=0;
+		//
 		precision = Integer.parseInt(stats[13]);
 		courage = Integer.parseInt(stats[14]);
 		
@@ -100,9 +109,10 @@ public class BattleUnit implements HexTileUnit{
 		resist_slash = Integer.parseInt(stats[22]);
         resist_pirce = Integer.parseInt(stats[23]);
         
-        meele_skill = Integer.parseInt(stats[24]);
+        weapon_skill = Integer.parseInt(stats[24]);
+        equippable = Boolean.parseBoolean(stats[25]);
         name = player.getGame().name_generator.generate_name(type);
-        equipment.equipItem(player.getGame().itemBuilder.buildItembyName("stone"));
+        equip(player.getGame().itemBuilder.buildItembyName("stone"));
 	}
 	
 	public BattleUnit() {
@@ -117,7 +127,9 @@ public class BattleUnit implements HexTileUnit{
 		fatigue = 0;
 		mana = 100;
 		fear = 0;
+		fled = false;
 		tiles_moved_this_round = 0;
+		retreat_tile =tile;
 	}
 	
 	/*
@@ -155,6 +167,22 @@ public class BattleUnit implements HexTileUnit{
 			fatigue = 100;
 		}
 	}
+	public void frighten(double f) {
+		f = Math.max(0, f * (10.0/courage)*100);
+		fear+=f;
+		if (fear>200) {
+			die();
+		}
+	}
+	public void gain_courage(double c) {
+		if (c > 0) {
+			fear -= c*100;
+			if (fear<0) {
+				fear = 0;
+			}
+		}
+	}
+	
 	
 	/*
 	 * attack enemy with main Hand weapon
@@ -229,7 +257,13 @@ public class BattleUnit implements HexTileUnit{
 		}
 	}
 	
-	
+	public boolean equip(Item item) {
+		if (equippable) {
+			return equipment.equipItem(item);
+		}else {
+			return false;
+		}
+	}
 	
 	public LinkedList<String> generateStatLines(){
 		//paint Hero info all interesting stats about the hero
@@ -238,16 +272,26 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("");
 		lines.add("health: "+(int)(getHealth())+"%");
 		lines.add("fatigue: "+(int)(getFatigue())+"%");
-		lines.add("fear: "+(int)getFear()+"%");
+		lines.add("fear: "+(int) getFear()+"%");
 		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
 		lines.add("");
 		//main stats
-		lines.add("damage: "+(int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this));
-		lines.add("offese: "+(int) BattleCalculations.get_fatigue_corrected_offense_skill(this)+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
-		lines.add("defense: "+(int) BattleCalculations.get_fatigue_corrected_defense_skill(this)+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
+		
+		//damage line
+		String damage_line = "damage: ";
+		if (equipment.getHand1()!=null) {
+			if (equipment.getHand1().getRange()>2 && BattleCalculations.amunition_ready(this)) {
+				damage_line += (int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MINIMUM_DAMAGE_FACTOR)+"-"+(int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MAXIMUM_DAMAGE_FACTOR);
+			}else {
+				damage_line += (int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this);
+			}
+		}
+		lines.add(damage_line);
+		lines.add("offese: "+(int) BattleCalculations.get_fatigue_fear_corrected_offense_skill(this)+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
+		lines.add("defense: "+(int) BattleCalculations.get_fatigue_fear_corrected_defense_skill(this)+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
 		
 		//precison and accuracy
-		String concat_string = ""+(int) BattleCalculations.get_fatigue_corrected_accuracy(this);
+		String concat_string = ""+(int) BattleCalculations.get_fatigue_fear_corrected_accuracy(this);
 		if (equipment.getHand1()!=null) {
 			if (equipment.getHand1().getRange()>2) {
 				concat_string = (int)(BattleCalculations.calc_attack_ranged_base_hit_chance(this)*100)+"% ("+concat_string+")";
@@ -640,12 +684,12 @@ public class BattleUnit implements HexTileUnit{
 		this.target = target;
 	}
 
-	public int getMeele_skill() {
-		return meele_skill;
+	public int getWeapon_skill() {
+		return weapon_skill;
 	}
 
 	public void setMeele_skill(int meele_skill) {
-		this.meele_skill = meele_skill;
+		this.weapon_skill = meele_skill;
 	}
 
 	public String getType() {
@@ -656,4 +700,27 @@ public class BattleUnit implements HexTileUnit{
 		this.type = type;
 	}
 
+	public boolean isFled() {
+		return fled;
+	}
+
+	public void setFled(boolean fled) {
+		this.fled = fled;
+	}
+
+	public int getBase_offense() {
+		return base_offense;
+	}
+
+	public int getBase_defense() {
+		return base_defense;
+	}
+
+	public HexTile getRetreat_tile() {
+		return retreat_tile;
+	}
+
+	public void setRetreat_tile(HexTile retreat_tile) {
+		this.retreat_tile = retreat_tile;
+	}
 }

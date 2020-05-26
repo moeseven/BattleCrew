@@ -29,7 +29,7 @@ public class HeroStatsPaintComponent extends JComponent{
 		private int offset=200;
 		private int offset_horizontal=0;
 		private boolean vertical = true;
-		private int component_height_lines=16;
+		private int component_height_lines=14;
 		public HeroStatsPaintComponent(CampaignWindow sw, int offset, boolean vertical){
 			this.gw=sw;
 			this.vertical=true;
@@ -80,7 +80,7 @@ public class HeroStatsPaintComponent extends JComponent{
 						}
 						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipHead(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -108,7 +108,7 @@ public class HeroStatsPaintComponent extends JComponent{
 						}
 						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipBody(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -137,7 +137,7 @@ public class HeroStatsPaintComponent extends JComponent{
 						}
 						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipHand1(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -165,7 +165,7 @@ public class HeroStatsPaintComponent extends JComponent{
 						}
 						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipHand2(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -177,6 +177,8 @@ public class HeroStatsPaintComponent extends JComponent{
 						if (! (gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2().getCategory()==3)) {
 							//not a two handed weapon
 							this.setImageNumber(gw.getGame().getPlayer().getSelectedUnit().getEquipment().getHand2().getImage());
+						}else {
+							this.setImageNumber(16);
 						}
 						
 					}else {
@@ -197,7 +199,7 @@ public class HeroStatsPaintComponent extends JComponent{
 						}
 						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipRing(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -224,7 +226,7 @@ public class HeroStatsPaintComponent extends JComponent{
 						}
 						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipRing(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -252,7 +254,7 @@ public class HeroStatsPaintComponent extends JComponent{
 							gw.getGame().getPlayer().getSelectedUnit().getEquipment().unequipAmunition();
 						}						
 					}else {
-						gw.getGame().getPlayer().getSelectedUnit().getEquipment().equipAmunition(gw.getGame().getPlayer().getSelectedItem());
+						gw.getGame().getPlayer().getSelectedUnit().equip(gw.getGame().getPlayer().getSelectedItem());
 					}
 				}
 				@Override
@@ -299,7 +301,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				if(i<=component_height_lines+1) {
 					g.drawString(lines.get(i), offset+x_offset, y_offset+10+12*i);
 				}else {
-					g.drawString(lines.get(i), offset+x_offset+140, y_offset+10+12*(i-component_height_lines+2));
+					g.drawString(lines.get(i), offset+x_offset+140, y_offset+10+12*(i-component_height_lines));
 				}			
 			}
 		}else {

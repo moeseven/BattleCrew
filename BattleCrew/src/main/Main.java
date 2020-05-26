@@ -16,11 +16,11 @@ public class Main {
 		Player player = game.getPlayer();		
 		player.getInventory().add(game.itemBuilder.buildItembyName("shortsword"));
 		player.gainGold(1000);
-		for(int i=0; i<6 ;i++) {
+		for(int i=0; i<5 ;i++) {
 			player.addHero(game.unitBuilder.buildUnitbyName("dwarf", player));
 		}
-		player.getHeroes().getFirst().getEquipment().equipHand1(game.itemBuilder.buildItembyName("longsword"));
-		player.getHeroes().get(1).getEquipment().equipHand1(game.itemBuilder.buildItembyName("shortbow"));
+		player.getHeroes().getFirst().equip(game.itemBuilder.buildItembyName("longsword"));
+		player.getHeroes().get(1).equip(game.itemBuilder.buildItembyName("shortbow"));
 
 		
 		player.setSelectedHero(player.getHeroes().getFirst());

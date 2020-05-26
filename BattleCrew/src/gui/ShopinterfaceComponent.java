@@ -184,15 +184,17 @@ public class ShopinterfaceComponent extends JComponent{
 		public void onClick(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(campaign_window.getGame().getPlayer().getSelectedItem()!=null) {
-				Item item=campaign_window.getGame().getPlayer().getSelectedItem();
 				if(!campaign_window.getGame().getPlayer().getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
 					if(shop.getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
-						//buy
-						if(campaign_window.getGame().getPlayer().getGold()>=campaign_window.getGame().getPlayer().getSelectedItem().getGold_value()) {
-							if(campaign_window.getGame().getPlayer().getInventory().add(campaign_window.getGame().getPlayer().getSelectedItem())) {
-								campaign_window.getGame().getPlayer().gainGold(-campaign_window.getGame().getPlayer().getSelectedItem().getGold_value());
-								shop.getInventory().remove(campaign_window.getGame().getPlayer().getSelectedItem());
-							}								
+						buy(campaign_window.getGame().getPlayer().getSelectedItem()); //buy item
+						if (campaign_window.getGame().getPlayer().getSelectedItem().getCategory()==7 && shop.getInventory().getInventory_map().containsKey(campaign_window.getGame().getPlayer().getSelectedItem().getName())) { //x10 if ammunition
+							if (shop.getInventory().getInventory_map().get(campaign_window.getGame().getPlayer().getSelectedItem().getName()).size()>10) {
+								for (int i = 0; i < 9; i++) {
+									campaign_window.getGame().getPlayer().setSelectedItem(shop.getInventory().getInventory_map().get(campaign_window.getGame().getPlayer().getSelectedItem().getName()).get(0));
+									buy(campaign_window.getGame().getPlayer().getSelectedItem());
+								}
+							}
+															
 						}
 						if(shop.getInventory().getInventory_list().size()>0) {
 							campaign_window.getGame().getPlayer().setSelectedItem(shop.getInventory().getInventory_list().getFirst().get(0));
@@ -201,6 +203,16 @@ public class ShopinterfaceComponent extends JComponent{
 				}				
 			}
 
+		}
+		private boolean buy(Item item){
+			if(campaign_window.getGame().getPlayer().getGold()>=campaign_window.getGame().getPlayer().getSelectedItem().getGold_value()) {
+				if(campaign_window.getGame().getPlayer().getInventory().add(campaign_window.getGame().getPlayer().getSelectedItem())) {
+					campaign_window.getGame().getPlayer().gainGold(-campaign_window.getGame().getPlayer().getSelectedItem().getGold_value());
+					shop.getInventory().remove(campaign_window.getGame().getPlayer().getSelectedItem());
+					return true;
+				}								
+			}
+			return false;
 		}
 		@Override
 		public void updateCaption() {

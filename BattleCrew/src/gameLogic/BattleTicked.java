@@ -11,8 +11,22 @@ import javax.swing.Timer;
 import HexTilePlayground.HexTile;
 
 public class BattleTicked  extends Battle{
+	
 	public BattleTicked(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		super(game, battlefield, attacker, defender);	
+	}
+	
+	/**
+	 * this is for fear calculations
+	 */
+	private int calc_vitality_sums(Player player) {
+		int sum = 0;
+		for (int w = 0; w < battleParticipants.size(); w++) {
+			if (battleParticipants.get(w).getPlayer() == player) {
+				sum += battleParticipants.get(w).getVitality();
+			}
+		}
+		return sum;
 	}
 
 	public void battle_tick() {
@@ -30,8 +44,18 @@ public class BattleTicked  extends Battle{
 			
 
 	public boolean deathCheck(BattleUnit warrior) {
-		if (warrior.isDead()) {
+		if (warrior.isDead()||warrior.isFled()) {
+			//TODO strike fear into their hearts	
+			double total_vit = calc_vitality_sums(warrior.getPlayer());
 			battleParticipants.remove(warrior);
+			for (int w = 0; w < battleParticipants.size(); w++) {
+				if (warrior.getPlayer() == battleParticipants.get(w).getPlayer()) {
+					battleParticipants.get(w).frighten(warrior.getVitality()/(total_vit+1.0));
+				}else {
+					battleParticipants.get(w).gain_courage(0.1*warrior.getVitality()/(total_vit+1.0));
+				}
+				
+			}
 			return true;
 		}else {
 			return false;

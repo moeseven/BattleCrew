@@ -18,15 +18,21 @@ public class Behaviour {
 		if (warrior.getBehaviour() == null) {
 			warrior.setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
 		}else {
-			switch (warrior.getBehaviour()) {
-			case ATTACK_CLOSEST_ENEMY:
-				tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
-				break;
-
-			default:
-				tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
-				break;
+			if (warrior.getFear()>=100) {
+				//flee you fools
+				retreat(battle, warrior);				
+			}else {
+				switch (warrior.getBehaviour()) {
+				case ATTACK_CLOSEST_ENEMY:
+					tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+					break;
+	
+				default:
+					tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+					break;
+				}
 			}
+			
 		}		
 	}
 
@@ -72,6 +78,44 @@ public class Behaviour {
 			}
 			
 			
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * 
+	 * @param battle
+	 * @param warrior
+	 * @param tile (destination)
+	 * @param speed (speed mode)
+	 * @return true if destination is reached
+	 */
+	public static boolean move_towards_tile(Battle battle, BattleUnit warrior, HexTile tile, Movespeed speed) {
+		if (battle.pathfinder.find_path((PathfinderField) warrior.getHexTile(), (PathfinderField) tile, 3)) {	
+			for (int j = 0; j < Math.min(warrior.get_movepoints_from_movement_mode(speed),battle.pathfinder.get_best_path().getPath().size()); j++) {
+				warrior.move((Tile)battle.pathfinder.get_best_path().getPath().get(j));
+				if (warrior.getTile() == tile) {
+					return true;
+				}
+			}					
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param battle
+	 * @param warrior
+	 * @return true if warrior actually retreated
+	 */
+	public static boolean retreat(Battle battle, BattleUnit warrior) {
+		if (warrior.getTile() == warrior.getRetreat_tile()) {
+			//battle.battleParticipants.remove(warrior);
+			warrior.setFled(true);
+			warrior.getTile().setUnit(null);
+		}else {
+			move_towards_tile(battle, warrior, warrior.getRetreat_tile(), Movespeed.CHARGE);
 		}
 		return false;
 	}

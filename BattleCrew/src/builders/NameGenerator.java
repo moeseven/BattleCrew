@@ -30,8 +30,7 @@ public class NameGenerator {
 				int random =  (int) (1+Math.random()* (map.get(type).length-1));
 				return map.get(type)[random]; //all parameters needed to generate a name
 			}else {
-				System.out.println("there is no namelist for "+type);
-				return "blabbish";
+				return type+"(no name)";
 			}
 			
 		}
