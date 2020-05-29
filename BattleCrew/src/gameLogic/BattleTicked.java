@@ -44,7 +44,7 @@ public class BattleTicked  extends Battle{
 			
 
 	public boolean deathCheck(BattleUnit warrior) {
-		if (warrior.isDead()||warrior.isFled()) {
+		if (warrior.is_unable_to_fight()||warrior.isFled()) {
 			//TODO strike fear into their hearts	
 			double total_vit = calc_vitality_sums(warrior.getPlayer());
 			battleParticipants.remove(warrior);

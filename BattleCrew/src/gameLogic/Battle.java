@@ -93,7 +93,7 @@ public class Battle {
 		defender.setSelectedHero(getActiveWarrior());
 	}
 	public void endActiveWarriorTurn() {
-		if (getActiveWarrior().isDead()) {
+		if (getActiveWarrior().is_unable_to_fight()) {
 			battleParticipants.removeFirst();
 			if (tryEndBattle()) {
 				
@@ -126,26 +126,27 @@ public class Battle {
 			}		
 		}
 		if (winner!=null) {
-			attacker.removeDeadHeroesFromRoster();
-			defender.removeDeadHeroesFromRoster();
-			for (int i = 0; i < attacker.getHeroes().size(); i++) {
-				attacker.getHeroes().get(i).setBattle_participant(false);
-					
-			}
-			for (int i = 0; i < defender.getHeroes().size(); i++) {
-				defender.getHeroes().get(i).setBattle_participant(false);
-			}
-			for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
-				if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
-					if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
-						game.getPrepareTable().getTiles().get(i).setUnit(null);					
-					}
-					
-				}
-			}
+			end_battle();
 			return true;
 		}
 		return false;
+	}
+	public void end_battle() {
+		for (int i = 0; i < attacker.getHeroes().size(); i++) {
+			attacker.getHeroes().get(i).setBattle_participant(false);
+				
+		}
+		for (int i = 0; i < defender.getHeroes().size(); i++) {
+			defender.getHeroes().get(i).setBattle_participant(false);
+		}
+		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
+			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
+				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
+					game.getPrepareTable().getTiles().get(i).setUnit(null);					
+				}
+				
+			}
+		}
 	}
 
 	public void setHeroTrunOrder() {

@@ -61,7 +61,7 @@ public class Behaviour {
 	 * this method should handle the finding of a path towards the target so it can be attacked
 	 */
 	public static boolean move_into_attack_range(BattleUnit active_warrior, Battle battle, Movespeed speed) {		
-		if (!active_warrior.getTarget().isDead() && active_warrior.getTarget() != null) {
+		if (!active_warrior.getTarget().is_unable_to_fight() && active_warrior.getTarget() != null) {
 			//check distance to target (in range?)
 			if (in_range_for_attack(active_warrior)) {
 				return true;

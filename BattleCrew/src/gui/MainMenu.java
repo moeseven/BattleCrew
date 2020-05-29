@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import game.Leaderboard.Leaderboard;
+import gameLogic.CommanderChooser;
 import gameLogic.Game;
 
 
@@ -27,8 +29,8 @@ public class MainMenu extends JFrame{
 	private JButton buttonLoadGame;
 	private JButton buttonShowLeaderboard;
 	private Game game;
-	protected StatsWindow gw;
-	protected CampaignWindow rw;
+	//protected StatsWindow gw;
+	protected CampaignWindow campaign_window;
 	protected MainMenu mm;
 	public MainMenu(){
 		this.setTitle("Menu");
@@ -54,6 +56,7 @@ public class MainMenu extends JFrame{
 		jp01.add(buttonLoadGame);
 		jp01.add(buttonShowLeaderboard);
 		add(jp01);
+		game = new Game(1);
 		setVisible(true);
 	}
 	private class ButtonShowLeaderboardListener extends MouseAdapter{
@@ -64,19 +67,18 @@ public class MainMenu extends JFrame{
 	private class ButtonStartListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
 			if(game.getPlayer().getHeroes().size()>0) {
-				game.getPlayer().setSelectedHero(game.getPlayer().getHeroes().getFirst());
-				game.enterRoom(game.getRoom());			
-				rw=new CampaignWindow(game,mm);
+				game.getPlayer().setSelectedHero(game.getPlayer().getHeroes().getFirst());		
+				campaign_window=new CampaignWindow(game,mm);
 				
 			}else {
-				new FrameCharacterBuilder(new CharacterBuilder(game),mm);
+				new FrameCharacterBuilder(new CommanderChooser(game),mm);
 			}
 			mm.setVisible(false);
 		} 
 	}
 	private class ButtonBuildCharacterListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			new FrameCharacterBuilder(new CharacterBuilder(game),mm);
+			new FrameCharacterBuilder(new CommanderChooser(game),mm);
 		} 
 	}
 	private class ButtonSaveUserListener extends MouseAdapter{
@@ -84,7 +86,7 @@ public class MainMenu extends JFrame{
 			//save game;
 			ObjectOutputStream oos=null;
 			try {
-				oos = new ObjectOutputStream(new FileOutputStream("./resources/game.dat"));
+				oos = new ObjectOutputStream(new FileOutputStream("./saves/game.dat"));
 				oos.writeObject(game);
 			} catch (FileNotFoundException e1) {			
 				e1.printStackTrace();
@@ -105,7 +107,7 @@ public class MainMenu extends JFrame{
 			//load from file;
 			ObjectInputStream ois=null;
 			try {
-				ois=new ObjectInputStream(new FileInputStream("./resources/game.dat"));
+				ois=new ObjectInputStream(new FileInputStream("./saves/game.dat"));
 				game=(Game)ois.readObject();
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block

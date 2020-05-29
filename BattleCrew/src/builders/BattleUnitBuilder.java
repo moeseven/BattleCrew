@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import gameLogic.Ability;
 import gameLogic.BattleUnit;
+import gameLogic.Commander;
+import gameLogic.Commander_Class;
 import gameLogic.Game;
 import gameLogic.Item;
 import gameLogic.Player;
@@ -32,6 +34,15 @@ public class BattleUnitBuilder {
 		}else {
 			System.out.println("there is no unit with the name "+name);
 			return new BattleUnit();
+		}
+		
+	}
+	public Commander buildCommanderbyName(String name, Commander_Class commander_class, Player player) {
+		if (map.containsKey(name)) {
+			return new Commander(map.get(name),commander_class,game,player); //all parameters needed to genarate an item
+		}else {
+			System.out.println("there is no unit with the name "+name);
+			return new Commander(map.get("human"),commander_class, game, player);
 		}
 		
 	}

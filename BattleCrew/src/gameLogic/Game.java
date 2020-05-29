@@ -10,8 +10,13 @@ import builders.AbilityBuilder;
 import builders.BattleUnitBuilder;
 import builders.ItemBuilder;
 import builders.NameGenerator;
+import game.Leaderboard.LeaderBoardEntry;
+import game.Leaderboard.Leaderboard;
 
 public class Game implements Serializable {
+	public boolean isGame_over() {
+		return game_over;
+	}
 	private Player player; // change this for multiplayer
 	private Player opponent;
 	private BattleTicked battle;
@@ -19,9 +24,6 @@ public class Game implements Serializable {
 	public double image_scale;
 	protected int maximumGroupSize=5;
 	private Shop shop;
-	//public GeneratorRandom generator;
-	// public MyImageLoader imageLoader;
-	//public CardBuilder cardBuilder;
 	public ItemBuilder itemBuilder;
 	public AbilityBuilder abilityBuilder;
 	public BattleUnitBuilder unitBuilder;
@@ -32,6 +34,7 @@ public class Game implements Serializable {
 	//private LinkedList<Quest> availableQuests;
 	private int idleStressRelief = 10;
 	private BattleUnit lastCaster;
+	private boolean game_over = false; //TODO
 	public Game(double image_scale) {
 		super();
 		log = new MyLog();	
@@ -74,6 +77,16 @@ public class Game implements Serializable {
 		battle= new BattleTicked(this, new Battlefield(38, 19, image_scale, this), player, defender);		
 		battle.start();
 	}
+	
+	public void game_over() {
+		// TODO Game ends here
+		Leaderboard leaderboard = Leaderboard.loadLeaderboard();
+		leaderboard.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(this));
+		leaderboard.writeToFile();
+		game_over=true;
+	}
+	
+	
 	// getters and setters
 
 	public Player getPlayer() {
@@ -123,6 +136,7 @@ public class Game implements Serializable {
 	public void setPrepareTable(WarriorsReadyForBattleTable prepareTable) {
 		this.prepareTable = prepareTable;
 	}
+	
 	
 	
 }

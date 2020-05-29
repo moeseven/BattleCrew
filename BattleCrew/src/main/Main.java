@@ -7,12 +7,13 @@ import gameLogic.Game;
 import gameLogic.Player;
 import gui.BattleWindow;
 import gui.CampaignWindow;
+import gui.Resources;
 import imageloader.MyStaticImageLoader;
 
 public class Main {
 	public static void main(String[] args) {				
 		Game game = new Game(1);
-		StaticImageLoader.prepareImage("./images",game.image_scale);
+		StaticImageLoader.prepareImage(Resources.IMAGE_PATH,game.image_scale);
 		Player player = game.getPlayer();		
 		player.getInventory().add(game.itemBuilder.buildItembyName("shortsword"));
 		player.gainGold(1000);
@@ -20,9 +21,7 @@ public class Main {
 			player.addHero(game.unitBuilder.buildUnitbyName("dwarf", player));
 		}
 		player.getHeroes().getFirst().equip(game.itemBuilder.buildItembyName("longsword"));
-		player.getHeroes().get(1).equip(game.itemBuilder.buildItembyName("shortbow"));
-
-		
+		player.getHeroes().get(1).equip(game.itemBuilder.buildItembyName("shortbow"));		
 		player.setSelectedHero(player.getHeroes().getFirst());
 		new CampaignWindow(game, null);
 		//game.startExampleBattle(player, defender);

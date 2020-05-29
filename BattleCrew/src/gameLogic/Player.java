@@ -10,6 +10,7 @@ import HexTilePlayground.HexTileUnit;
 
 
 public class Player implements HexTilePlayer,Serializable{
+
 	private BattleUnit selectedWarrior;
 	private HexTile selectedTile;
 	private Item selectedItem;
@@ -17,34 +18,18 @@ public class Player implements HexTilePlayer,Serializable{
 	//private LinkedList<Warrior> availableWarriors;
 	protected LinkedList<BattleUnit> warriors;
 	private Inventory inventory;
-	
-	protected int groupSize;//level this up by spending money
+	private Commander commander;
 	private Game game;
-	private int gold;
 	private boolean cheat=false;
 	public Player(Game game, Boolean AI) {
 		this.game=game;
 		this.AI=AI;
 		warriors=new LinkedList<BattleUnit>();
 		inventory=new Inventory();
-		gold=100;
-		if (AI) {
-			groupSize=20;
-		}else {
-			groupSize=6;
-		}
 		
 	}
-	public void gainGold(int g) {
-		gold+=g;
-		if(g>=0) {
-			if(g!=0) {
-				game.log.addLine("gained "+g+" gold.");
-			}			
-		}else {
-			game.log.addLine("lost "+(-g)+" gold.");
-		}
-		
+	public void gainGold(int gold) {
+		commander.gain_Gold(gold);		
 	}
 	public boolean addSummon(BattleUnit hero) {
 		for(int a=0; a<warriors.size();a++) {// prevent equal names
@@ -59,7 +44,7 @@ public class Player implements HexTilePlayer,Serializable{
 		return true;
 	}
 	public boolean addHero(BattleUnit hero) {// do not exeed maximum size
-		if(warriors.size()<groupSize) {
+		if(warriors.size()<getGroupSize()) {
 			for(int a=0; a<warriors.size();a++) {// prevent equal names
 				for(int b=0; b<warriors.size();b++) {
 					if(warriors.get(b).getName().equals(hero.getName())) {
@@ -68,7 +53,6 @@ public class Player implements HexTilePlayer,Serializable{
 				}
 			}
 			warriors.addFirst(hero);
-//			hero.setInventory(inventory);
 			hero.setPlayer(this);
 			selectedWarrior=hero;
 			return true;
@@ -82,17 +66,17 @@ public class Player implements HexTilePlayer,Serializable{
 //			hero.setPlayer(null);
 //		}
 //	}
-	public void removeDeadHeroesFromRoster() {
-		LinkedList<BattleUnit> deadHeroes=new LinkedList<BattleUnit>();
-		for(int i=0; i<warriors.size();i++) {
-			if(warriors.get(i).isDead()) {
-				deadHeroes.add(warriors.get(i));
-			}
-		}
-		for(int i=0; i<deadHeroes.size();i++) {
-			warriors.remove(deadHeroes.get(i));
-		}
-	}
+//	public void removeDeadHeroesFromRoster() {
+//		LinkedList<BattleUnit> deadHeroes=new LinkedList<BattleUnit>();
+//		for(int i=0; i<warriors.size();i++) {
+//			if(warriors.get(i).is_unable_to_fight()) {
+//				deadHeroes.add(warriors.get(i));
+//			}
+//		}
+//		for(int i=0; i<deadHeroes.size();i++) {
+//			warriors.remove(deadHeroes.get(i));
+//		}
+//	}
 	public void removeHero(BattleUnit hero) {
 		if(warriors.size()>=1&&warriors.contains(hero)) {
 			warriors.remove(hero);
@@ -150,7 +134,7 @@ public class Player implements HexTilePlayer,Serializable{
 		this.inventory = inventory;
 	}
 	public int getGold() {
-		return gold;
+		return commander.getWealth();
 	}
 
 	public Game getGame() {
@@ -166,10 +150,12 @@ public class Player implements HexTilePlayer,Serializable{
 //		this.availableWarriors = availableHeroes;
 //	}
 	public int getGroupSize() {
-		return groupSize;
-	}
-	public void setGroupSize(int groupSize) {
-		this.groupSize = groupSize;
+		if (commander == null) {
+			return 20;
+		}else {
+			return commander.getGroup_size();
+		}
+		
 	}
 	public boolean hasCheat() {
 		// TODO Auto-generated method stub
@@ -188,8 +174,13 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setSelectedItem(Item selectedItem) {
 		this.selectedItem = selectedItem;
 	}
-
-
+	
+	public Commander getCommander() {
+		return commander;
+	}
+	public void setCommander(Commander commander) {
+		this.commander = commander;
+	}
 
 	
 }

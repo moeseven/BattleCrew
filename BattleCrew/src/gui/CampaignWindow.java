@@ -10,10 +10,9 @@ import javax.swing.JPanel;
 import gameLogic.Game;
 import gameLogic.Shop;
 
-public class CampaignWindow extends JFrame{
+public class CampaignWindow extends JFrame implements Refreshable_gui{
 	private Game game;
 	private BattleWindow bw;
-	private String sprite_path="./images";
 	private MainMenu mm;
 	private JPanel warrior_inspection;
 	private WarriorsReadyForBattleComponent warriors_battle;
@@ -50,7 +49,7 @@ public class CampaignWindow extends JFrame{
 		repaint();
 	}
 	private void setUpWarriorInspectionPanel() {
-		warrior_stats= new HeroStatsPaintComponent(this,200,true);
+		warrior_stats= new HeroStatsPaintComponent(game.getPlayer().getSelectedUnit(),this,200,true);
 		warrior_inventory= new HeroInventoryPaintComponent(this);
 		warrior_inspection= new JPanel();
 		warrior_inspection.setLayout(new BorderLayout());
@@ -67,7 +66,6 @@ public class CampaignWindow extends JFrame{
 		repaint();
 	}
 	
-	
 	//getters and setters
 	public Game getGame() {
 		return game;
@@ -83,12 +81,6 @@ public class CampaignWindow extends JFrame{
 		this.setVisible(false);
 		mm.setVisible(true);
 	}
-	public String getSprite_path() {
-		return sprite_path;
-	}
-	public void setSprite_path(String sprite_path) {
-		this.sprite_path = sprite_path;
-	}
 	public int getState() {
 		return state;
 	}
@@ -98,4 +90,5 @@ public class CampaignWindow extends JFrame{
 	public void destory_battle_window() {
 		bw = null;
 	}
+
 }

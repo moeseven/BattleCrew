@@ -115,7 +115,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 	private class WarriorsReadyForBattleTableComponent extends HexTileTableComponent{
 
 		public WarriorsReadyForBattleTableComponent(HexTilePlayer player, HexTileTable table, CampaignWindow gf) {
-			super(player, table, gf, gf.getSprite_path());
+			super(player, table, gf, Resources.IMAGE_PATH);
 			// TODO Auto-generated constructor stub
 			addMouseListener(new MyMouseListener());
 		}

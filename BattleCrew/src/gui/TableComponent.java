@@ -20,9 +20,8 @@ public class TableComponent extends HexTileTableComponent {
 	}
 	BattleWindow bw;
 	public TableComponent(HexTilePlayer player, HexTileTable table, BattleWindow gf) {
-		super(player, table, gf, gf.get_sprite_path());
+		super(player, table, gf,Resources.IMAGE_PATH);
 		this.bw=gf;
-		this.setBackground(Color.green);
 	}
 	
 }

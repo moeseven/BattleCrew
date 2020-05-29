@@ -40,17 +40,25 @@ public class WarriorsReadyForBattleTable extends HexTileTable{
 
 		@Override
 		public void triggerLeftClick(HexTilePlayer player) {
+			Player p = (Player) player;
 			// TODO Auto-generated method stub
-			if (getWarrior()==null) {				
+			if (getWarrior()==null) {
+				int units_in_preparation = 0;				
 				for (int i = 0; i < table.getTiles().size(); i++) {
 					if (table.getTiles().get(i).getUnit()!=null) {
+						units_in_preparation++;
 						if (table.getTiles().get(i).getUnit()==player.getSelectedUnit()||table.getTiles().get(i).getUnit().getHealth()<=0) {
 							table.getTiles().get(i).setUnit(null);
 						}
 					}
 					
 				}
-				setUnit(player.getSelectedUnit());
+				
+				if (p.getCommander().getCommand_points()>units_in_preparation) {
+					setUnit(player.getSelectedUnit());
+				}else {
+					p.getGame().log.addLine("your commander can't field more units!");
+				}
 			}else {
 				player.setSelectedUnit(getUnit());
 			}

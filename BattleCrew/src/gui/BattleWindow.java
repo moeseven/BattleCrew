@@ -44,9 +44,6 @@ public class BattleWindow extends JFrame implements ActionListener{
 			campaign_window.destory_battle_window();
 		}
 	}
-	public String get_sprite_path() {
-		return campaign_window.getSprite_path();
-	}
 	public Game getGame() {
 		return game;
 	}

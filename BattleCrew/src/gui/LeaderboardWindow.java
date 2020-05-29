@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import game.Leaderboard.LeaderBoardEntry;
+import game.Leaderboard.Leaderboard;
 import gameLogic.Game;
 
 
@@ -65,7 +67,7 @@ public class LeaderboardWindow extends JFrame{
 		private class ButtonOKListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){
 				askName=false;
-				lb.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(game, text.getText()));
+				lb.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(game));
 				lb.writeToFile();
 				upadate();
 			} 

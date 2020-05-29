@@ -13,28 +13,33 @@ public class BattleUnit implements HexTileUnit{
 	
 	
 
+
+
 	//other
-	private Player player;
+	protected Player player;
 	private String name;
 	private String type;
 	private int image_number;
 
 	//stats
-	private int vitality;
-	private int strength;
-	private int dexterity;
-	private int size;
+	protected int vitality;
+	protected int strength;
+	protected int dexterity;
+	protected int size;
 	
 	private int move_speed;
 	
 	private int protection;
-	private int endurance;
-	private int wisdom;
-	private int spell_power;
-	private int offense,base_offense;
-	private int defense, base_defense;
-	private int precision;
-	private int courage;
+	protected int endurance;
+	protected int wisdom;
+	protected int spell_power;
+	protected int base_offense;
+	protected int base_defense;
+	private int offense;
+	private int defense;
+	protected int precision;
+	protected int courage;
+	protected int recovery = 5;
 	
 	private int resist_cold;
 	private int resist_heat;
@@ -46,7 +51,7 @@ public class BattleUnit implements HexTileUnit{
 	private int resist_slash;
 	private int resist_pirce;
 	
-	private int weapon_skill;
+	protected int weapon_skill;
 	private int base_damage = 10;
 	private boolean equippable = true; //TODO
 	
@@ -54,15 +59,16 @@ public class BattleUnit implements HexTileUnit{
 	
 	//dynamic stats
 	private double health;
-	private double fatigue;
-	private double mana;
-	private double fear;
+	private double fatigue = 0;
+	private double mana = 0;
+	private double fear = 0;
 	private boolean stunned;
 	private int tiles_moved_this_round;
 	private HexTile tile;
 	private HexTile retreat_tile;
 	private boolean fled;
 	private double damage_dealt=0;
+	private int level=1;
 	
 	//other things
 	private Behaviour_type behaviour;
@@ -111,6 +117,7 @@ public class BattleUnit implements HexTileUnit{
         
         weapon_skill = Integer.parseInt(stats[24]);
         equippable = Boolean.parseBoolean(stats[25]);
+        recovery = Integer.parseInt(stats[26]);
         name = player.getGame().name_generator.generate_name(type);
         equip(player.getGame().itemBuilder.buildItembyName("stone"));
 	}
@@ -124,10 +131,8 @@ public class BattleUnit implements HexTileUnit{
 	 * initialize for battle
 	 */
 	public void battle_begin() {
-		fatigue = 0;
-		mana = 100;
-		fear = 0;
 		fled = false;
+		fear = 0;
 		tiles_moved_this_round = 0;
 		retreat_tile =tile;
 	}
@@ -151,6 +156,11 @@ public class BattleUnit implements HexTileUnit{
 		return false;
 	}
 	
+	public void recover() {
+		heal_percent(recovery+player.getCommander().getRecover_points());
+		relax(2*recovery);
+	}
+	
 	/*
 	 * reset sats for new round
 	 */
@@ -165,6 +175,14 @@ public class BattleUnit implements HexTileUnit{
 		fatigue+=e;
 		if (fatigue>100) {
 			fatigue = 100;
+		}
+	}
+	public void relax(double r) {
+		if (r > 0) {
+			fatigue -= r;
+			if (fatigue < 0) {
+				fatigue = 0;
+			}
 		}
 	}
 	public void frighten(double f) {
@@ -182,7 +200,15 @@ public class BattleUnit implements HexTileUnit{
 			}
 		}
 	}
-	
+	public void heal_percent(double h) {
+		if (h > 0) {
+			health += h;
+			if (health>100) {
+				health = 100;
+			}
+		}
+		
+	}
 	
 	/*
 	 * attack enemy with main Hand weapon
@@ -222,22 +248,33 @@ public class BattleUnit implements HexTileUnit{
 			attacker.add_to_damage_dealt(damage*vitality/10);
 			health -= damage;
 			player.getGame().log.addLine(name+" took "+(int) damage+"% damage!");
-			if (isDead()) {
+			if (health<=0) {
 				die();
 			}
 		}
 	}
 	
-	private void die() {
+	public void die() {
 		this.tile.setUnit(null);
-		equipment.unequipAll();		
-		player.getGame().log.addLine(name+" died!");
-		player.getHeroes().remove(this);
+		equipment.unequipAll();
+		if (player.getCommander()!=null) {
+			if (Math.random() < player.getCommander().getHealer_points()/100.0) { //recover chance
+				health = 1;
+				player.getGame().log.addLine(name+" is wounded");
+			}else {
+				player.getGame().log.addLine(name+" died!");
+				player.getHeroes().remove(this);
+			}
+		}else {
+			player.getGame().log.addLine(name+" died!");
+			player.getHeroes().remove(this);
+		}
+			
 	}
 	
-	public boolean isDead() {
+	public boolean is_unable_to_fight() {
 		// TODO Auto-generated method stub
-		if (this.getHealth()<=0) {
+		if (this.getHealth()<=1) {
 			return true;
 		}
 		return false;
@@ -268,7 +305,7 @@ public class BattleUnit implements HexTileUnit{
 	public LinkedList<String> generateStatLines(){
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=new LinkedList<String>();
-		lines.add(name+" ("+type+")");
+		lines.add(name+" (Level "+level+" "+type+")");
 		lines.add("");
 		lines.add("health: "+(int)(getHealth())+"%");
 		lines.add("fatigue: "+(int)(getFatigue())+"%");
@@ -722,5 +759,12 @@ public class BattleUnit implements HexTileUnit{
 
 	public void setRetreat_tile(HexTile retreat_tile) {
 		this.retreat_tile = retreat_tile;
+	}
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }
