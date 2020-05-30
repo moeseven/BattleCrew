@@ -18,7 +18,7 @@ public LeaderBoardEntry(int turns, String playerName, int points) {
 }
 public LeaderBoardEntry(Game game) {
 	playerName = game.getPlayer().getCommander().getName();
-	points = game.getPlayer().getGold()*game.getPlayer().getCommander().getLevel();
+	points = game.getPlayer().getScore();
 }
 public int getTurns() {
 	return turns;

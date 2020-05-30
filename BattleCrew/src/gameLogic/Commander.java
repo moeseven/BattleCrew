@@ -88,8 +88,8 @@ public class Commander extends BattleUnit {
 			healer_points+=10;
 			break;
 		case Warrior:
-			vitality++;
-			weapon_skill++;
+			vitality += 2;
+			weapon_skill += 2;
 			base_defense+=5;
 			base_offense+=8;
 			break;
@@ -99,11 +99,14 @@ public class Commander extends BattleUnit {
 		case Noble:
 			wealth += 500;
 			break;
+		case Hero:
+			player.earn_score(100);
+			break;
 		default:
 			break;
 		}
 	}
-	public void gain_Gold(int gold) {		
+	public void gain_gold(int gold) {		
 		if(gold>0) {
 			gold= (int) (gold*(1+gold_bonus/100.0));
 			player.getGame().log.addLine("gained "+gold+" gold.");			

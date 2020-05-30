@@ -68,6 +68,7 @@ public class BattleUnit implements HexTileUnit{
 	private HexTile retreat_tile;
 	private boolean fled;
 	private double damage_dealt=0;
+	private int experience = 0;
 	private int level=1;
 	
 	//other things
@@ -209,7 +210,67 @@ public class BattleUnit implements HexTileUnit{
 		}
 		
 	}
+	public static int experience_threshold_for_next_level(int level) {
+		if(level==1) {
+			return 0;
+		}else {
+			return experience_threshold_for_next_level(level-1)+80+10*level;
+		}		
+	}
 	
+	public void gain_experience(int exp) {
+		int exp_missing_for_lvlup = experience_threshold_for_next_level(level)-experience;
+		if(exp_missing_for_lvlup < exp) {
+			experience = experience_threshold_for_next_level(level);
+			lvl_up();	
+			gain_experience(exp - exp_missing_for_lvlup);
+		}else {
+			experience += exp;
+		}
+	}
+	
+	public void lvl_up() {
+		base_defense++;
+		base_offense++;
+		int random_stat = (int) (Math.random()*11);
+		switch (random_stat) {
+		case 1:
+			courage++;
+			break;
+		case 2:
+			precision++;
+			break;
+		case 3:
+			courage++;
+			break;
+		case 4:
+			vitality++;
+			break;
+		case 5:
+			dexterity++;
+			break;
+		case 6:
+			strength++;
+			break;
+		case 7:
+			endurance++;
+			break;
+		case 8:
+			weapon_skill++;
+			break;
+		case 9:
+			spell_power++;
+			break;
+		case 10:
+			wisdom++;
+			break;
+		default:
+			recovery++;
+			break;
+		}
+		
+		
+	}
 	/*
 	 * attack enemy with main Hand weapon
 	 */

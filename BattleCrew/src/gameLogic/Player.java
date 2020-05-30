@@ -2,6 +2,7 @@ package gameLogic;
 
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import HexTilePlayground.HexTile;
@@ -11,6 +12,12 @@ import HexTilePlayground.HexTileUnit;
 
 public class Player implements HexTilePlayer,Serializable{
 
+	public int getScore() {
+		return score;
+	}
+	public void earn_score(int score) {
+		this.score += score;
+	}
 	private BattleUnit selectedWarrior;
 	private HexTile selectedTile;
 	private Item selectedItem;
@@ -21,6 +28,7 @@ public class Player implements HexTilePlayer,Serializable{
 	private Commander commander;
 	private Game game;
 	private boolean cheat=false;
+	private int score = 0;
 	public Player(Game game, Boolean AI) {
 		this.game=game;
 		this.AI=AI;
@@ -29,7 +37,7 @@ public class Player implements HexTilePlayer,Serializable{
 		
 	}
 	public void gainGold(int gold) {
-		commander.gain_Gold(gold);		
+		commander.gain_gold(gold);		
 	}
 	public boolean addSummon(BattleUnit hero) {
 		for(int a=0; a<warriors.size();a++) {// prevent equal names
@@ -58,6 +66,13 @@ public class Player implements HexTilePlayer,Serializable{
 			return true;
 		}else {
 			return false;
+		}
+	}
+	
+	public void recover_warriors() {
+		for (Iterator iterator = warriors.iterator(); iterator.hasNext();) {
+			BattleUnit battleUnit = (BattleUnit) iterator.next();
+			battleUnit.recover();
 		}
 	}
 //	public void removeHeroFromTavern(Warrior hero) {
@@ -181,6 +196,6 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setCommander(Commander commander) {
 		this.commander = commander;
 	}
-
+	
 	
 }
