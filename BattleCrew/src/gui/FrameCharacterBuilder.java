@@ -54,20 +54,20 @@ public class FrameCharacterBuilder extends JFrame{
 	private class ButtonRaceListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
 			cb.scrollThroughCharRaces();
-			cb.updateHero(cbi.getTf().getText());
+			cb.updateHero();
 			cbi.repaint();
 		} 
 	}
 	private class ButtonClassListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
 			cb.scrollThroughCharClasses();
-			cb.updateHero(cbi.getTf().getText());
+			cb.updateHero();
 			cbi.repaint();
 		} 
 	}
 	private class ButtonCreateHeroListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			fcb.cb.createHero();
+			fcb.cb.createHero(cbi.getTf().getText());
 			fcb.setVisible(false);					
 			mainMenu.campaign_window = new CampaignWindow(mainMenu.getGame(), null);
 		} 

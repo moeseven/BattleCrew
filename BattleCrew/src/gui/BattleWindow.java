@@ -32,6 +32,8 @@ public class BattleWindow extends JFrame implements ActionListener{
 		add(table_component,BorderLayout.CENTER);
 		add(control_component,BorderLayout.EAST);
 		setVisible(true);
+		campaign_window.setVisible(false);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		battle_tick_timer.start();
 	}
 	public void battleOver(){

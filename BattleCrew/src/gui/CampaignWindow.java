@@ -17,12 +17,14 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 	private JPanel warrior_inspection;
 	private WarriorsReadyForBattleComponent warriors_battle;
 	private ShopinterfaceComponent shop;
+	private WarriorCampaignComponent warriors;
 	private HeroStatsPaintComponent warrior_stats;
 	private HeroInventoryPaintComponent warrior_inventory;
-	private int state; //0: shop, 1: battlepreparation
+	private int state; //0: shop, 1: battlepreparation, 2: warriors
 	public CampaignWindow(Game game,MainMenu mm) {
 		this.mm=mm;
-		state=0;
+		game.getPlayer().setAction_points(3);
+		state=2;
 		setTitle("campaign");
 		this.game=game;		
 		this.setSize(1300, 680);
@@ -30,6 +32,7 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 		setLayout(new BorderLayout());	
 		warriors_battle=new WarriorsReadyForBattleComponent(this);
 		shop= new ShopinterfaceComponent(this, new Shop(game));
+		warriors = new WarriorCampaignComponent(this);
 		showAccurateComponent();
 		add(new RectangleCampaignManagementMenu(this),BorderLayout.CENTER);
 		setLocation(10, 10);
@@ -39,11 +42,16 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 	public void showAccurateComponent() {
 		remove(warriors_battle);
 		remove(shop);
+		remove(warriors);
 		if (state==0) {
 			add(shop,BorderLayout.NORTH);
 		}else {
 			if (state==1) {
 				add(warriors_battle, BorderLayout.NORTH);
+			}else {
+				if (state == 2) {
+					add(warriors,BorderLayout.NORTH);
+				}
 			}
 		}
 		repaint();
@@ -65,6 +73,7 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 		warrior_inventory.repaint();
 		repaint();
 	}
+	
 	
 	//getters and setters
 	public Game getGame() {

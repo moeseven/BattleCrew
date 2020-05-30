@@ -21,7 +21,7 @@ public class CommanderChooser {
 		charRaces.add("human");
 		charRaces.add("elf");
 		charRaces.add("dwarf");
-		updateHero("Öfterus");
+		updateHero();
 	}
 	public void scrollThroughCharClasses() {
 		charClasses.add(charClasses.removeFirst());
@@ -29,12 +29,12 @@ public class CommanderChooser {
 	public void scrollThroughCharRaces() {
 		charRaces.add(charRaces.removeFirst());
 	}
-	public void updateHero(String name) {
+	public void updateHero() {
 		commander = game.unitBuilder.buildCommanderbyName(charRaces.getFirst(),charClasses.getFirst(), game.getPlayer());
-		commander.setName(name);
 		game.getPlayer().setSelectedHero(commander);
 	}
-	public void createHero() {
+	public void createHero(String name) {
+		commander.setName(name);
 		game.getPlayer().setCommander(commander);		
 		for(int i=1; i<commander.getGroup_size() ;i++) {
 			game.getPlayer().addHero(game.unitBuilder.buildUnitbyName(commander.getType(), game.getPlayer()));

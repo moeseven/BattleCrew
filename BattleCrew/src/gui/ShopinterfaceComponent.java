@@ -25,7 +25,7 @@ public class ShopinterfaceComponent extends JComponent{
 	this.campaign_window=campaignWindow;
 	this.shop=s;
 	setBorder(new LineBorder(Color.WHITE));
-	super.setPreferredSize(new Dimension(800,400));
+	super.setPreferredSize(new Dimension(800,300));
 	MyMouseListener ml = new MyMouseListener();
 	super.addMouseListener(ml);
 	setLayout(new BorderLayout());

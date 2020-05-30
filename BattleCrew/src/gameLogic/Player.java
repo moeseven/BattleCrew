@@ -12,6 +12,20 @@ import HexTilePlayground.HexTileUnit;
 
 public class Player implements HexTilePlayer,Serializable{
 
+	public int getAction_points() {
+		return action_points;
+	}
+	public void setAction_points(int action_points) {
+		this.action_points = action_points;
+	}
+	public boolean pay_action_points(int p) {
+		if (action_points >= p) {
+			action_points--;
+			return true;
+		}else {
+			return false;
+		}
+	}
 	public int getScore() {
 		return score;
 	}
@@ -26,6 +40,7 @@ public class Player implements HexTilePlayer,Serializable{
 	protected LinkedList<BattleUnit> warriors;
 	private Inventory inventory;
 	private Commander commander;
+	private int action_points=0;
 	private Game game;
 	private boolean cheat=false;
 	private int score = 0;

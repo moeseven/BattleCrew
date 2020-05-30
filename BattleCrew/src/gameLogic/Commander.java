@@ -131,7 +131,7 @@ public class Commander extends BattleUnit {
 			lines.add("revive chance: " + "+" + healer_points + "%");
 		}
 		if (wealth > 0) {
-			lines.add("sarting gold: "+wealth);
+			lines.add("gold: "+wealth);
 		}
 		return lines;
 	}

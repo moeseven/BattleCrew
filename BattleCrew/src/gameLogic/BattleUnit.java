@@ -69,7 +69,7 @@ public class BattleUnit implements HexTileUnit{
 	private boolean fled;
 	private double damage_dealt=0;
 	private int experience = 0;
-	private int level=1;
+	private int level = 1;
 	
 	//other things
 	private Behaviour_type behaviour;
@@ -230,6 +230,7 @@ public class BattleUnit implements HexTileUnit{
 	}
 	
 	public void lvl_up() {
+		level++;
 		base_defense++;
 		base_offense++;
 		int random_stat = (int) (Math.random()*11);
@@ -396,7 +397,7 @@ public class BattleUnit implements HexTileUnit{
 			}
 		}
 		lines.add("precision: "+concat_string);
-		
+		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
 		lines.add("armor: "+getArmor());
 		lines.add("");
