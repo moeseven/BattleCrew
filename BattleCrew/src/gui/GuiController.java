@@ -10,5 +10,7 @@ package gui;
 public class GuiController {
 	public BattleWindow battle_window;
 	public CampaignWindow campaign_window;
+	public MainMenu main_menu;
+	
 
 }
