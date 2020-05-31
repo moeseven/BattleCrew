@@ -5,9 +5,9 @@ import gameLogic.Battle;
 import gameLogic.Battlefield;
 import gameLogic.Game;
 import gameLogic.Player;
-import gui.BattleWindow;
-import gui.CampaignWindow;
 import gui.Resources;
+import gui.windows.BattleWindow;
+import gui.windows.CampaignWindow;
 import imageloader.MyStaticImageLoader;
 
 public class Main {

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileTable;
 import HexTilePlayground.GUI.HexTileTableComponent;
+import gui.windows.BattleWindow;
 
 public class TableComponent extends HexTileTableComponent {
 	@Override

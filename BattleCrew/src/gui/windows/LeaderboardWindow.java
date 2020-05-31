@@ -1,4 +1,4 @@
-package gui;
+package gui.windows;
 
 
 import java.awt.BorderLayout;
@@ -27,15 +27,14 @@ import gameLogic.Game;
 
 
 
-public class LeaderboardWindow extends JFrame{
+public class LeaderboardWindow extends X_to_main_main_menu_window{
 	private JPanel jp01;
-	private Game game;
 	protected Leaderboard lb;
 	protected boolean askName;
-	public LeaderboardWindow(Leaderboard lb, Game game, boolean askName){
+	public LeaderboardWindow(ViewController gui_controller, boolean askName){
+		super(gui_controller);
 		this.setTitle("Leaderboard");
-		this.lb=lb;
-		this.game=game;
+		this.lb = Leaderboard.loadLeaderboard();
 		this.askName=askName;
 		setSize(650,500);
 		setLocationRelativeTo(null);
@@ -67,7 +66,7 @@ public class LeaderboardWindow extends JFrame{
 		private class ButtonOKListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){
 				askName=false;
-				lb.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(game));
+				lb.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(gui_controller.getGame()));
 				lb.writeToFile();
 				upadate();
 			} 
@@ -89,7 +88,7 @@ public class LeaderboardWindow extends JFrame{
 					}			
 					
 					g.drawString(lb.getLeaderboardEntries().get(i).getPoints()+"",250-decimalCounter*6, 20+i*20);
-					g.drawString(" points       (in "+lb.getLeaderboardEntries().get(i).getTurns()+" turns)",260, 20+i*20);
+					g.drawString(" points       (with level "+lb.getLeaderboardEntries().get(i).getLevel()+")",260, 20+i*20);
 				}
 			}
 			

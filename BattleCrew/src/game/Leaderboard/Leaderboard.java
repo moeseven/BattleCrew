@@ -16,9 +16,9 @@ private int maxEntries=20;
 public Leaderboard() {
 	super();
 	leaderboardEntries=new LinkedList<LeaderBoardEntry>();
-	addLeaderboardEntryInRightOrder(new LeaderBoardEntry(60, "Gollum", 1000));
-	addLeaderboardEntryInRightOrder(new LeaderBoardEntry(200, "Klöftile", 20));
-	addLeaderboardEntryInRightOrder(new LeaderBoardEntry(59, "Argeil", 1010));
+	addLeaderboardEntryInRightOrder(new LeaderBoardEntry("Gollum", 1000));
+	addLeaderboardEntryInRightOrder(new LeaderBoardEntry("Klöftile", 20));
+	addLeaderboardEntryInRightOrder(new LeaderBoardEntry("Argeil", 1010));
 }
 	public void addLeaderboardEntryInRightOrder(LeaderBoardEntry newEntry) {
 		LinkedList<LeaderBoardEntry> intermediateList=new LinkedList<LeaderBoardEntry>();

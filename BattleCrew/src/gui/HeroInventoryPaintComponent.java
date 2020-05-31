@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.Game;
 import gameLogic.Item;
+import gui.windows.CampaignWindow;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 

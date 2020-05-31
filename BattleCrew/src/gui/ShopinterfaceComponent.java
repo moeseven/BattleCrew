@@ -14,6 +14,7 @@ import javax.swing.border.LineBorder;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.Item;
 import gameLogic.Shop;
+import gui.windows.CampaignWindow;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 

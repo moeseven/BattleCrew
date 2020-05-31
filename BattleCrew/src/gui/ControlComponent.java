@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.Ability;
 import gameLogic.Player;
+import gui.windows.BattleWindow;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 import imageloader.MyStaticImageLoader;
@@ -42,7 +43,7 @@ public class ControlComponent extends JComponent {
 		add(log,BorderLayout.SOUTH);
 		pause_button = new PauseButton();
 		add(pause_button, BorderLayout.NORTH);
-		hero_stat = new HeroStatsPaintComponent(player.getSelectedUnit(),bw.getCampaign_window(), 0, false);
+		hero_stat = new HeroStatsPaintComponent(player.getSelectedUnit(),bw, 0, false);
 		add(hero_stat, BorderLayout.CENTER);
 		setBorder(new LineBorder(Color.GREEN));
 		super.setPreferredSize(new Dimension(190,(height-1)*15+500));

@@ -14,9 +14,6 @@ import game.Leaderboard.LeaderBoardEntry;
 import game.Leaderboard.Leaderboard;
 
 public class Game implements Serializable {
-	public boolean isGame_over() {
-		return game_over;
-	}
 	private Player player; // change this for multiplayer
 	private Player opponent;
 	private BattleTicked battle;
@@ -34,7 +31,23 @@ public class Game implements Serializable {
 	//private LinkedList<Quest> availableQuests;
 	private int idleStressRelief = 10;
 	private BattleUnit lastCaster;
-	private boolean game_over = false; //TODO
+	public enum GameState{
+		City,
+		Battle,
+		GameOver
+	};
+	private GameState state = GameState.City;
+	public GameState get_state() {
+		return state;
+	}
+	public boolean set_state(GameState s) {
+		if (state == GameState.GameOver) {
+			return false;
+		}else {
+			state = s;
+			return true;
+		}
+	}
 	public Game(double image_scale) {
 		super();
 		log = new MyLog();	
@@ -63,19 +76,14 @@ public class Game implements Serializable {
 	public void startExampleBattle() {
 		
 		Player defender = new Player(this,true);
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 10; i++) {
 			defender.addHero(unitBuilder.buildUnitbyName("giant_rat", defender));	
 		}			
 		
-		defender.getHeroes().get(1).equip(itemBuilder.buildItembyName("slingshot"));
-		defender.getHeroes().get(0).equip(itemBuilder.buildItembyName("leatherarmor"));
-		defender.getHeroes().get(0).equip(itemBuilder.buildItembyName("shortsword"));
-		for (int i = 0; i < defender.getHeroes().size(); i++) {
-			defender.getHeroes().get(i).setBattle_participant(true);
-		}
-		//battle= new Battle(this, new Battlefield(20, 8, 2, this), player, defender);
-		battle= new BattleTicked(this, new Battlefield(38, 19, image_scale, this), player, defender);		
-		battle.start();
+//		defender.getHeroes().get(1).equip(itemBuilder.buildItembyName("slingshot"));
+//		defender.getHeroes().get(0).equip(itemBuilder.buildItembyName("leatherarmor"));
+//		defender.getHeroes().get(0).equip(itemBuilder.buildItembyName("shortsword"));		
+		enter_battle(defender);
 	}
 	
 	public void game_over() {
@@ -83,9 +91,22 @@ public class Game implements Serializable {
 		Leaderboard leaderboard = Leaderboard.loadLeaderboard();
 		leaderboard.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(this));
 		leaderboard.writeToFile();
-		game_over=true;
+		state = GameState.GameOver;
 	}
 	
+	public void enter_city() {
+		player.setAction_points(3);
+		set_state(GameState.City);
+	}
+	
+	public void enter_battle(Player opponent) {
+		set_state(GameState.Battle);
+		for (int i = 0; i < opponent.getHeroes().size(); i++) {
+			opponent.getHeroes().get(i).setBattle_participant(true);
+		}
+		battle= new BattleTicked(this, new Battlefield(38, 19, image_scale, this), player, opponent);		
+		battle.start();
+	}
 	
 	// getters and setters
 

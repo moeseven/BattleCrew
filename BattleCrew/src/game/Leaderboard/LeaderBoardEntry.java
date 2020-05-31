@@ -7,25 +7,26 @@ import gameLogic.Game;
 
 
 public class LeaderBoardEntry implements Serializable{
-private int turns;
+public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
+private int level;
 private String playerName;
 private int points;
-public LeaderBoardEntry(int turns, String playerName, int points) {
+public LeaderBoardEntry(String playerName, int points) {
 	super();
-	this.turns = turns;
 	this.playerName = playerName;
 	this.points = points;
 }
 public LeaderBoardEntry(Game game) {
 	playerName = game.getPlayer().getCommander().getName();
 	points = game.getPlayer().getScore();
+	level = game.getPlayer().getCommander().getLevel();
 }
-public int getTurns() {
-	return turns;
-}
-public void setTurns(int turns) {
-	this.turns = turns;
-}
+
 public String getPlayerName() {
 	return playerName;
 }

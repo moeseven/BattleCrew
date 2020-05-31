@@ -1,4 +1,4 @@
-package gui;
+package gui.windows;
 
 
 import java.awt.BorderLayout;
@@ -21,18 +21,17 @@ import gameLogic.Game;
 
 
 
-public class MainMenu extends JFrame{
+public class MainMenu extends X_to_main_main_menu_window{
 	private JPanel jp01;
 	private JButton buttonStart;
 	private JButton buttonCharacterBuilder;
 	private JButton buttonSaveGame;
 	private JButton buttonLoadGame;
 	private JButton buttonShowLeaderboard;
-	private Game game;
 	//protected StatsWindow gw;
-	protected CampaignWindow campaign_window;
 	protected MainMenu mm;
-	public MainMenu(){
+	public MainMenu(ViewController gc){
+		super(gc);
 		this.setTitle("Menu");
 		setSize(650,500);
 		setLocationRelativeTo(null);
@@ -56,83 +55,32 @@ public class MainMenu extends JFrame{
 		jp01.add(buttonLoadGame);
 		jp01.add(buttonShowLeaderboard);
 		add(jp01);
-		game = new Game(1);
 		setVisible(true);
 	}
 	private class ButtonShowLeaderboardListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			new LeaderboardWindow(Leaderboard.loadLeaderboard(),game,false);
+			
+			gui_controller.leader_board = new LeaderboardWindow(gui_controller,false);
 		} 
 	}
 	private class ButtonStartListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			if(game.getPlayer().getHeroes().size()>0) {
-				game.getPlayer().setSelectedHero(game.getPlayer().getHeroes().getFirst());		
-				campaign_window=new CampaignWindow(game,mm);
-				
-			}else {
-				new FrameCharacterBuilder(new CommanderChooser(game),mm);
-			}
-			mm.setVisible(false);
+			gui_controller.start_game();
 		} 
 	}
 	private class ButtonBuildCharacterListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			new FrameCharacterBuilder(new CommanderChooser(game),mm);
+			//TODO
 		} 
 	}
 	private class ButtonSaveUserListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			//save game;
-			ObjectOutputStream oos=null;
-			try {
-				oos = new ObjectOutputStream(new FileOutputStream("./saves/game.dat"));
-				oos.writeObject(game);
-			} catch (FileNotFoundException e1) {			
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			finally{
-				try {
-					oos.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		} 
+			gui_controller.save_game();
+		}
 	}
 	private class ButtonLoadUserListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			//load from file;
-			ObjectInputStream ois=null;
-			try {
-				ois=new ObjectInputStream(new FileInputStream("./saves/game.dat"));
-				game=(Game)ois.readObject();
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			finally{
-				try {
-					ois.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				
-			}
+			gui_controller.load_game();
 		} 
-	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
 	}
 }

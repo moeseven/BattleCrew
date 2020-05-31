@@ -307,7 +307,8 @@ public class BattleUnit implements HexTileUnit{
 	
 	public void take_damage(double damage,BattleUnit attacker) {
 		if (damage > 0) {
-			attacker.add_to_damage_dealt(damage*vitality/10);
+			damage = Math.min(damage, health);
+			attacker.add_to_damage_dealt(damage*vitality/10.0);
 			health -= damage;
 			player.getGame().log.addLine(name+" took "+(int) damage+"% damage!");
 			if (health<=0) {
@@ -316,7 +317,7 @@ public class BattleUnit implements HexTileUnit{
 		}
 	}
 	
-	public void die() {
+	public void die() {		
 		this.tile.setUnit(null);
 		equipment.unequipAll();
 		if (player.getCommander()!=null) {
@@ -331,7 +332,7 @@ public class BattleUnit implements HexTileUnit{
 			player.getGame().log.addLine(name+" died!");
 			player.getHeroes().remove(this);
 		}
-			
+		player.setSelectedHero(player.getHeroes().getFirst());
 	}
 	
 	public boolean is_unable_to_fight() {

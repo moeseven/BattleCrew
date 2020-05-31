@@ -1,4 +1,4 @@
-package gui;
+package gui.windows;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -11,21 +11,24 @@ import javax.swing.JPanel;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.CommanderChooser;
 import gameLogic.Game;
+import gameLogic.Game.GameState;
 import gameLogic.Player;
+import gui.CharcterBuilderInfoComponent;
+import gui.windows.ViewController.View;
 
-public class FrameCharacterBuilder extends JFrame{
+public class CharacterBuilderWindow extends X_to_main_main_menu_window{
 	private JPanel jp01;
 	private JPanel jpDraw;
 	private JButton buttonNextRace;
 	private JButton buttonNextClass;
 	private JButton buttonCreateHero;
 	private CommanderChooser cb;
-	protected FrameCharacterBuilder fcb;
+	protected CharacterBuilderWindow fcb;
 	private CharcterBuilderInfoComponent cbi;
-	protected MainMenu mainMenu;
-	public FrameCharacterBuilder(CommanderChooser cb, MainMenu mm) {
+
+	public CharacterBuilderWindow(CommanderChooser cb, ViewController gc) {
+		super(gc);
 		this.cb=cb;
-		mainMenu=mm;
 		fcb=this;
 		this.setTitle("character builder");
 		cbi=new CharcterBuilderInfoComponent(this);
@@ -69,7 +72,9 @@ public class FrameCharacterBuilder extends JFrame{
 		public void mousePressed(MouseEvent e){
 			fcb.cb.createHero(cbi.getTf().getText());
 			fcb.setVisible(false);					
-			mainMenu.campaign_window = new CampaignWindow(mainMenu.getGame(), null);
+			gui_controller.campaign_window = new CampaignWindow(gui_controller);
+			gui_controller.getGame().enter_city();
+			gui_controller.setView(View.City);
 		} 
 	}
 	public CommanderChooser getCb() {

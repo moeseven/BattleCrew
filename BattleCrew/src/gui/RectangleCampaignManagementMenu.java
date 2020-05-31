@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import gameLogic.City;
+import gui.windows.CampaignWindow;
 import guiRectangles.RectangleClicker;
 
 public class RectangleCampaignManagementMenu extends JComponent {

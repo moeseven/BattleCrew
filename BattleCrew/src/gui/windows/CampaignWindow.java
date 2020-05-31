@@ -1,6 +1,8 @@
-package gui;
+package gui.windows;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -8,12 +10,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import gameLogic.Game;
+import gameLogic.Game.GameState;
 import gameLogic.Shop;
+import gui.HeroInventoryPaintComponent;
+import gui.HeroStatsPaintComponent;
+import gui.RectangleCampaignManagementMenu;
+import gui.Refreshable_gui;
+import gui.ShopinterfaceComponent;
+import gui.WarriorCampaignComponent;
+import gui.WarriorsReadyForBattleComponent;
+import gui.windows.ViewController.View;
 
-public class CampaignWindow extends JFrame implements Refreshable_gui{
-	private Game game;
-	private BattleWindow bw;
-	private MainMenu mm;
+public class CampaignWindow extends X_to_main_main_menu_window implements Refreshable_gui{
 	private JPanel warrior_inspection;
 	private WarriorsReadyForBattleComponent warriors_battle;
 	private ShopinterfaceComponent shop;
@@ -21,23 +29,21 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 	private HeroStatsPaintComponent warrior_stats;
 	private HeroInventoryPaintComponent warrior_inventory;
 	private int state; //0: shop, 1: battlepreparation, 2: warriors
-	public CampaignWindow(Game game,MainMenu mm) {
-		this.mm=mm;
-		game.getPlayer().setAction_points(3);
+	public CampaignWindow(ViewController gc) {
+		super(gc);
 		state=2;
-		setTitle("campaign");
-		this.game=game;		
+		setTitle("campaign");	
 		this.setSize(1300, 680);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		setLayout(new BorderLayout());	
 		warriors_battle=new WarriorsReadyForBattleComponent(this);
-		shop= new ShopinterfaceComponent(this, new Shop(game));
+		shop= new ShopinterfaceComponent(this, new Shop(gc.getGame()));
 		warriors = new WarriorCampaignComponent(this);
 		showAccurateComponent();
 		add(new RectangleCampaignManagementMenu(this),BorderLayout.CENTER);
 		setLocation(10, 10);
 		setUpWarriorInspectionPanel();
-		this.setVisible(true);
 	}
 	public void showAccurateComponent() {
 		remove(warriors_battle);
@@ -57,7 +63,7 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 		repaint();
 	}
 	private void setUpWarriorInspectionPanel() {
-		warrior_stats= new HeroStatsPaintComponent(game.getPlayer().getSelectedUnit(),this,200,true);
+		warrior_stats= new HeroStatsPaintComponent(gui_controller.getGame().getPlayer().getSelectedUnit(),this,200,true);
 		warrior_inventory= new HeroInventoryPaintComponent(this);
 		warrior_inspection= new JPanel();
 		warrior_inspection.setLayout(new BorderLayout());
@@ -76,28 +82,18 @@ public class CampaignWindow extends JFrame implements Refreshable_gui{
 	
 	
 	//getters and setters
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
-	}
 	public void setUpFightWindow() {
-		bw=new BattleWindow(game,this);
-		setVisible(false);
+		//gui_controller.battle_window = new BattleWindow(gui_controller);
+		gui_controller.setView(View.Battle);
 	}
-	public void openMenu() {
-		this.setVisible(false);
-		mm.setVisible(true);
-	}
+	
 	public int getState() {
 		return state;
 	}
 	public void setState(int state) {
 		this.state = state;
 	}
-	public void destory_battle_window() {
-		bw = null;
+	public Game getGame() {
+		return gui_controller.getGame();
 	}
-
 }
