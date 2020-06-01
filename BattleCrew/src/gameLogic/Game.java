@@ -12,6 +12,7 @@ import builders.ItemBuilder;
 import builders.NameGenerator;
 import game.Leaderboard.LeaderBoardEntry;
 import game.Leaderboard.Leaderboard;
+import gameLogic.campaignTiles.CampaignTile;
 
 public class Game implements Serializable {
 	private Player player; // change this for multiplayer
@@ -25,6 +26,7 @@ public class Game implements Serializable {
 	public AbilityBuilder abilityBuilder;
 	public BattleUnitBuilder unitBuilder;
 	public NameGenerator name_generator;
+
 	//public ItemSpecialBuilder itemSpecialBuilder;
 	//public ItemSuffixBuilder itemSuffixBuilder;
 	public MyLog log;
