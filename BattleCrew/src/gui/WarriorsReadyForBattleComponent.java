@@ -24,6 +24,7 @@ import gameLogic.BattleUnit;
 import gameLogic.WarriorsReadyForBattleTable;
 import gui.windows.BattleWindow;
 import gui.windows.CampaignWindow;
+import gui.windows.ViewController.View;
 
 
 public class WarriorsReadyForBattleComponent extends JComponent{
@@ -55,7 +56,8 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 				if(e.getButton()==1){
 					//start battle
 					cw.gui_controller.getGame().startExampleBattle();
-					cw.gui_controller.battle_window = new BattleWindow(cw.gui_controller);
+					cw.gui_controller.setView(View.Battle);
+					//cw.gui_controller.battle_window = new BattleWindow(cw.gui_controller);
 				}
 			} 
 		}

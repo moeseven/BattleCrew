@@ -22,7 +22,7 @@ public class LogComponent extends JComponent{
 			text.setVisible(true);
 			scroll = new JScrollPane(text);		
 			this.add(scroll,BorderLayout.CENTER);
-			super.setPreferredSize(new Dimension(300,220));
+			super.setPreferredSize(new Dimension(200,220));
 			setVisible(true);
 	}
 	public void refresh() {

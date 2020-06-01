@@ -52,7 +52,8 @@ public class BattleTicked  extends Battle{
 				if (warrior.getPlayer() == battleParticipants.get(w).getPlayer()) {
 					battleParticipants.get(w).frighten(warrior.getVitality()/(total_vit+1.0));
 				}else {
-					battleParticipants.get(w).gain_courage(0.1*warrior.getVitality()/(total_vit+1.0));
+					//maybe gain some moral back through kills
+					battleParticipants.get(w).gain_courage(5*warrior.getVitality()/10);
 				}
 				
 			}

@@ -73,5 +73,9 @@ public class BattleWindow extends X_to_main_main_menu_window implements ActionLi
 	public boolean isPaused() {
 		return paused;
 	}
+	@Override
+	public ViewController get_gui_controller() {
+		return gui_controller;
+	}
 	
 }

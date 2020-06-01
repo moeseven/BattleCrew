@@ -95,7 +95,7 @@ public class Item {
 		description=new LinkedList<String>();
 		description.add("cost: "+gold_value);
 		description.add("weight: "+weight);
-		if (damage > 0) {
+		if (damage > 0 && block == 0) {
 			description.add("damage: "+damage);
 		}
 		if (range > 0) {
@@ -105,7 +105,7 @@ public class Item {
 			description.add("precision: "+precision);
 		}
 		if (block > 0) {
-			description.add("block: "+block);
+			description.add("block: "+damage+"("+block+"%)");
 		}
 		if (armor>0) {
 			description.add("armor: +"+armor);

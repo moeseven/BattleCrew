@@ -32,7 +32,13 @@ public class City {
 			if (player.getGroupSize() <= player.getHeroes().size()) {
 				player.getCommander().setGroup_size(player.getGroupSize()+1);
 			}
-			player.addHero(player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player));
+			//some chance of getting a recruit from another race
+			double roll = Math.random();
+			if (roll < 0.2) {
+				player.addHero(player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player));
+			}else {
+				player.addHero(player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player));
+			}			
 			return true;
 		}
 		return false;	

@@ -42,7 +42,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				offset_horizontal = 200;
 			}
 			setBorder(new LineBorder(Color.YELLOW));
-			super.setPreferredSize(new Dimension(700,200+offset_horizontal));
+			super.setPreferredSize(new Dimension(800,200+offset_horizontal));
 			MyMouseListener ml = new MyMouseListener();
 			super.addMouseListener(ml);
 			setLayout(new BorderLayout());
@@ -288,13 +288,14 @@ public class HeroStatsPaintComponent extends JComponent{
 				}
 			}
 			rc.updateCaptions();
-			gw.refresh();
+			gw.get_gui_controller().refresh_gui();
 		} 
 	}
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=warrior.getPlayer().getSelectedUnit().generateStatLines();
+		LinkedList<String> lines_statistics = warrior.getPlayer().getSelectedUnit().generate_statistics_lines();
 		//g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), gw.getGame().getPlayer().getSelectedUnit().getImageNumber(), gw.getGame().image_scale).getScaledInstance(300, 255, 5),-50,-5,null);	
 		int y_offset;
 		int x_offset;
@@ -306,11 +307,17 @@ public class HeroStatsPaintComponent extends JComponent{
 					g.drawString(lines.get(i), offset+x_offset, y_offset+10+12*i);
 				}else {
 					g.drawString(lines.get(i), offset+x_offset+140, y_offset+10+12*(i-component_height_lines));
-				}			
+				}		
+			}
+			for(int i=0; i<lines_statistics.size();i++) {
+					g.drawString(lines_statistics.get(i), offset+x_offset+280, y_offset+10+12*i);	
 			}
 		}else {
 			for(int i=0; i<lines.size();i++) {
 				g.drawString(lines.get(i), 10, 200 + 10+12*i);		
+			}
+			for(int i=0; i<lines_statistics.size();i++) {
+				g.drawString(lines_statistics.get(i), 10, 200+10+12*(i+lines.size()));	
 			}
 		}
 		

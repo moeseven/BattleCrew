@@ -23,7 +23,7 @@ public class GameOverWindow extends X_to_main_main_menu_window{
 	public GameOverWindow(ViewController gui_controller){
 		super(gui_controller);
 		this.gui_controller = gui_controller;
-		setSize(400, 550);
+		setSize(550, 350);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
@@ -39,7 +39,7 @@ public class GameOverWindow extends X_to_main_main_menu_window{
 			g.setFont(new Font("TimesRoman", Font.BOLD, 32)); 
 			g.drawString("Game Over!", 130, 100);
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 23)); 
-			g.drawString("Commander: " + gui_controller.getGame().getPlayer().getCommander().getName()+" (Level: "+gui_controller.getGame().getPlayer().getCommander().getLevel()+")", 10, 210);
+			g.drawString("Commander: " + gui_controller.getGame().getPlayer().getCommander().getName()+" (Level: "+gui_controller.getGame().getPlayer().getCommander().getLevel()+" "+gui_controller.getGame().getPlayer().getCommander().getType()+")", 10, 210);
 			g.drawString("Score: " + gui_controller.getGame().getPlayer().getScore(), 50, 240);
 		}
 	

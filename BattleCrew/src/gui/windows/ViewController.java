@@ -120,7 +120,24 @@ public class ViewController {
 		}
 	}
 	
-
+	/**
+	 * call this after a click action
+	 * in order to refresh all refreshable views
+	 */
+	public void refresh_gui() {
+		//TODO add all here
+		if (battle_window != null) {
+			if (battle_window.isVisible()) {
+				battle_window.refresh();
+			}
+		}
+		if (campaign_window != null) {
+			if (campaign_window.isVisible()) {
+				campaign_window.refresh();
+			}
+		}
+		
+	}
 	
 	public void load_game() {
 		//TODO make stuff serializable

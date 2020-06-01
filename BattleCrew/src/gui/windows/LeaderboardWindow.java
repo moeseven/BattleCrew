@@ -80,7 +80,7 @@ public class LeaderboardWindow extends X_to_main_main_menu_window{
 			}else {
 				for (int i = 0; i < lb.getLeaderboardEntries().size(); i++) {
 					g.drawString(lb.getLeaderboardEntries().get(i).getPlayerName(),140, 20+i*20);
-					g.drawString("Platz "+(i+1),30, 20+i*20);
+					g.drawString("Rank "+(i+1),30, 20+i*20);
 					int divisor=10;int decimalCounter=1;
 					while (lb.getLeaderboardEntries().get(i).getPoints()/divisor>=1) {
 						divisor*=10;	

@@ -6,10 +6,12 @@ import builders.BattleUnitBuilder;
 
 public class CommanderChooser {
 	private Game game;
+	public String type_name_string = "type name here";
 	private Commander commander;
 	private int points; //TODO give points
 	LinkedList<Commander_Class> charClasses;
 	LinkedList<String> charRaces;
+	public static String[] COMMANDER_RACES = {"human","elf","dwarf","halfling"};
 	public CommanderChooser(Game game) {
 		super();
 		this.game=game;
@@ -18,9 +20,9 @@ public class CommanderChooser {
 		for (Commander_Class cc : Commander_Class.values()) { 
 		     charClasses.add(cc);
 		}
-		charRaces.add("human");
-		charRaces.add("elf");
-		charRaces.add("dwarf");
+		for (int i = 0; i < COMMANDER_RACES.length; i++) {
+			charRaces.add(COMMANDER_RACES[i]);
+		}
 		updateHero();
 	}
 	public void scrollThroughCharClasses() {
@@ -34,7 +36,9 @@ public class CommanderChooser {
 		game.getPlayer().setSelectedHero(commander);
 	}
 	public void createHero(String name) {
-		commander.setName(name);
+		if (!name.equals(type_name_string)) {
+			commander.setName(name);
+		}		
 		game.getPlayer().setCommander(commander);		
 		for(int i=1; i<commander.getGroup_size() ;i++) {
 			game.getPlayer().addHero(game.unitBuilder.buildUnitbyName(commander.getType(), game.getPlayer()));

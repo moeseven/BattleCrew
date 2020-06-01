@@ -74,7 +74,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	}
 	public void refresh() {
 		warrior_stats.rc.updateCaptions();
-		warrior_inventory.rc.updateCaptions();
+		warrior_inventory.refresh();
 		warrior_stats.repaint();
 		warrior_inventory.repaint();
 		repaint();
@@ -95,5 +95,9 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	}
 	public Game getGame() {
 		return gui_controller.getGame();
+	}
+	@Override
+	public ViewController get_gui_controller() {
+		return gui_controller;
 	}
 }

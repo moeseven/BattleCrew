@@ -21,11 +21,12 @@ import SpriteSheet.StaticImageLoader;
 import gameLogic.Game;
 import gameLogic.Item;
 import gui.windows.CampaignWindow;
+import gui.windows.ViewController;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 
 
-public class HeroInventoryPaintComponent extends JComponent{
+public class HeroInventoryPaintComponent extends JComponent implements Refreshable_gui{
 		private JPanel jp;
 		private JScrollPane sp;
 		private CampaignWindow gw;
@@ -36,7 +37,7 @@ public class HeroInventoryPaintComponent extends JComponent{
 			this.gw=sw;
 			game = gw.getGame();
 			setBorder(new LineBorder(Color.YELLOW));
-			super.setPreferredSize(new Dimension(550,200));
+			super.setPreferredSize(new Dimension(500,200));
 			addMouseListener(new MyMouseListener());
 			setLayout(new BorderLayout());
 			setVisible(true);
@@ -102,11 +103,10 @@ public class HeroInventoryPaintComponent extends JComponent{
 				public void updateCaption() {
 					setFirstLineColor(Color.black);
 					if(game.getPlayer().getSelectedItem()!=null) {
-						if (game.getPlayer().getInventory().contains(game.getPlayer().getSelectedItem())) {
-							game.getPlayer().getSelectedItem().generateItemDescription();						
-							caption=game.getPlayer().getSelectedItem().getDescription();
-							String composite = game.getPlayer().getSelectedItem().getName();
-							
+						game.getPlayer().getSelectedItem().generateItemDescription();
+						caption=game.getPlayer().getSelectedItem().getDescription();
+						String composite = game.getPlayer().getSelectedItem().getName();
+						if (game.getPlayer().getInventory().contains(game.getPlayer().getSelectedItem())) {																					
 							caption.addFirst(composite+"(x"+game.getPlayer().getInventory().getInventory_map().get(game.getPlayer().getSelectedItem().getName()).size()+")");
 	//						if(gw.getGame().getPlayer().getSelectedItem().getNumberOfSuffixes()>0) {
 	//							setFirstLineColor(Color.blue);
@@ -228,18 +228,26 @@ public class HeroInventoryPaintComponent extends JComponent{
 				}
 			}
 			rc.updateCaptions();
-			gw.refresh();
+			get_gui_controller().refresh_gui();
 		} 
 	}
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		//g.drawImage(StaticImageLoader.getScaledImage(gw.getSprite_path(), gw.getGame().getPlayer().getSelectedUnit().getImageNumber(),gw.getGame().getImage_scale()).getScaledInstance(240,204, 2),-30,0,null);
+
 		for(int i=0; i<rc.rectAngles.size();i++) {
 				if (rc.rectAngles.get(i).getImageNumber()!=1) {
 					g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, rc.rectAngles.get(i).getImageNumber(),game.getImage_scale()).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);
 				}
 		}
 		rc.paintRectangles(g);
+	}
+	@Override
+	public void refresh() {
+		rc.updateCaptions();		
+	}
+	@Override
+	public ViewController get_gui_controller() {
+		return gw.gui_controller;
 	}
 }
 

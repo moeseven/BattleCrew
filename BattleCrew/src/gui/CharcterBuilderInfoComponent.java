@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import gui.windows.CharacterBuilderWindow;
+import gui.windows.ViewController;
 
 
 public class CharcterBuilderInfoComponent extends JComponent implements Refreshable_gui{
@@ -17,7 +18,7 @@ public class CharcterBuilderInfoComponent extends JComponent implements Refresha
 		this.fcb=fcb;
 		this.setLayout(new BorderLayout());
 		tf=new JTextField();
-		tf.setText("type name here");
+		tf.setText(fcb.getCb().type_name_string);
 		this.add(tf, BorderLayout.NORTH);
 		jp= new JPanel();
 		jp.add(new HeroStatsPaintComponent(fcb.gui_controller.getGame().getPlayer().getSelectedUnit(), this, 30, true));
@@ -34,6 +35,10 @@ public class CharcterBuilderInfoComponent extends JComponent implements Refresha
 	public void refresh() {
 		// TODO Auto-generated method stub
 		repaint();
+	}
+	@Override
+	public ViewController get_gui_controller() {
+		return fcb.gui_controller;
 	}
 	
 }

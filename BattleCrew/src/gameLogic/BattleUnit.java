@@ -67,10 +67,22 @@ public class BattleUnit implements HexTileUnit{
 	private HexTile tile;
 	private HexTile retreat_tile;
 	private boolean fled;
-	private double damage_dealt=0;
+	
 	private int experience = 0;
 	private int level = 1;
 	
+	//statistics
+	public double damage_dealt=0;
+	public double damage_blocked=0;
+	public int evaded_attacks=0;
+	public int missed_attacks=0;
+	public double damage_absorbed=0;
+	public int meele_attacks_attempted = 0;
+	public int meele_attacks_defended=0;
+	public int target_of_a_meele_attack=0;
+	public int meele_attacks_landed=0;
+	public int ranged_attacks_landed=0;
+	public int ranged_attacks_attempted=0;
 	//other things
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
@@ -195,7 +207,7 @@ public class BattleUnit implements HexTileUnit{
 	}
 	public void gain_courage(double c) {
 		if (c > 0) {
-			fear -= c*100;
+			fear -= c;
 			if (fear<0) {
 				fear = 0;
 			}
@@ -300,10 +312,6 @@ public class BattleUnit implements HexTileUnit{
 		return adjacent_enemies;
 	}
 
-	public boolean get_attacked_meele(BattleUnit attacker) {
-		//TODO
-		return false;
-	}
 	
 	public void take_damage(double damage,BattleUnit attacker) {
 		if (damage > 0) {
@@ -364,7 +372,23 @@ public class BattleUnit implements HexTileUnit{
 			return false;
 		}
 	}
-	
+	public LinkedList<String> generate_statistics_lines(){
+		LinkedList<String> lines=new LinkedList<String>();		
+		lines.add("statistics:");
+		lines.add("");
+		lines.add("damage dealt: "+(int)damage_dealt);
+		lines.add("attacks evaded: " +(int)evaded_attacks);
+		lines.add("damage blocked: " +(int)damage_blocked);
+		lines.add("damage absorbed: "+(int)damage_absorbed);
+		lines.add("meele hits: "+ meele_attacks_landed);
+		lines.add("meele defends: "+ meele_attacks_defended);
+		if (ranged_attacks_attempted > 0) {
+			lines.add("ranged hits: "+ ranged_attacks_landed + "("+(int)(ranged_attacks_landed/(ranged_attacks_attempted)*100.0)+"%)");
+		}		
+		lines.add("missed attacks: "+ missed_attacks);
+		lines.add("");
+		return lines;
+	}
 	public LinkedList<String> generateStatLines(){
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=new LinkedList<String>();
@@ -378,12 +402,10 @@ public class BattleUnit implements HexTileUnit{
 		//main stats
 		
 		//damage line
-		String damage_line = "damage: ";
+		String damage_line = "damage: " + (int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this);
 		if (equipment.getHand1()!=null) {
 			if (equipment.getHand1().getRange()>2 && BattleCalculations.amunition_ready(this)) {
-				damage_line += (int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MINIMUM_DAMAGE_FACTOR)+"-"+(int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MAXIMUM_DAMAGE_FACTOR);
-			}else {
-				damage_line += (int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this);
+				damage_line = "damage: " + (int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MINIMUM_DAMAGE_FACTOR)+"-"+(int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MAXIMUM_DAMAGE_FACTOR);
 			}
 		}
 		lines.add(damage_line);
@@ -398,6 +420,7 @@ public class BattleUnit implements HexTileUnit{
 			}
 		}
 		lines.add("precision: "+concat_string);
+		lines.add("courage: "+courage);
 		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
 		lines.add("armor: "+getArmor());
@@ -406,10 +429,9 @@ public class BattleUnit implements HexTileUnit{
 		lines.add("endurance: "+getEndurance());
 		lines.add("");
 		lines.add("strength: "+getStrength());
-		lines.add("dexterity: "+getDexterity());		
+		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));		
 		lines.add("vitality: "+getVitality());
-		lines.add("");
-		lines.add("damage dealt: "+(int)damage_dealt);
+		
 		//defensive
 		
 		

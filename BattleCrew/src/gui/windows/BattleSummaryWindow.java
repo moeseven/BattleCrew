@@ -21,6 +21,7 @@ import gui.TableComponent;
  */
 //TODO
 public class BattleSummaryWindow extends X_to_main_main_menu_window implements Refreshable_gui{
+	private ViewController gui_controller;
 	public BattleSummaryWindow(ViewController gc){
 		super(gc);
 		setExtendedState(MAXIMIZED_BOTH); 
@@ -30,6 +31,11 @@ public class BattleSummaryWindow extends X_to_main_main_menu_window implements R
 	
 	public void refresh() {
 		//TODO
+	}
+
+	@Override
+	public ViewController get_gui_controller() {
+		return gui_controller;
 	}
 	
 	

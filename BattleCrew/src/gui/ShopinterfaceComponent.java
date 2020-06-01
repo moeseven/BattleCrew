@@ -15,10 +15,11 @@ import SpriteSheet.StaticImageLoader;
 import gameLogic.Item;
 import gameLogic.Shop;
 import gui.windows.CampaignWindow;
+import gui.windows.ViewController;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 
-public class ShopinterfaceComponent extends JComponent{
+public class ShopinterfaceComponent extends JComponent implements Refreshable_gui{
 	private RectangleClicker rc;
 	private CampaignWindow campaign_window;
 	private Shop shop;
@@ -265,6 +266,7 @@ private class MyMouseListener extends MouseAdapter{
 				//new CardView(card);
 			}
 		}
+		get_gui_controller().refresh_gui();
 	} 
 }
 protected void paintComponent(Graphics g){
@@ -284,5 +286,15 @@ protected void paintComponent(Graphics g){
 			g.drawString(rc.rectAngles.get(i).getCaption().get(a), rc.rectAngles.get(i).getX()+3, rc.rectAngles.get(i).getY()+11+a*11);
 		}
 	}
+}
+@Override
+public void refresh() {
+	rc.updateCaptions();
+	repaint();
+	
+}
+@Override
+public ViewController get_gui_controller() {
+	return campaign_window.gui_controller;
 }
 }
