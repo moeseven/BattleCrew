@@ -15,6 +15,14 @@ public class BattleUnit implements HexTileUnit{
 
 
 
+	public boolean isAttacked_this_round() {
+		return attacked_this_round;
+	}
+
+	public void setAttacked_this_round(boolean attacked_this_round) {
+		this.attacked_this_round = attacked_this_round;
+	}
+
 	//other
 	protected Player player;
 	private String name;
@@ -87,6 +95,7 @@ public class BattleUnit implements HexTileUnit{
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
 	private BattleUnit target;
+	private boolean attacked_this_round;
 	
 	public BattleUnit(String[] stats,Game game, Player player) {
 		super();
@@ -148,6 +157,7 @@ public class BattleUnit implements HexTileUnit{
 		fear = 0;
 		tiles_moved_this_round = 0;
 		retreat_tile =tile;
+		attacked_this_round = false;
 	}
 	
 	/*
@@ -181,6 +191,7 @@ public class BattleUnit implements HexTileUnit{
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
 		tiles_moved_this_round = 0;
+		attacked_this_round = false;
 	}
 	
 	
@@ -295,6 +306,7 @@ public class BattleUnit implements HexTileUnit{
 			//meele
 			BattleCalculations.perform_meele_attack(this, target);			
 		}
+		attacked_this_round = true;
 		return true;
 	}
 	
@@ -852,4 +864,5 @@ public class BattleUnit implements HexTileUnit{
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	
 }

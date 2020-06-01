@@ -33,7 +33,8 @@ public class HeroStatsPaintComponent extends JComponent{
 		private int offset_horizontal=0;
 		private boolean vertical = true;
 		private int component_height_lines=14;
-		public HeroStatsPaintComponent(BattleUnit warrior, Refreshable_gui gui, int offset, boolean vertical){
+		private boolean paint_statistics;
+		public HeroStatsPaintComponent(BattleUnit warrior, Refreshable_gui gui, int offset, boolean vertical, boolean paint_statistics){
 			this.gw=gui;
 			this.warrior = warrior;
 			this.vertical=true;
@@ -42,7 +43,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				offset_horizontal = 200;
 			}
 			setBorder(new LineBorder(Color.YELLOW));
-			super.setPreferredSize(new Dimension(800,200+offset_horizontal));
+			super.setPreferredSize(new Dimension(650,200+offset_horizontal));
 			MyMouseListener ml = new MyMouseListener();
 			super.addMouseListener(ml);
 			setLayout(new BorderLayout());
@@ -309,15 +310,20 @@ public class HeroStatsPaintComponent extends JComponent{
 					g.drawString(lines.get(i), offset+x_offset+140, y_offset+10+12*(i-component_height_lines));
 				}		
 			}
-			for(int i=0; i<lines_statistics.size();i++) {
+			if (paint_statistics) {
+				for(int i=0; i<lines_statistics.size();i++) {
 					g.drawString(lines_statistics.get(i), offset+x_offset+280, y_offset+10+12*i);	
+				}
 			}
+			
 		}else {
 			for(int i=0; i<lines.size();i++) {
 				g.drawString(lines.get(i), 10, 200 + 10+12*i);		
 			}
-			for(int i=0; i<lines_statistics.size();i++) {
-				g.drawString(lines_statistics.get(i), 10, 200+10+12*(i+lines.size()));	
+			if (paint_statistics) {
+				for(int i=0; i<lines_statistics.size();i++) {
+					g.drawString(lines_statistics.get(i), 10, 200+10+12*(i+lines.size()));	
+				}
 			}
 		}
 		

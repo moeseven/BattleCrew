@@ -63,7 +63,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		repaint();
 	}
 	private void setUpWarriorInspectionPanel() {
-		warrior_stats= new HeroStatsPaintComponent(gui_controller.getGame().getPlayer().getSelectedUnit(),this,200,true);
+		warrior_stats= new HeroStatsPaintComponent(gui_controller.getGame().getPlayer().getSelectedUnit(),this,200,true,true);
 		warrior_inventory= new HeroInventoryPaintComponent(this);
 		warrior_inspection= new JPanel();
 		warrior_inspection.setLayout(new BorderLayout());

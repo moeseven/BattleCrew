@@ -43,7 +43,7 @@ public class ControlComponent extends JComponent {
 		add(log,BorderLayout.SOUTH);
 		pause_button = new PauseButton();
 		add(pause_button, BorderLayout.NORTH);
-		hero_stat = new HeroStatsPaintComponent(player.getSelectedUnit(),bw, 0, false);
+		hero_stat = new HeroStatsPaintComponent(player.getSelectedUnit(),bw, 0, false,true);
 		add(hero_stat, BorderLayout.CENTER);
 		setBorder(new LineBorder(Color.GREEN));
 		super.setPreferredSize(new Dimension(190,(height-1)*15+500));

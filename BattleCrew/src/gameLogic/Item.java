@@ -64,6 +64,18 @@ public class Item {
 ////			}			
 //			abilities.add(new Ability(ability_stats));
 //		}
+		
+		//calculate gold value
+
+//		if (gold_value == 0) {
+//			gold_value = (int) ((defense+offense)*2.0+damage*3.0+range+precision*precision/20.0+(block*block*damage)/100.0+armor*armor/100.0);
+//			//gold_value = (int) (Math.pow(((defense+offense)*2.0+damage*3.0+range+precision*precision/20.0+(block*block*damage)/100.0+armor*armor/100.0), 3)/1000);
+//			if (category == 3) {
+//				gold_value = (int) (gold_value*0.75);
+//			}
+//			gold_value *= 10;
+//		}
+		
 	}
 	public Item() {
 		name= "unknown";

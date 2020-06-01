@@ -56,6 +56,8 @@ public class WarriorsReadyForBattleTable extends HexTileTable{
 				
 				if (p.getCommander().getCommand_points()>units_in_preparation) {
 					setUnit(player.getSelectedUnit());
+					p.getHeroes().add(p.getHeroes().removeFirst());
+					p.setSelectedHero(p.getHeroes().getFirst());
 				}else {
 					p.getGame().log.addLine("your commander can't field more units!");
 				}

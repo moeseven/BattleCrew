@@ -155,18 +155,7 @@ public class ShopinterfaceComponent extends JComponent implements Refreshable_gu
 		@Override
 		public void onClick(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(campaign_window.getGame().getPlayer().getSelectedItem()!=null) {
-				Item item=campaign_window.getGame().getPlayer().getSelectedItem();
-				if(campaign_window.getGame().getPlayer().getInventory().contains(campaign_window.getGame().getPlayer().getSelectedItem())) {
-					//sell
-					shop.getInventory().add(item);
-					campaign_window.getGame().getPlayer().getInventory().remove(item);
-					campaign_window.getGame().getPlayer().gainGold((int) (item.getGold_value()/5.0));
-					if(campaign_window.getGame().getPlayer().getInventory().getInventory_list().size()>0) {
-						campaign_window.getGame().getPlayer().setSelectedItem(campaign_window.getGame().getPlayer().getInventory().getInventory_list().getFirst().get(0));
-					}
-				}	
-			}
+			shop.sell_item(campaignWindow.getGame().getPlayer(), campaign_window.getGame().getPlayer().getSelectedItem());
 
 		}
 		@Override
@@ -207,14 +196,7 @@ public class ShopinterfaceComponent extends JComponent implements Refreshable_gu
 
 		}
 		private boolean buy(Item item){
-			if(campaign_window.getGame().getPlayer().getGold()>=campaign_window.getGame().getPlayer().getSelectedItem().getGold_value()) {
-				if(campaign_window.getGame().getPlayer().getInventory().add(campaign_window.getGame().getPlayer().getSelectedItem())) {
-					campaign_window.getGame().getPlayer().gainGold(-campaign_window.getGame().getPlayer().getSelectedItem().getGold_value());
-					shop.getInventory().remove(campaign_window.getGame().getPlayer().getSelectedItem());
-					return true;
-				}								
-			}
-			return false;
+			return shop.buy_item(campaignWindow.getGame().getPlayer(), item);
 		}
 		@Override
 		public void updateCaption() {

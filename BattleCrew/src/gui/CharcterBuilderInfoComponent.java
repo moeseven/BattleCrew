@@ -21,7 +21,7 @@ public class CharcterBuilderInfoComponent extends JComponent implements Refresha
 		tf.setText(fcb.getCb().type_name_string);
 		this.add(tf, BorderLayout.NORTH);
 		jp= new JPanel();
-		jp.add(new HeroStatsPaintComponent(fcb.gui_controller.getGame().getPlayer().getSelectedUnit(), this, 30, true));
+		jp.add(new HeroStatsPaintComponent(fcb.gui_controller.getGame().getPlayer().getSelectedUnit(), this, 30, true,false));
 		this.add(jp,BorderLayout.CENTER);
 		this.setVisible(true);
 	}
