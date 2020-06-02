@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import gameLogic.campaignTiles.BattleTile;
 import gameLogic.campaignTiles.CampaignTile;
 import gameLogic.campaignTiles.TownTile;
+import gameLogic.campaignTiles.VictoryTile;
 
 public class Campaign {
 	public Game getGame() {
@@ -38,6 +39,7 @@ public class Campaign {
 			defender.addHero(game.unitBuilder.buildUnitbyName("zombie", defender));	
 		}	
 		campaign_tiles.add(new BattleTile(defender,70,250,125));
+		campaign_tiles.add(new VictoryTile());
 	}
 	
 	public boolean enter_next_tile() {

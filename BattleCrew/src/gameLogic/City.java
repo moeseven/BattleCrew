@@ -55,7 +55,10 @@ public class City {
 	
 	public static boolean practice(Player player) {
 		if (player.pay_action_points(1)) {
-			player.getSelectedUnit().gain_experience(100);
+			for (int i = 0; i < player.getHeroes().size(); i++) {
+				player.getHeroes().get(i).gain_experience(55);
+				player.getHeroes().get(i).exhaust(5);
+			}
 			return true;
 		}
 		return false;
