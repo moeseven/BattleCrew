@@ -6,8 +6,11 @@ import gameLogic.Game.GameState;
 
 public class BattleTile extends CampaignTile {
 	private Player opponent;
-	public BattleTile(Player opponent) {
+	public BattleTile(Player opponent, int gold_reward, int experience_reward, int score) {
 		this.opponent = opponent;
+		opponent.setGold_reward(gold_reward);
+		opponent.setScore(score);
+		opponent.setExperience_reward(experience_reward);
 	}
 	@Override
 	public void enter(Campaign campaign) {

@@ -42,6 +42,7 @@ public class Game implements Serializable {
 	public enum GameState{
 		Menu,
 		Leaderboard,
+		BattleSummary,
 		BattlePrepare,
 		Battle,
 		City,

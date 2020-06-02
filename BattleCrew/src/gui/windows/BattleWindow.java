@@ -42,7 +42,7 @@ public class BattleWindow extends X_to_main_main_menu_window implements ActionLi
 //			gui_controller.campaign_window = new CampaignWindow(gui_controller);
 						
 			battle_tick_timer.stop();
-			gui_controller.getGame().getCampaign().enter_next_tile();
+			gui_controller.getGame().set_state(GameState.BattleSummary);
 			//TODO Battle Summary Screen
 			gui_controller.update_view();
 		}

@@ -12,6 +12,21 @@ import HexTilePlayground.HexTileUnit;
 
 public class Player implements HexTilePlayer,Serializable{
 
+	public int getExperience_reward() {
+		return experience_reward;
+	}
+	public void setExperience_reward(int experience_reward) {
+		this.experience_reward = experience_reward;
+	}
+	public int getGold_reward() {
+		return gold_reward;
+	}
+	public void setGold_reward(int gold_reward) {
+		this.gold_reward = gold_reward;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
 	public int getAction_points() {
 		return action_points;
 	}
@@ -44,6 +59,8 @@ public class Player implements HexTilePlayer,Serializable{
 	private Game game;
 	private boolean cheat=false;
 	private int score = 0;
+	private int experience_reward;
+	private int gold_reward;
 	public Player(Game game, Boolean AI) {
 		this.game=game;
 		this.AI=AI;

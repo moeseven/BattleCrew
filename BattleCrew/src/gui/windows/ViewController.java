@@ -29,6 +29,7 @@ public class ViewController {
 
 	public BattleWindow battle_window;
 	public BattlePrepareWindow battle_prepare_window;
+	public BattleSummaryWindow battle_summary_window;
 	public CampaignWindow campaign_window;
 	public MainMenu main_menu;
 	public LeaderboardWindow leader_board;
@@ -63,6 +64,9 @@ public class ViewController {
 			case Battle:
 				show_battle();
 				break;
+			case BattleSummary:
+				show_battle_summary();
+				break;
 			case City:
 				show_campaign();
 				break;
@@ -91,6 +95,9 @@ public class ViewController {
 		if (battle_prepare_window != null) {
 			battle_prepare_window.setVisible(false);
 		}
+		if (battle_summary_window != null) {
+			battle_summary_window.setVisible(false);
+		}
 		if (battle_window != null) {
 			battle_window.setVisible(false);
 		}
@@ -105,6 +112,16 @@ public class ViewController {
 	 */
 	public void refresh_gui() {
 		//TODO add all here
+		if (battle_summary_window != null) {
+			if (battle_summary_window.isVisible()) {
+				battle_summary_window.refresh();
+			}
+		}
+		if (battle_prepare_window != null) {
+			if (battle_prepare_window.isVisible()) {
+				battle_prepare_window.refresh();
+			}
+		}
 		if (battle_window != null) {
 			if (battle_window.isVisible()) {
 				battle_window.refresh();
@@ -209,6 +226,15 @@ public class ViewController {
 		}
 		hide_all_windows();
 		battle_window.setVisible(true);
+		
+	}
+	
+	private void show_battle_summary() {
+		if (battle_summary_window == null) {
+			battle_summary_window = new BattleSummaryWindow(this);
+		}
+		hide_all_windows();
+		battle_summary_window.setVisible(true);
 		
 	}
 

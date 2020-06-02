@@ -31,8 +31,13 @@ public class Campaign {
 		for (int i = 0; i < 10; i++) {
 			defender.addHero(game.unitBuilder.buildUnitbyName("giant_rat", defender));	
 		}	
-		campaign_tiles.add(new BattleTile(defender));
+		campaign_tiles.add(new BattleTile(defender,20,200,105));
 		campaign_tiles.add(new TownTile());
+		defender = new Player(game,true);
+		for (int i = 0; i < 10; i++) {
+			defender.addHero(game.unitBuilder.buildUnitbyName("zombie", defender));	
+		}	
+		campaign_tiles.add(new BattleTile(defender,70,250,125));
 	}
 	
 	public boolean enter_next_tile() {

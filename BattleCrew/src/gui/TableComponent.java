@@ -13,6 +13,7 @@ import HexTilePlayground.HexTileTable;
 import HexTilePlayground.GUI.HexTileTableComponent;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.BattleUnit;
+import gameLogic.Commander;
 import gameLogic.Tile;
 import gui.windows.BattleWindow;
 
@@ -33,6 +34,9 @@ public class TableComponent extends HexTileTableComponent {
 			}
 			if(f.getUnit().isFleeing()){
 				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,14, table.getHex_size()),x_start, y_start,null);
+			}
+			if (f.getUnit() instanceof Commander) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,391, table.getHex_size()),x_start, y_start,null);
 			}
 			// attack direction image numbers:
 			/*

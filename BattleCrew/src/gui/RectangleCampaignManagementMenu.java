@@ -12,9 +12,10 @@ import javax.swing.JComponent;
 
 import gameLogic.City;
 import gui.windows.CampaignWindow;
+import gui.windows.ViewController;
 import guiRectangles.RectangleClicker;
 
-public class RectangleCampaignManagementMenu extends JComponent {
+public class RectangleCampaignManagementMenu extends JComponent implements Refreshable_gui{
 	private RectangleClicker rectangle_clicker;
 	private JButton shop_button,warriors_button,prepare_battle_button;
 	private JButton rest_button, train_button, earn_button, recruit_button, score_button; //city actions (use up action points)
@@ -126,13 +127,7 @@ public class RectangleCampaignManagementMenu extends JComponent {
 	}
 	private void handle_action_point_buttons_visibility() {
 		cw.refresh();
-		if (cw.getGame().getPlayer().getAction_points() <= 0) {
-			rest_button.setVisible(false);
-			train_button.setVisible(false);
-			earn_button.setVisible(false);
-			recruit_button.setVisible(false);
-			score_button.setVisible(false);
-		}
+		
 	}
 	private class ShopButton extends JButton{
 		public ShopButton() {
@@ -190,5 +185,26 @@ public class RectangleCampaignManagementMenu extends JComponent {
 				}
 			} 
 		}
+	}
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		if (cw.getGame().getPlayer().getAction_points() <= 0) {
+			rest_button.setVisible(false);
+			train_button.setVisible(false);
+			earn_button.setVisible(false);
+			recruit_button.setVisible(false);
+			score_button.setVisible(false);
+		}else {
+			rest_button.setVisible(true);
+			train_button.setVisible(true);
+			earn_button.setVisible(true);
+			recruit_button.setVisible(true);
+			score_button.setVisible(true);
+		}
+	}
+	@Override
+	public ViewController get_gui_controller() {
+		return cw.gui_controller;
 	}
 }

@@ -27,6 +27,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	private WarriorCampaignComponent warriors;
 	private HeroStatsPaintComponent warrior_stats;
 	private HeroInventoryPaintComponent warrior_inventory;
+	private RectangleCampaignManagementMenu buttons;
 	private int state; //0: shop, 1: battlepreparation, 2: warriors
 	public CampaignWindow(ViewController gc) {
 		super(gc);
@@ -38,7 +39,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		shop= new ShopinterfaceComponent(this, new Shop(gc.getGame()));
 		warriors = new WarriorCampaignComponent(this);
 		showAccurateComponent();
-		add(new RectangleCampaignManagementMenu(this),BorderLayout.CENTER);
+		add(buttons = new RectangleCampaignManagementMenu(this),BorderLayout.CENTER);
 		setUpWarriorInspectionPanel();
 	}
 	public void showAccurateComponent() {
@@ -68,6 +69,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	
 	}
 	public void refresh() {
+		buttons.refresh();
 		warrior_stats.rc.updateCaptions();
 		warrior_inventory.refresh();
 		warrior_stats.repaint();

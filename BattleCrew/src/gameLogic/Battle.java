@@ -132,13 +132,13 @@ public class Battle {
 		return false;
 	}
 	public void end_battle() {
-		for (int i = 0; i < attacker.getHeroes().size(); i++) {
-			attacker.getHeroes().get(i).setBattle_participant(false);
-				
-		}
-		for (int i = 0; i < defender.getHeroes().size(); i++) {
-			defender.getHeroes().get(i).setBattle_participant(false);
-		}
+//		for (int i = 0; i < attacker.getHeroes().size(); i++) {
+//			attacker.getHeroes().get(i).setBattle_participant(false);
+//				
+//		}
+//		for (int i = 0; i < defender.getHeroes().size(); i++) {
+//			defender.getHeroes().get(i).setBattle_participant(false);
+//		}
 		for (int i = 0; i < game.getPrepareTable().getTiles().size(); i++) {
 			if (game.getPrepareTable().getTiles().get(i).getUnit()!=null) {
 				if (game.getPrepareTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
