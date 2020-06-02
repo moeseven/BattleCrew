@@ -15,6 +15,12 @@ import game.Leaderboard.Leaderboard;
 import gameLogic.campaignTiles.CampaignTile;
 
 public class Game implements Serializable {
+	public Campaign getCampaign() {
+		return campaign;
+	}
+	public void setCampaign(Campaign campaign) {
+		this.campaign = campaign;
+	}
 	private Player player; // change this for multiplayer
 	private Player opponent;
 	private BattleTicked battle;
@@ -26,7 +32,7 @@ public class Game implements Serializable {
 	public AbilityBuilder abilityBuilder;
 	public BattleUnitBuilder unitBuilder;
 	public NameGenerator name_generator;
-
+	private Campaign campaign;
 	//public ItemSpecialBuilder itemSpecialBuilder;
 	//public ItemSuffixBuilder itemSuffixBuilder;
 	public MyLog log;
@@ -34,19 +40,34 @@ public class Game implements Serializable {
 	private int idleStressRelief = 10;
 	private BattleUnit lastCaster;
 	public enum GameState{
-		City,
+		Menu,
+		Leaderboard,
+		BattlePrepare,
 		Battle,
+		City,
+		CharacterCreation,
 		GameOver
 	};
 	private GameState state = GameState.City;
+	private GameState previous_in_game_state = state;
+	public GameState previous_game_state() {
+		return previous_in_game_state;
+	}
 	public GameState get_state() {
 		return state;
 	}
-	public boolean set_state(GameState s) {
+	public boolean set_state(GameState new_state) {
+		if (new_state == GameState.GameOver) {
+			previous_in_game_state = GameState.GameOver;
+		}
+		if (state != GameState.Leaderboard && state != GameState.Menu) {
+			previous_in_game_state = state;
+		}
+		
 		if (state == GameState.GameOver) {
 			return false;
 		}else {
-			state = s;
+			state = new_state;
 			return true;
 		}
 	}
@@ -66,6 +87,7 @@ public class Game implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		campaign = new Campaign(this);
 		shop= new Shop(this);
 //		cardBuilder = new CardBuilder();
 //		itemBuilder = new ItemBuilder(this,"resources/items.properties");
@@ -96,10 +118,10 @@ public class Game implements Serializable {
 		state = GameState.GameOver;
 	}
 	
-	public void enter_city() {
-		player.setAction_points(3);
-		set_state(GameState.City);
-	}
+//	public void enter_city() {
+//		player.setAction_points(3);
+//		set_state(GameState.City);
+//	}
 	
 	public void enter_battle(Player opponent) {
 		set_state(GameState.Battle);

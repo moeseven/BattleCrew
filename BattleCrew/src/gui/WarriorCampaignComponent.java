@@ -15,14 +15,15 @@ import SpriteSheet.StaticImageLoader;
 import gameLogic.Item;
 import gameLogic.Shop;
 import gui.windows.CampaignWindow;
+import gui.windows.ViewControlledWindow;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
 
 public class WarriorCampaignComponent extends JComponent{
 	private RectangleClicker rc;
-	private CampaignWindow campaign_window;
-	public WarriorCampaignComponent(CampaignWindow campaignWindow) {
-	this.campaign_window=campaignWindow;
+	private ViewControlledWindow window;
+	public WarriorCampaignComponent(ViewControlledWindow window) {
+	this.window=window;
 	setBorder(new LineBorder(Color.WHITE));
 	super.setPreferredSize(new Dimension(600,300));
 	MyMouseListener ml = new MyMouseListener();
@@ -36,8 +37,8 @@ public class WarriorCampaignComponent extends JComponent{
 	rc.addRect(new ClickableRectangle("<-",125,120,45,20) {
 		@Override
 		public void onClick(MouseEvent e) {
-			campaignWindow.gui_controller.getGame().getPlayer().getHeroes().add(campaignWindow.gui_controller.getGame().getPlayer().getHeroes().removeFirst());
-			campaignWindow.gui_controller.getGame().getPlayer().setSelectedHero(campaignWindow.gui_controller.getGame().getPlayer().getHeroes().getFirst());
+			window.get_view_controller().getGame().getPlayer().getHeroes().add(window.get_view_controller().getGame().getPlayer().getHeroes().removeFirst());
+			window.get_view_controller().getGame().getPlayer().setSelectedHero(window.get_view_controller().getGame().getPlayer().getHeroes().getFirst());
 				
 		}
 		@Override
@@ -47,8 +48,8 @@ public class WarriorCampaignComponent extends JComponent{
 	rc.addRect(new ClickableRectangle("->",170,120,45,20) {
 		@Override
 		public void onClick(MouseEvent e) {
-			campaignWindow.gui_controller.getGame().getPlayer().getHeroes().addFirst(campaignWindow.gui_controller.getGame().getPlayer().getHeroes().removeLast());
-			campaignWindow.gui_controller.getGame().getPlayer().setSelectedHero(campaignWindow.gui_controller.getGame().getPlayer().getHeroes().getFirst());
+			window.get_view_controller().getGame().getPlayer().getHeroes().addFirst(window.get_view_controller().getGame().getPlayer().getHeroes().removeLast());
+			window.get_view_controller().getGame().getPlayer().setSelectedHero(window.get_view_controller().getGame().getPlayer().getHeroes().getFirst());
 		}
 		@Override
 		public void updateCaption() {					
@@ -64,7 +65,7 @@ private class MyMouseListener extends MouseAdapter{
 			rc.triggerClick(e);
 			rc.updateCaptions();
 			//campaign_window.refresh();
-			campaign_window.refresh();
+			window.refresh();
 			revalidate();
 			repaint();			
 		}else{
@@ -76,13 +77,13 @@ private class MyMouseListener extends MouseAdapter{
 }
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);
-	for (int i = 0; i < campaign_window.gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
-		if (campaign_window.gui_controller.getGame().getPlayer().getSelectedUnit() == campaign_window.gui_controller.getGame().getPlayer().getHeroes().get(i)) {
-			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,campaign_window.gui_controller.getGame().getPlayer().getHeroes().get(i).getImage_number(), campaign_window.gui_controller.getGame().image_scale).getScaledInstance(180, 153, 3),-20+i*90,0,null);
-			g.drawString(campaign_window.gui_controller.getGame().getPlayer().getHeroes().get(i).getName(),40+i*90, 165);
+	for (int i = 0; i < window.get_view_controller().getGame().getPlayer().getHeroes().size(); i++) {
+		if (window.get_view_controller().getGame().getPlayer().getSelectedUnit() == window.get_view_controller().getGame().getPlayer().getHeroes().get(i)) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,window.get_view_controller().getGame().getPlayer().getHeroes().get(i).getImage_number(), window.get_view_controller().getGame().image_scale).getScaledInstance(180, 153, 3),-20+i*90,0,null);
+			g.drawString(window.get_view_controller().getGame().getPlayer().getHeroes().get(i).getName(),40+i*90, 165);
 		}else {
-			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,campaign_window.gui_controller.getGame().getPlayer().getHeroes().get(i).getImage_number(), campaign_window.gui_controller.getGame().image_scale).getScaledInstance(120, 102, 2),-40+i*90,0,null);
-			g.drawString(campaign_window.gui_controller.getGame().getPlayer().getHeroes().get(i).getName(),7+i*90, 110);
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,window.get_view_controller().getGame().getPlayer().getHeroes().get(i).getImage_number(), window.get_view_controller().getGame().image_scale).getScaledInstance(120, 102, 2),-40+i*90,0,null);
+			g.drawString(window.get_view_controller().getGame().getPlayer().getHeroes().get(i).getName(),7+i*90, 110);
 		}
 		
 	}

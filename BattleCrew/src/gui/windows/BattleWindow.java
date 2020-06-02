@@ -14,7 +14,6 @@ import gameLogic.Game.GameState;
 import gui.ControlComponent;
 import gui.Refreshable_gui;
 import gui.TableComponent;
-import gui.windows.ViewController.View;
 
 
 public class BattleWindow extends X_to_main_main_menu_window implements ActionListener, Refreshable_gui{
@@ -41,8 +40,11 @@ public class BattleWindow extends X_to_main_main_menu_window implements ActionLi
 //			dispose();
 //			gui_controller.campaign_window.dispose();
 //			gui_controller.campaign_window = new CampaignWindow(gui_controller);
-			gui_controller.setView(View.City);
+						
 			battle_tick_timer.stop();
+			gui_controller.getGame().getCampaign().enter_next_tile();
+			//TODO Battle Summary Screen
+			gui_controller.update_view();
 		}
 	}
 	public void refresh() {

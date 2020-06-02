@@ -20,43 +20,27 @@ import gui.ShopinterfaceComponent;
 import gui.WarriorCampaignComponent;
 import gui.WarriorsReadyForBattleComponent;
 
-
-public class CampaignWindow extends X_to_main_main_menu_window implements Refreshable_gui{
+public class BattlePrepareWindow extends X_to_main_main_menu_window implements Refreshable_gui{
 	private JPanel warrior_inspection;
-	private ShopinterfaceComponent shop;
+	private WarriorsReadyForBattleComponent warriors_battle;
 	private WarriorCampaignComponent warriors;
 	private HeroStatsPaintComponent warrior_stats;
 	private HeroInventoryPaintComponent warrior_inventory;
 	private int state; //0: shop, 1: battlepreparation, 2: warriors
-	public CampaignWindow(ViewController gc) {
+	public BattlePrepareWindow(ViewController gc) {
 		super(gc);
 		state=2;
-		setTitle("campaign");	
+		setTitle("prepare for battle");	
 		this.setSize(1300, 680);
-		setLocationRelativeTo(null);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		setLayout(new BorderLayout());	
-		shop= new ShopinterfaceComponent(this, new Shop(gc.getGame()));
-		warriors = new WarriorCampaignComponent(this);
-		showAccurateComponent();
-		add(new RectangleCampaignManagementMenu(this),BorderLayout.CENTER);
+		warriors_battle=new WarriorsReadyForBattleComponent(this);
+		add(warriors_battle, BorderLayout.NORTH);
+		setLocationRelativeTo(null);
 		setUpWarriorInspectionPanel();
 	}
-	public void showAccurateComponent() {
-		remove(shop);
-		remove(warriors);
-		if (state==0) {
-			add(shop,BorderLayout.NORTH);
-		}else {
-			if (state==1) {
-				//TODO
-			}else {
-				if (state == 2) {
-					add(warriors,BorderLayout.NORTH);
-				}
-			}
-		}
-		repaint();
-	}
+	
 	private void setUpWarriorInspectionPanel() {
 		warrior_stats= new HeroStatsPaintComponent(gui_controller.getGame().getPlayer().getSelectedUnit(),this,200,true,true);
 		warrior_inventory= new HeroInventoryPaintComponent(this);
@@ -76,8 +60,12 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	}
 	
 	
-	//getters and setters
 	
+//	public void setUpFightWindow() {
+//		//gui_controller.battle_window = new BattleWindow(gui_controller);
+//		gui_controller.update_view();
+//	}
+	//getters and setters
 	public int getState() {
 		return state;
 	}

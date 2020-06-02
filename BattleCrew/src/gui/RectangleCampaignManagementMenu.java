@@ -62,8 +62,8 @@ public class RectangleCampaignManagementMenu extends JComponent {
 	}
 	private class EarnButton extends JButton{
 		public EarnButton() {
-			setName("gold");
-			this.setText("gold");
+			setName("earn gold");
+			this.setText("earn gold");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -111,7 +111,7 @@ public class RectangleCampaignManagementMenu extends JComponent {
 	private class LearnButton extends JButton{
 		public LearnButton() {
 			setName("study");
-			this.setText("study");
+			this.setText("training");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -185,10 +185,8 @@ public class RectangleCampaignManagementMenu extends JComponent {
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
 					//TODO open battle prepare here
-					cw.setState(1);
-					cw.showAccurateComponent();
-					prepare_battle_button.setVisible(false);
-					shop_button.setVisible(true);
+					cw.gui_controller.getGame().getCampaign().enter_next_tile();
+					cw.gui_controller.update_view();
 				}
 			} 
 		}

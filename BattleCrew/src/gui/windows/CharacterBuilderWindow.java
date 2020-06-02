@@ -14,7 +14,6 @@ import gameLogic.Game;
 import gameLogic.Game.GameState;
 import gameLogic.Player;
 import gui.CharcterBuilderInfoComponent;
-import gui.windows.ViewController.View;
 
 public class CharacterBuilderWindow extends X_to_main_main_menu_window{
 	private JPanel jp01;
@@ -73,8 +72,8 @@ public class CharacterBuilderWindow extends X_to_main_main_menu_window{
 			fcb.cb.createHero(cbi.getTf().getText());
 			fcb.setVisible(false);					
 			gui_controller.campaign_window = new CampaignWindow(gui_controller);
-			gui_controller.getGame().enter_city();
-			gui_controller.setView(View.City);
+			gui_controller.getGame().getCampaign().enter_next_tile();
+			gui_controller.update_view();
 		} 
 	}
 	public CommanderChooser getCb() {

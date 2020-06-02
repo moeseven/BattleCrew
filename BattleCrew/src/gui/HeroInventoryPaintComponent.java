@@ -21,6 +21,7 @@ import SpriteSheet.StaticImageLoader;
 import gameLogic.Game;
 import gameLogic.Item;
 import gui.windows.CampaignWindow;
+import gui.windows.ViewControlledWindow;
 import gui.windows.ViewController;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
@@ -29,13 +30,13 @@ import guiRectangles.RectangleClicker;
 public class HeroInventoryPaintComponent extends JComponent implements Refreshable_gui{
 		private JPanel jp;
 		private JScrollPane sp;
-		private CampaignWindow gw;
+		private ViewControlledWindow window;
 		public RectangleClicker rc;
 		private int x_offset=-90;
 		private Game game;
-		public HeroInventoryPaintComponent(CampaignWindow sw){
-			this.gw=sw;
-			game = gw.getGame();
+		public HeroInventoryPaintComponent(ViewControlledWindow window){
+			this.window=window;
+			game = window.get_view_controller().getGame();
 			setBorder(new LineBorder(Color.YELLOW));
 			super.setPreferredSize(new Dimension(500,200));
 			addMouseListener(new MyMouseListener());
@@ -148,8 +149,8 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 						if(game.getPlayer().getInventory().contains(itemUsable)) {
 							//TODO
 							if (itemUsable.getCategory() == 0) {
-								itemUsable.mod(gw.getGame().getPlayer().getSelectedUnit());
-								gw.getGame().getPlayer().getInventory().remove(itemUsable);								
+								itemUsable.mod(game.getPlayer().getSelectedUnit());
+								game.getPlayer().getInventory().remove(itemUsable);								
 							}
 						}			
 					}
@@ -247,7 +248,7 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 	}
 	@Override
 	public ViewController get_gui_controller() {
-		return gw.gui_controller;
+		return window.get_view_controller();
 	}
 }
 

@@ -28,69 +28,45 @@ public class ViewController {
 	}
 
 	public BattleWindow battle_window;
+	public BattlePrepareWindow battle_prepare_window;
 	public CampaignWindow campaign_window;
 	public MainMenu main_menu;
 	public LeaderboardWindow leader_board;
 	public CharacterBuilderWindow character_builder;
 	public GameOverWindow game_over;
 	private Game game;
-	public enum View{
-		Menu,
-		Leaderboard,
-		Battle,
-		City,
-		CharacterCreation,
-		GameOver
-	}
-	private View view = View.Menu;
 	public ViewController() {
 		this.game= new Game(1);
 		main_menu = new MainMenu(this);
 	}
 	
-	public void setView(View v) {
-		switch (v) {
-		case Battle:
-			game.set_state(GameState.Battle);
-			break;
-		case City:
-			game.set_state(GameState.City);
-			break;
-		default:
-			break;
-		}
-		view = v;
-		update_view();
-	}
-	private void update_view() {
-		if (view == View.Menu) {
+	public void update_view() {
+		if (game.get_state() == GameState.Menu) {
 			if (game.get_state() == GameState.GameOver) {
 				game = new Game(1);
 			}
 			show_menu();
 		}else {
 			if (game.get_state() == GameState.GameOver) {
-				view = View.GameOver;
 				show_game_over();			
 		}else {
-			switch (view) {
+			switch (game.get_state()) {
 			case Leaderboard:
 				show_leaderboard();
 				break;
 			case CharacterCreation:
 				show_character_creation();
 				break;
+			case BattlePrepare:
+				show_prepare_battle();
+				break;
+			case Battle:
+				show_battle();
+				break;
+			case City:
+				show_campaign();
+				break;
 			default:
-				switch (game.get_state()) {
-				case Battle:
-					show_battle();
-					break;
-				case City:
-					show_campaign();
-					break;
-				default:
-					break;
-				}
 				break;
 			}
 		}
@@ -111,6 +87,9 @@ public class ViewController {
 		}
 		if (main_menu != null) {
 			main_menu.setVisible(false);
+		}
+		if (battle_prepare_window != null) {
+			battle_prepare_window.setVisible(false);
 		}
 		if (battle_window != null) {
 			battle_window.setVisible(false);
@@ -190,19 +169,11 @@ public class ViewController {
     public void start_game() {
     	if(game.getPlayer().getHeroes().size()>0 && game.get_state() != GameState.GameOver) {
 			game.getPlayer().setSelectedHero(game.getPlayer().getHeroes().getFirst());	
-			switch (game.get_state()) {
-			case Battle:
-				view = View.Battle;
-				break;
-			case City:
-				view = View.City;
-			default:
-				break;
-			}
+			game.set_state(game.previous_game_state());
 		}else {
 			game = new Game(1);
 			character_builder = new CharacterBuilderWindow(new CommanderChooser(game),this);
-			view = View.CharacterCreation;
+			game.set_state(GameState.CharacterCreation);
 		}
 		update_view();
     }
@@ -221,6 +192,15 @@ public class ViewController {
 	private void show_menu() {
 		hide_all_windows();
 		main_menu.setVisible(true);	
+	}
+	
+	private void show_prepare_battle() {
+		if (battle_prepare_window == null) {
+			battle_prepare_window = new BattlePrepareWindow(this);
+		}
+		hide_all_windows();
+		battle_prepare_window.setVisible(true);
+		
 	}
 
 	private void show_battle() {

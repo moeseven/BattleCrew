@@ -22,18 +22,18 @@ import HexTilePlayground.GUI.HexTileTableComponent;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.BattleUnit;
 import gameLogic.WarriorsReadyForBattleTable;
+import gui.windows.BattlePrepareWindow;
 import gui.windows.BattleWindow;
 import gui.windows.CampaignWindow;
-import gui.windows.ViewController.View;
 
 
 public class WarriorsReadyForBattleComponent extends JComponent{
-	CampaignWindow cw;
+	BattlePrepareWindow battle_prepare_window;
 	
 
-	public WarriorsReadyForBattleComponent(CampaignWindow cw) {
+	public WarriorsReadyForBattleComponent(BattlePrepareWindow cw) {
 		super();
-		this.cw = cw;
+		this.battle_prepare_window = cw;
 		setBorder(new LineBorder(Color.YELLOW));
 		setLayout(new BorderLayout());
 		add(new WarriorsReadyForBattleTableComponent(cw.gui_controller.getGame().getPlayer(), cw.gui_controller.getGame().getPrepareTable(), cw),BorderLayout.CENTER);
@@ -55,8 +55,9 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
 					//start battle
-					cw.gui_controller.getGame().startExampleBattle();
-					cw.gui_controller.setView(View.Battle);
+					//battle_prepare_window.gui_controller.getGame().startExampleBattle();
+					battle_prepare_window.gui_controller.getGame().enter_battle(battle_prepare_window.gui_controller.getGame().getOpponent());
+					battle_prepare_window.gui_controller.update_view();
 					//cw.gui_controller.battle_window = new BattleWindow(cw.gui_controller);
 				}
 			} 
@@ -76,8 +77,8 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		}
 		public void remakeListEntries() {
 			this.removeAll(); 
-			for (int i = 0; i < cw.gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
-				entry_box.add(new HeroListItem(cw.gui_controller.getGame().getPlayer().getHeroes().get(i)));
+			for (int i = 0; i < battle_prepare_window.gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
+				entry_box.add(new HeroListItem(battle_prepare_window.gui_controller.getGame().getPlayer().getHeroes().get(i)));
 			}
 		}
 		private class EntryBox extends JComponent{
@@ -103,15 +104,15 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		private class HeroListItemMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					cw.gui_controller.getGame().getPlayer().setSelectedHero(warrior);			
-					cw.refresh();
+					battle_prepare_window.gui_controller.getGame().getPlayer().setSelectedHero(warrior);			
+					battle_prepare_window.refresh();
 				}
 			} 
 		}
 	}
 	private class MyMouseListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){	
-			cw.refresh();
+			battle_prepare_window.refresh();
 		} 
 	}
 	//////////////////////////////////////////////////////////////////////
@@ -119,7 +120,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 
 	private class WarriorsReadyForBattleTableComponent extends HexTileTableComponent{
 
-		public WarriorsReadyForBattleTableComponent(HexTilePlayer player, HexTileTable table, CampaignWindow gf) {
+		public WarriorsReadyForBattleTableComponent(HexTilePlayer player, HexTileTable table, BattlePrepareWindow gf) {
 			super(player, table, gf, Resources.IMAGE_PATH);
 			// TODO Auto-generated constructor stub
 			addMouseListener(new MyMouseListener());

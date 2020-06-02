@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import game.Leaderboard.Leaderboard;
 import gameLogic.CommanderChooser;
 import gameLogic.Game;
-import gui.windows.ViewController.View;
+import gameLogic.Game.GameState;
 
 
 
@@ -60,7 +60,8 @@ public class MainMenu extends X_to_main_main_menu_window{
 	}
 	private class ButtonShowLeaderboardListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			gui_controller.setView(View.Leaderboard);
+			gui_controller.getGame().set_state(GameState.Leaderboard);
+			gui_controller.update_view();
 			//gui_controller.leader_board = new LeaderboardWindow(gui_controller,false);
 		} 
 	}

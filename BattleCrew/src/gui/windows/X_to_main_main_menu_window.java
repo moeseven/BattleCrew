@@ -16,11 +16,11 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 import gameLogic.Game;
+import gameLogic.Game.GameState;
 import gui.Refreshable_gui;
-import gui.windows.ViewController.View;
 
 
-public class X_to_main_main_menu_window extends JFrame{
+public class X_to_main_main_menu_window extends JFrame implements ViewControlledWindow{
 	public ViewController gui_controller;
 	public X_to_main_main_menu_window(ViewController gui_controller){
 		this.gui_controller = gui_controller;
@@ -28,10 +28,20 @@ public class X_to_main_main_menu_window extends JFrame{
 		addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		       gui_controller.setView(View.Menu);
+		       gui_controller.getGame().set_state(GameState.Menu);
+		       gui_controller.update_view();
 		    }
 		});
 
+	}
+	@Override
+	public ViewController get_view_controller() {
+		return gui_controller;
+	}
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

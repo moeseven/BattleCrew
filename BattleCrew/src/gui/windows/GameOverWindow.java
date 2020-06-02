@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 import gameLogic.Game;
-import gui.windows.ViewController.View;
 
 
 public class GameOverWindow extends X_to_main_main_menu_window{
