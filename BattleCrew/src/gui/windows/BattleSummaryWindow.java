@@ -45,6 +45,9 @@ public class BattleSummaryWindow extends X_to_main_main_menu_window{
 			for (int i = 0; i < gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
 				if (gui_controller.getGame().getPlayer().getHeroes().get(i).isBattle_participant()) {
 					survivors++;
+				}else {
+					//regen
+					gui_controller.getGame().getPlayer().getHeroes().get(i).recover();
 				}
 			}
 			for (int i = 0; i < gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
