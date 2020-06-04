@@ -34,9 +34,11 @@ public class HeroStatsPaintComponent extends JComponent{
 		private boolean vertical = true;
 		private int component_height_lines=14;
 		private boolean paint_statistics;
-		public HeroStatsPaintComponent(BattleUnit warrior, Refreshable_gui gui, int offset, boolean vertical, boolean paint_statistics){
+		private boolean paint_equipment;
+		public HeroStatsPaintComponent(BattleUnit warrior, Refreshable_gui gui, int offset, boolean vertical, boolean paint_statistics, boolean paint_equipment){
 			this.gw=gui;
 			this.paint_statistics = paint_statistics;
+			this.paint_equipment = paint_equipment;
 			int x_dimension = 600;
 			if (paint_statistics) {
 				x_dimension = 800;
@@ -56,231 +58,235 @@ public class HeroStatsPaintComponent extends JComponent{
 			if(warrior.getPlayer().getInventory().getInventory_list().size()>0) {
 				warrior.getPlayer().setSelectedItem(warrior.getPlayer().getInventory().getInventory_list().getFirst().get(0));
 			}
-			//rectangles
 			rc=new RectangleClicker();
-			//potion
-			rc.addRect(new ClickableRectangle("potion",60+offset,142+offset_horizontal,50,34) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion());
-					}
-				}
-				@Override
-				public void updateCaption() {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion()!=null) {
-						caption.removeFirst();
-						caption.addFirst("");
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion().getImage());
-					}else {
-						cleanImageNumber();
-						caption.removeFirst();
-						caption.addFirst(name);
-					}					
-				}		
-			});
-			//head
-			rc.addRect(new ClickableRectangle("head",60+offset,10+offset_horizontal,50,50) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getHead());
-						if (e.isMetaDown()) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipHead();
+			if (paint_equipment) {
+				//rectangles
+				
+				//potion
+				rc.addRect(new ClickableRectangle("potion",60+offset,142+offset_horizontal,50,34) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion());
 						}
-						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
 					}
-				}
-				@Override
-				public void updateCaption() {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
-						caption.removeFirst();
-						caption.addFirst("");
-						//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHead().getName());
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getHead().getImage());
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
-					}					
-				}		
-			});
-			//body
-			rc.addRect(new ClickableRectangle("body",60+offset,70+offset_horizontal,50,70) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getBody());
-						if (e.getButton() == 3) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipBody();
-						}
-						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
-					}
-				}
-				@Override
-				public void updateCaption() {
-					// TODO Auto-generated method stub					
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
-						caption.removeFirst();	
-						caption.addFirst("");
-						//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getBody().getName());
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getBody().getImage());
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
-					}
-				}		
-			});
-			//hand1
-			rc.addRect(new ClickableRectangle("hand1",5+offset,60+offset_horizontal,50,80) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1());
-						if (e.getButton() == 3) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipHand1();
-						}
-						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
-					}
-				}
-				@Override
-				public void updateCaption() {				
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
-						caption.removeFirst();	
-						caption.addFirst("");
-						//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHand1().getName());
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1().getImage());
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
-					}
-				}		
-			});
-			//hand2
-			rc.addRect(new ClickableRectangle("hand2",115+offset,60+offset_horizontal,50,80) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2());
-						if (e.getButton() == 3) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipHand2();
-						}
-						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
-					}
-				}
-				@Override
-				public void updateCaption() {					
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
-						caption.removeFirst();	
-						caption.addFirst("");
-						//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHand2().getName());
-						if (! (warrior.getPlayer().getSelectedUnit().getEquipment().getHand2().getCategory()==3)) {
-							//not a two handed weapon
-							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2().getImage());
+					@Override
+					public void updateCaption() {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion()!=null) {
+							caption.removeFirst();
+							caption.addFirst("");
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getPotion().getImage());
 						}else {
-							this.setImageNumber(16);
+							cleanImageNumber();
+							caption.removeFirst();
+							caption.addFirst(name);
+						}					
+					}		
+				});
+				//head
+				rc.addRect(new ClickableRectangle("head",60+offset,10+offset_horizontal,50,50) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getHead());
+							if (e.isMetaDown()) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipHead();
+							}
+							
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
 						}
-						
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
 					}
-				}		
-			});
-			//ring1
-			rc.addRect(new ClickableRectangle("ring1",15+offset,142+offset_horizontal,30,30) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1());
-						if (e.getButton() == 3) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipRing1();
+					@Override
+					public void updateCaption() {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getHead()!=null) {
+							caption.removeFirst();
+							caption.addFirst("");
+							//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHead().getName());
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getHead().getImage());
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
+						}					
+					}		
+				});
+				//body
+				rc.addRect(new ClickableRectangle("body",60+offset,70+offset_horizontal,50,70) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getBody());
+							if (e.getButton() == 3) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipBody();
+							}
+							
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
 						}
-						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
 					}
-				}
-				@Override
-				public void updateCaption() {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
-						caption.removeFirst();
-						caption.addFirst("");					
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1().getImage());
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
-					}					
-				}		
-			});
-			//ring2
-			rc.addRect(new ClickableRectangle("ring2",125+offset,142+offset_horizontal,30,30) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2());
-						if (e.getButton() == 3) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipRing2();
+					@Override
+					public void updateCaption() {
+						// TODO Auto-generated method stub					
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getBody()!=null) {
+							caption.removeFirst();	
+							caption.addFirst("");
+							//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getBody().getName());
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getBody().getImage());
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
 						}
-						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
+					}		
+				});
+				//hand1
+				rc.addRect(new ClickableRectangle("hand1",5+offset,60+offset_horizontal,50,80) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1());
+							if (e.getButton() == 3) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipHand1();
+							}
+							
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
+						}
 					}
-				}
-				@Override
-				public void updateCaption() {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
-						caption.removeFirst();
-						caption.addFirst("");					
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2().getImage());
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
-					}					
-				}		
-			});
-			rc.updateCaptions();
+					@Override
+					public void updateCaption() {				
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1()!=null) {
+							caption.removeFirst();	
+							caption.addFirst("");
+							//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHand1().getName());
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getHand1().getImage());
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
+						}
+					}		
+				});
+				//hand2
+				rc.addRect(new ClickableRectangle("hand2",115+offset,60+offset_horizontal,50,80) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2());
+							if (e.getButton() == 3) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipHand2();
+							}
+							
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
+						}
+					}
+					@Override
+					public void updateCaption() {					
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2()!=null) {
+							caption.removeFirst();	
+							caption.addFirst("");
+							//caption.addFirst(gw.getGame().getPlayer().getSelectedHero().getEquipment().getHand2().getName());
+							if (! (warrior.getPlayer().getSelectedUnit().getEquipment().getHand2().getCategory()==3)) {
+								//not a two handed weapon
+								this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getHand2().getImage());
+							}else {
+								this.setImageNumber(16);
+							}
+							
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
+						}
+					}		
+				});
+				//ring1
+				rc.addRect(new ClickableRectangle("ring1",15+offset,142+offset_horizontal,30,30) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1());
+							if (e.getButton() == 3) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipRing1();
+							}
+							
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
+						}
+					}
+					@Override
+					public void updateCaption() {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1()!=null) {
+							caption.removeFirst();
+							caption.addFirst("");					
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getRing1().getImage());
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
+						}					
+					}		
+				});
+				//ring2
+				rc.addRect(new ClickableRectangle("ring2",125+offset,142+offset_horizontal,30,30) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2());
+							if (e.getButton() == 3) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipRing2();
+							}
+							
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
+						}
+					}
+					@Override
+					public void updateCaption() {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2()!=null) {
+							caption.removeFirst();
+							caption.addFirst("");					
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getRing2().getImage());
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
+						}					
+					}		
+				});
+				rc.updateCaptions();
+				
+				//amunition
+				rc.addRect(new ClickableRectangle("amo",115+offset,10+offset_horizontal,50,40) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
+							warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0));
+							if (e.getButton() == 3) {
+								warrior.getPlayer().getSelectedUnit().getEquipment().unequipAmunition();
+							}						
+						}else {
+							warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
+						}
+					}
+					@Override
+					public void updateCaption() {
+						if(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
+							caption.removeFirst();
+							caption.addFirst(""+warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().size());					
+							this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0).getImage());
+						}else {
+							this.setImageNumber(1);
+							caption.removeFirst();
+							caption.addFirst(name);
+						}					
+					}		
+				});
+				rc.updateCaptions();
+			}
 			
-			//amunition
-			rc.addRect(new ClickableRectangle("amo",115+offset,10+offset_horizontal,50,40) {
-				@Override
-				public void onClick(MouseEvent e) {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
-						warrior.getPlayer().setSelectedItem(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0));
-						if (e.getButton() == 3) {
-							warrior.getPlayer().getSelectedUnit().getEquipment().unequipAmunition();
-						}						
-					}else {
-						warrior.getPlayer().getSelectedUnit().equip(warrior.getPlayer().getSelectedItem());
-					}
-				}
-				@Override
-				public void updateCaption() {
-					if(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().size()>0) {
-						caption.removeFirst();
-						caption.addFirst(""+warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().size());					
-						this.setImageNumber(warrior.getPlayer().getSelectedUnit().getEquipment().getAmunition().get(0).getImage());
-					}else {
-						this.setImageNumber(1);
-						caption.removeFirst();
-						caption.addFirst(name);
-					}					
-				}		
-			});
-			rc.updateCaptions();
 		}
 
 	private class MyMouseListener extends MouseAdapter{
@@ -326,10 +332,10 @@ public class HeroStatsPaintComponent extends JComponent{
 			}
 		}
 		
-		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, warrior.getPlayer().getSelectedUnit().getImageNumber(),warrior.getPlayer().getGame().getImage_scale()).getScaledInstance(240,204, 2),-30,0,null);
+		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, warrior.getPlayer().getSelectedUnit().getImageNumber(),gw.get_gui_controller().image_scale).getScaledInstance(240,204, 2),-30,0,null);
 		for(int i=0; i<rc.rectAngles.size();i++) {
 				if (rc.rectAngles.get(i).getImageNumber()!=1) {
-					g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, rc.rectAngles.get(i).getImageNumber(),warrior.getPlayer().getGame().getImage_scale()).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);
+					g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, rc.rectAngles.get(i).getImageNumber(),gw.get_gui_controller().image_scale).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);
 				}
 		}
 		rc.paintRectangles(g);

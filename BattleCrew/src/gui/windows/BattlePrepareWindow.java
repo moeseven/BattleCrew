@@ -42,7 +42,7 @@ public class BattlePrepareWindow extends X_to_main_main_menu_window implements R
 	}
 	
 	private void setUpWarriorInspectionPanel() {
-		warrior_stats= new HeroStatsPaintComponent(gui_controller.getGame().getPlayer().getSelectedUnit(),this,200,true,true);
+		warrior_stats= new HeroStatsPaintComponent(gui_controller.getGame().getPlayer().getSelectedUnit(),this,200,true,true,true);
 		warrior_inventory= new HeroInventoryPaintComponent(this);
 		warrior_inspection= new JPanel();
 		warrior_inspection.setLayout(new BorderLayout());

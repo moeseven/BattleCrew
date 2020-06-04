@@ -45,7 +45,9 @@ public class Shop implements Serializable{
 		for (int i = 0; i < 11; i++) {
 			inventory.add(game.itemBuilder.buildItembyName("arrow"));
 		}
-		
+		for (int i = 0; i < 11; i++) {
+			inventory.add(game.itemBuilder.buildItembyName("stone"));
+		}
 		
 		
 		

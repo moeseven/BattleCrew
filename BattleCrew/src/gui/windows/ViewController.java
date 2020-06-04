@@ -6,10 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import gameLogic.CommanderChooser;
 import gameLogic.Game;
 import gameLogic.Game.GameState;
+import gui.Refreshable_gui;
 
 /**
  * This should track all windows
@@ -26,7 +31,7 @@ public class ViewController {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
+	public double image_scale = 1;
 	public BattleWindow battle_window;
 	public BattlePrepareWindow battle_prepare_window;
 	public BattleSummaryWindow battle_summary_window;
@@ -36,15 +41,20 @@ public class ViewController {
 	public CharacterBuilderWindow character_builder;
 	public GameOverWindow game_over;
 	private Game game;
+	Set<Refreshable_gui> refreshables;
 	public ViewController() {
-		this.game= new Game(1);
+		this.game= new Game();
 		main_menu = new MainMenu(this);
+		refreshables = new HashSet<Refreshable_gui>();
 	}
 	
+	public void register_refreshable(Refreshable_gui refreshable) {
+		refreshables.add(refreshable);
+	}
 	public void update_view() {
 		if (game.get_state() == GameState.Menu) {
 			if (game.get_state() == GameState.GameOver) {
-				game = new Game(1);
+				game = new Game();
 			}
 			show_menu();
 		}else {
@@ -111,6 +121,9 @@ public class ViewController {
 	 * in order to refresh all refreshable views
 	 */
 	public void refresh_gui() {
+		for (Refreshable_gui r : refreshables) {
+		    r.refresh();
+		}
 		//TODO add all here
 		if (battle_summary_window != null) {
 			if (battle_summary_window.isVisible()) {
@@ -183,13 +196,19 @@ public class ViewController {
 		}
 	}
 	
+	public void new_game() {
+		game = new Game();
+		character_builder = new CharacterBuilderWindow(new CommanderChooser(game), this);
+		game.set_state(GameState.CharacterCreation);
+		update_view();
+	}
+	
     public void start_game() {
     	if(game.getPlayer().getHeroes().size()>0 && game.get_state() != GameState.GameOver) {
 			game.getPlayer().setSelectedHero(game.getPlayer().getHeroes().getFirst());	
 			game.set_state(game.previous_game_state());
 		}else {
-			game = new Game(1);
-			character_builder = new CharacterBuilderWindow(new CommanderChooser(game),this);
+			game = new Game();
 			game.set_state(GameState.CharacterCreation);
 		}
 		update_view();
@@ -255,6 +274,9 @@ public class ViewController {
 	}
 	
 	private void show_character_creation() {
+		if (character_builder == null) {
+			character_builder = new CharacterBuilderWindow(new CommanderChooser(game),this);
+		}
 		hide_all_windows();
 		character_builder.setVisible(true);
 	}

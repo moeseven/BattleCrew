@@ -69,8 +69,7 @@ public class CharacterBuilderWindow extends X_to_main_main_menu_window{
 	}
 	private class ButtonCreateHeroListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			fcb.cb.createHero(cbi.getTf().getText());
-			fcb.setVisible(false);					
+			fcb.cb.createHero(cbi.getTf().getText());			
 			gui_controller.campaign_window = new CampaignWindow(gui_controller);
 			gui_controller.getGame().getCampaign().enter_next_tile();
 			gui_controller.update_view();

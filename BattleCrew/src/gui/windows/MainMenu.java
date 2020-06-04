@@ -25,6 +25,7 @@ import gameLogic.Game.GameState;
 public class MainMenu extends X_to_main_main_menu_window{
 	private JPanel jp01;
 	private JButton buttonStart;
+	private JButton button_new_game;
 	private JButton buttonCharacterBuilder;
 	private JButton buttonSaveGame;
 	private JButton buttonLoadGame;
@@ -44,17 +45,19 @@ public class MainMenu extends X_to_main_main_menu_window{
 		buttonSaveGame.addMouseListener(new ButtonSaveUserListener());
 		buttonLoadGame= new JButton("Load");
 		buttonLoadGame.addMouseListener(new ButtonLoadUserListener());
-		buttonStart=new JButton("Play");
+		buttonStart=new JButton("continue");
 		buttonStart.addMouseListener(new ButtonStartListener());
 		buttonShowLeaderboard=new JButton("view leaderboard");
 		buttonShowLeaderboard.addMouseListener(new ButtonShowLeaderboardListener());
-		buttonCharacterBuilder= new JButton("Charakter Builder");
+		buttonCharacterBuilder= new JButton("new game");
 		buttonCharacterBuilder.addMouseListener(new ButtonBuildCharacterListener());
 		jp01.add(buttonStart);
+		jp01.add(buttonCharacterBuilder);
 		//jp01.add(buttonCharacterBuilder); integrated in start of game
 		jp01.add(buttonSaveGame);
 		jp01.add(buttonLoadGame);
 		jp01.add(buttonShowLeaderboard);
+		
 		add(jp01);
 		setVisible(true);
 	}
@@ -72,7 +75,7 @@ public class MainMenu extends X_to_main_main_menu_window{
 	}
 	private class ButtonBuildCharacterListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			//TODO
+			gui_controller.new_game();
 		} 
 	}
 	private class ButtonSaveUserListener extends MouseAdapter{

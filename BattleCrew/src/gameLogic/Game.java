@@ -25,7 +25,6 @@ public class Game implements Serializable {
 	private Player opponent;
 	private BattleTicked battle;
 	private WarriorsReadyForBattleTable prepareTable;
-	public double image_scale;
 	protected int maximumGroupSize=5;
 	private Shop shop;
 	public ItemBuilder itemBuilder;
@@ -72,10 +71,9 @@ public class Game implements Serializable {
 			return true;
 		}
 	}
-	public Game(double image_scale) {
+	public Game() {
 		super();
 		log = new MyLog();	
-		this.image_scale=image_scale;
 		prepareTable= new WarriorsReadyForBattleTable(7, 2, 2, this);
 		player = new Player(this,false);
 		lastCaster= null;
@@ -128,7 +126,7 @@ public class Game implements Serializable {
 		for (int i = 0; i < opponent.getHeroes().size(); i++) {
 			opponent.getHeroes().get(i).setBattle_participant(true);
 		}
-		battle= new BattleTicked(this, new Battlefield(38, 19, image_scale, this), player, opponent);		
+		battle= new BattleTicked(this, new Battlefield(38, 19, 1, this), player, opponent);		
 		battle.start();
 	}
 	
@@ -162,12 +160,6 @@ public class Game implements Serializable {
 	}
 	public void setOpponent(Player opponent) {
 		this.opponent = opponent;
-	}
-	public double getImage_scale() {
-		return image_scale;
-	}
-	public void setImage_scale(double image_scale) {
-		this.image_scale = image_scale;
 	}
 	public Shop getShop() {
 		return shop;

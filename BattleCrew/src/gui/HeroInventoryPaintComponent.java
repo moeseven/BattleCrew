@@ -237,7 +237,7 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 
 		for(int i=0; i<rc.rectAngles.size();i++) {
 				if (rc.rectAngles.get(i).getImageNumber()!=1) {
-					g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, rc.rectAngles.get(i).getImageNumber(),game.getImage_scale()).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);
+					g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, rc.rectAngles.get(i).getImageNumber(),get_gui_controller().image_scale).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);
 				}
 		}
 		rc.paintRectangles(g);

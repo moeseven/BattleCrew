@@ -253,9 +253,9 @@ private class MyMouseListener extends MouseAdapter{
 }
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);				
-	g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,shop.getImageNumber(), campaign_window.getGame().image_scale).getScaledInstance(180, 153, 3),-40,0,null);
+	g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,shop.getImageNumber(), campaign_window.gui_controller.image_scale).getScaledInstance(180, 153, 3),-40,0,null);
 	if (campaign_window.getGame().getPlayer().getSelectedItem()!=null) {
-			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, campaign_window.getGame().getPlayer().getSelectedItem().getImage(), campaign_window.getGame().image_scale).getScaledInstance(180,153, 3),150,10,null);				
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, campaign_window.getGame().getPlayer().getSelectedItem().getImage(), campaign_window.gui_controller.image_scale).getScaledInstance(180,153, 3),150,10,null);				
 	}
 	for(int i=0; i<rc.rectAngles.size();i++) {
 		g.drawRect(rc.rectAngles.get(i).getX(), rc.rectAngles.get(i).getY(), rc.rectAngles.get(i).getLength(), rc.rectAngles.get(i).getHeight());

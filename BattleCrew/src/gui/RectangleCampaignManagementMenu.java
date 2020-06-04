@@ -92,8 +92,10 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 					City.hire_new_recruit(cw.getGame().getPlayer());
 					handle_action_point_buttons_visibility();
 				}
+				cw.gui_controller.refresh_gui();
 			} 
 		}
+		
 	}
 	
 	private class LeadershipButton extends JButton{

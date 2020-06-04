@@ -142,7 +142,6 @@ public class BattleUnit implements HexTileUnit, Serializable{
         equippable = Boolean.parseBoolean(stats[25]);
         recovery = Integer.parseInt(stats[26]);
         name = player.getGame().name_generator.generate_name(type);
-        equip(player.getGame().itemBuilder.buildItembyName("stone"));
 	}
 	
 	public BattleUnit() {
