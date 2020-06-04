@@ -59,7 +59,7 @@ public class BattleCalculations {
 	public static double calc_attack_ranged_base_hit_chance(BattleUnit warrior) {
 		double chance = 0;
 		if (warrior.getEquipment().getHand1() != null) {
-			chance = warrior.getEquipment().getHand1().getPrecision()/100.0*get_fatigue_fear_corrected_accuracy(warrior)/10.0;
+			chance = (warrior.getEquipment().getHand1().getPrecision()+get_fatigue_fear_corrected_accuracy(warrior)-10)/100.0;
 		}
 		return chance;
 	}
