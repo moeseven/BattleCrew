@@ -18,6 +18,7 @@ import gui.RectangleCampaignManagementMenu;
 import gui.Refreshable_gui;
 import gui.ShopinterfaceComponent;
 import gui.WarriorCampaignComponent;
+import gui.WarriorList;
 import gui.WarriorsReadyForBattleComponent;
 
 
@@ -74,6 +75,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		warrior_inventory.refresh();
 		warrior_stats.repaint();
 		warrior_inventory.repaint();
+		warriors.refresh();
 		repaint();
 	}
 	

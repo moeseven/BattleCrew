@@ -112,7 +112,7 @@ public class Battle {
 		int count_attacker=0;
 		int count_defender=0;
 		for (int i = 0; i < battleParticipants.size(); i++) {
-			if (battleParticipants.get(i).getPlayer()!=attacker) {
+			if (battleParticipants.get(i).getPlayer()==attacker) {
 				count_attacker++;
 			}else {
 				count_defender++;

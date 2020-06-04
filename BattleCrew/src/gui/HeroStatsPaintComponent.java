@@ -36,6 +36,11 @@ public class HeroStatsPaintComponent extends JComponent{
 		private boolean paint_statistics;
 		public HeroStatsPaintComponent(BattleUnit warrior, Refreshable_gui gui, int offset, boolean vertical, boolean paint_statistics){
 			this.gw=gui;
+			this.paint_statistics = paint_statistics;
+			int x_dimension = 600;
+			if (paint_statistics) {
+				x_dimension = 800;
+			}
 			this.warrior = warrior;
 			this.vertical=true;
 			this.offset = offset;
@@ -43,7 +48,7 @@ public class HeroStatsPaintComponent extends JComponent{
 				offset_horizontal = 200;
 			}
 			setBorder(new LineBorder(Color.YELLOW));
-			super.setPreferredSize(new Dimension(650,200+offset_horizontal));
+			super.setPreferredSize(new Dimension(x_dimension,200+offset_horizontal));
 			MyMouseListener ml = new MyMouseListener();
 			super.addMouseListener(ml);
 			setLayout(new BorderLayout());
@@ -280,14 +285,8 @@ public class HeroStatsPaintComponent extends JComponent{
 
 	private class MyMouseListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){	
-			if(e.getButton()==1){
-				//get equipment position from click
-				rc.triggerClick(e);												
-			}else{
-				if (e.getButton()==3){
-					//new CardView(card);
-				}
-			}
+			//get equipment position from click
+			rc.triggerClick(e);												
 			rc.updateCaptions();
 			gw.get_gui_controller().refresh_gui();
 		} 
@@ -307,12 +306,12 @@ public class HeroStatsPaintComponent extends JComponent{
 				if(i<=component_height_lines+1) {
 					g.drawString(lines.get(i), offset+x_offset, y_offset+10+12*i);
 				}else {
-					g.drawString(lines.get(i), offset+x_offset+140, y_offset+10+12*(i-component_height_lines));
+					g.drawString(lines.get(i), offset+x_offset+130, y_offset+10+12*(i-component_height_lines));
 				}		
 			}
 			if (paint_statistics) {
 				for(int i=0; i<lines_statistics.size();i++) {
-					g.drawString(lines_statistics.get(i), offset+x_offset+280, y_offset+10+12*i);	
+					g.drawString(lines_statistics.get(i), offset+x_offset+260, y_offset+10+12*i);	
 				}
 			}
 			

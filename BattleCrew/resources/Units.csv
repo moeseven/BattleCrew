@@ -1,7 +1,7 @@
 name,image_number,vitality,strength,dexterity,size,move_speed,protection,endurance,wisdom,spell_power,offense,defense,precision,courage,resist_cold,resist_heat,resist_bleed,resist_mind,resist_stun,resist_poison,resist_bash,resist_slash,resist_pirce,weapon_skill,equippable,recovery
 human,29,10,10,11,10,1,0,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,true,5
 dwarf,28,15,12,6,7,1,0,20,10,10,9,10,9,12,10,10,10,10,10,10,10,10,10,10,true,6
-zombie,65,20,6,1,10,1,0,40,8,8,9,2,1,100,10,10,10,10,10,10,10,10,10,4,true,5
+zombie,65,20,25,1,10,1,0,40,8,8,15,2,1,100,10,10,10,10,10,10,10,10,10,4,false,5
 elf,26,8,8,16,10,1,0,8,12,11,8,6,14,10,10,10,10,10,10,10,10,10,10,11,true,4
 giant_rat,54,7,22,12,9,1,0,5,10,10,30,15,10,7,10,10,10,10,10,10,10,10,10,0,false,5
 cave_troll,44,70,150,1,20,1,0,10,2,2,200,30,4,11,10,10,10,10,10,10,10,10,10,2,false,9

@@ -25,7 +25,8 @@ public class Equipment implements Serializable{
 		this.hero=hero;
 		amunition = new ArrayList<Item>(); //TODO use amunition when using ranged attack
 	}
-	public boolean equipItem(Item item) {
+	
+	public boolean equipItemDirectly(Item item) {
 		boolean success=true;
 		switch (item.getCategory()) {
 			case 0:  equipPotion(item);break;
@@ -38,6 +39,15 @@ public class Equipment implements Serializable{
 	        case 7:  equipAmunition(item);break;
 	        default: success=false;
 			}
+		return success;
+	}
+	
+	
+	public boolean equipItem(Item item) {
+		boolean success=false;
+		if (hero.getPlayer().getInventory().contains(item)) {
+			equipItemDirectly(item);
+		}		
 		return success;
 	}
 
@@ -220,14 +230,16 @@ public class Equipment implements Serializable{
 	//unequip
 	public void unequipAll() {
 		//!!! update this if a new item type is added
-		unequipBiHand();
+		
 		unequipBody();
 		unequipHead();
 		unequipHand1();
-		unequipHand2();		
+		unequipHand2();	
+		unequipBiHand();
 		unequipPotion();
 		unequipRing1();
 		unequipRing2();
+		
 	}
 	public void unequipPotion() {
 		if(potion!=null) {
@@ -240,8 +252,8 @@ public class Equipment implements Serializable{
 			hand1.demod(hero);
 			hero.getPlayer().getInventory().add(hand1);		
 			if(hand1==hand2) {//clean biHand removal
-			hand2=null;
-		}	
+				hand2=null;
+			}	
 		}
 	
 		hand1=null;
@@ -257,7 +269,7 @@ public class Equipment implements Serializable{
 		hand2=null;
 	}
 	public void unequipBiHand() {
-		if(hand2!=null && hand2.equals(hand2)) {
+		if(hand2!=null && hand2.equals(hand1)) {
 			hand2.demod(hero);
 			hero.getPlayer().getInventory().add(hand2);
 			hand1=null;		

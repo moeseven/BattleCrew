@@ -35,7 +35,7 @@ public class Player implements HexTilePlayer,Serializable{
 	}
 	public boolean pay_action_points(int p) {
 		if (action_points >= p) {
-			action_points--;
+			action_points -= p;
 			return true;
 		}else {
 			return false;

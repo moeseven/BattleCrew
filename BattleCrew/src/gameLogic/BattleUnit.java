@@ -242,9 +242,9 @@ public class BattleUnit implements HexTileUnit{
 	}
 	
 	public void gain_experience(int exp) {
-		int exp_missing_for_lvlup = experience_threshold_for_next_level(level)-experience;
+		int exp_missing_for_lvlup = experience_threshold_for_next_level(level+1)-experience;
 		if(exp_missing_for_lvlup < exp) {
-			experience = experience_threshold_for_next_level(level);
+			experience = experience_threshold_for_next_level(level+1);
 			lvl_up();	
 			gain_experience(exp - exp_missing_for_lvlup);
 		}else {
@@ -256,10 +256,19 @@ public class BattleUnit implements HexTileUnit{
 		level++;
 		base_defense++;
 		base_offense++;
-		int random_stat = (int) (Math.random()*11);
+		increase_random_stat();
+		increase_random_stat();
+		increase_random_stat();
+	}
+	
+	public void increase_random_stat() {
+		int random_stat = (int) (Math.random()*9);
 		switch (random_stat) {
+		case 0:
+			spell_power++;
+			break;
 		case 1:
-			courage++;
+			wisdom++;
 			break;
 		case 2:
 			precision++;
@@ -282,18 +291,10 @@ public class BattleUnit implements HexTileUnit{
 		case 8:
 			weapon_skill++;
 			break;
-		case 9:
-			spell_power++;
-			break;
-		case 10:
-			wisdom++;
-			break;
 		default:
-			recovery++;
+			vitality++;
 			break;
-		}
-		
-		
+		}		
 	}
 	/*
 	 * attack enemy with main Hand weapon
@@ -352,7 +353,7 @@ public class BattleUnit implements HexTileUnit{
 			player.getGame().log.addLine(name+" died!");
 			player.getHeroes().remove(this);
 		}
-		player.setSelectedHero(player.getHeroes().getFirst());
+		//player.setSelectedHero(player.getHeroes().getFirst());
 	}
 	
 	public boolean is_unable_to_fight() {

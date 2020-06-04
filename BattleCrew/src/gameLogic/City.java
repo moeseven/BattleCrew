@@ -26,6 +26,14 @@ public class City {
 		return false;
 	}
 	
+	public static boolean improve_leadership(Player player) {
+		if (player.pay_action_points(3)) {
+			player.getCommander().setCommand_points(player.getCommander().getCommand_points()+1);
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean hire_new_recruit(Player player) {
 		//TODO this should be more interesting
 		if (player.pay_action_points(1)) {
@@ -56,7 +64,7 @@ public class City {
 	public static boolean practice(Player player) {
 		if (player.pay_action_points(1)) {
 			for (int i = 0; i < player.getHeroes().size(); i++) {
-				player.getHeroes().get(i).gain_experience(55);
+				player.getHeroes().get(i).gain_experience(100);
 				player.getHeroes().get(i).exhaust(5);
 			}
 			return true;

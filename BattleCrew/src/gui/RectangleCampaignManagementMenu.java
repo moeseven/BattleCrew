@@ -18,7 +18,7 @@ import guiRectangles.RectangleClicker;
 public class RectangleCampaignManagementMenu extends JComponent implements Refreshable_gui{
 	private RectangleClicker rectangle_clicker;
 	private JButton shop_button,warriors_button,prepare_battle_button;
-	private JButton rest_button, train_button, earn_button, recruit_button, score_button; //city actions (use up action points)
+	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, score_button; //city actions (use up action points)
 	private CampaignWindow cw;
 	public RectangleCampaignManagementMenu(CampaignWindow cw) {	
 		this.cw=cw;
@@ -32,6 +32,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		recruit_button = new RecruitButton();
 		score_button = new ScoreButton();
 		warriors_button = new WarriorsButton();
+		leadership_button = new LeadershipButton();
 		add(warriors_button);
 		add(shop_button);
 		add(prepare_battle_button);
@@ -39,6 +40,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		add(train_button);
 		add(earn_button);
 		add(recruit_button);
+		add(leadership_button);
 		add(score_button);
 		rectangle_clicker=new RectangleClicker();
 	}
@@ -88,6 +90,23 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
 					City.hire_new_recruit(cw.getGame().getPlayer());
+					handle_action_point_buttons_visibility();
+				}
+			} 
+		}
+	}
+	
+	private class LeadershipButton extends JButton{
+		public LeadershipButton() {
+			setName("leadership");
+			this.setText("improve leadership");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new SpecificMouseListener());
+		}
+		private class SpecificMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					City.improve_leadership(cw.getGame().getPlayer());
 					handle_action_point_buttons_visibility();
 				}
 			} 
@@ -201,6 +220,11 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 			earn_button.setVisible(true);
 			recruit_button.setVisible(true);
 			score_button.setVisible(true);
+		}
+		if (cw.getGame().getPlayer().getAction_points() <= 2) {
+			leadership_button.setVisible(false);
+		}else {
+			leadership_button.setVisible(true);
 		}
 	}
 	@Override

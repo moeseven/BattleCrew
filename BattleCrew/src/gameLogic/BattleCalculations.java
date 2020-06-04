@@ -7,9 +7,9 @@ public class BattleCalculations {
 	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
 	public static double MAXIMUM_DAMAGE_FACTOR = 1;
 	private static double MEELE_STRIKE_CHANCE_FACTOR = 0.5;
-	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0007;
+	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0005;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
-	private static int BASE_EVASION = 15;
+	private static int BASE_EVASION = 17;
 	
 	public static double calc_movement_exhaustion(BattleUnit unit) {
 		double exhaustion;
@@ -265,7 +265,7 @@ public class BattleCalculations {
 	}
 	
 	private static int FATIGUE_EFFECT_THRESHOLD = 80;
-	private static double FEAR_EFFECTIVENESS = 0.002;
+	private static double FEAR_EFFECTIVENESS = 0.005;
 	
 	public static double get_fatigue_fear_corrected_offense_skill(BattleUnit warrior) {
 		double ret_val = get_meele_attack_skill(warrior);

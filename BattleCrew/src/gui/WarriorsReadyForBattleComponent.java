@@ -55,10 +55,10 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
 					//start battle
-					//battle_prepare_window.gui_controller.getGame().startExampleBattle();
 					battle_prepare_window.gui_controller.getGame().enter_battle(battle_prepare_window.gui_controller.getGame().getOpponent());
+					battle_prepare_window.gui_controller.battle_window = new BattleWindow(battle_prepare_window.gui_controller);
 					battle_prepare_window.gui_controller.update_view();
-					//cw.gui_controller.battle_window = new BattleWindow(cw.gui_controller);
+
 				}
 			} 
 		}

@@ -243,6 +243,7 @@ public class ViewController {
 			campaign_window = new CampaignWindow(this);
 		}
 		hide_all_windows();
+		campaign_window.refresh();
 		campaign_window.setVisible(true);
 	}
 	private void show_leaderboard() {

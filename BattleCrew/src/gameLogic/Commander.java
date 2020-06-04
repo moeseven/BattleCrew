@@ -88,8 +88,9 @@ public class Commander extends BattleUnit {
 			healer_points+=10;
 			break;
 		case Warrior:
-			vitality += 2;
+			vitality += 3;
 			weapon_skill += 2;
+			strength += 2;
 			base_defense+=5;
 			base_offense+=8;
 			break;

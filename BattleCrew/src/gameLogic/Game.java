@@ -57,6 +57,7 @@ public class Game implements Serializable {
 	public GameState get_state() {
 		return state;
 	}
+	
 	public boolean set_state(GameState new_state) {
 		if (new_state == GameState.GameOver) {
 			previous_in_game_state = GameState.GameOver;
@@ -65,7 +66,7 @@ public class Game implements Serializable {
 			previous_in_game_state = state;
 		}
 		
-		if (state == GameState.GameOver) {
+		if (state == GameState.GameOver && new_state != GameState.Menu) {
 			return false;
 		}else {
 			state = new_state;
