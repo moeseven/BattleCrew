@@ -1,12 +1,13 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Item {
+public class Item implements Serializable{
 	private String name;
 	private String[] ability_names;
 	private LinkedList<Ability> abilities;
@@ -34,11 +35,6 @@ public class Item {
 		//name,abilities,gold_value,droppable,category
 		name=stats[0];
 		String[] ability_names = stats[1].split(";");
-		for (int i = 0; i < ability_names.length; i++) {
-			if (!ability_names[i].equals("")) {
-				abilities.add(game.abilityBuilder.buildAbilitybyName(ability_names[i]));
-			}			
-		}
 		gold_value= Integer.parseInt(stats[2]);
 		droppable= Boolean.parseBoolean(stats[3]);
 		category= Integer.parseInt(stats[4]);

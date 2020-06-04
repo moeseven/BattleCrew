@@ -1,5 +1,6 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import gameLogic.campaignTiles.BattleTile;
@@ -7,7 +8,7 @@ import gameLogic.campaignTiles.CampaignTile;
 import gameLogic.campaignTiles.TownTile;
 import gameLogic.campaignTiles.VictoryTile;
 
-public class Campaign {
+public class Campaign implements Serializable{
 	public Game getGame() {
 		return game;
 	}

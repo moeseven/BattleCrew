@@ -3,12 +3,13 @@ package builders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import gameLogic.Game;
 import gameLogic.Item;
 
-public class NameGenerator {
+public class NameGenerator implements Serializable{
 		private HashMap<String,String[]> map;
 		private Game game;
 		public NameGenerator(Game game) throws IOException {		

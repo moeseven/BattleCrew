@@ -1,8 +1,9 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Shop {
+public class Shop implements Serializable{
 	private Game game;
 	private int imageNumber=382;
 	private Inventory inventory;

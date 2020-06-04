@@ -18,7 +18,6 @@ import gui.RectangleCampaignManagementMenu;
 import gui.Refreshable_gui;
 import gui.ShopinterfaceComponent;
 import gui.WarriorCampaignComponent;
-import gui.WarriorList;
 import gui.WarriorsReadyForBattleComponent;
 
 

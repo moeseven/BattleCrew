@@ -1,10 +1,11 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Inventory {
+public class Inventory implements Serializable{
 	private HashMap<String, ArrayList<Item>> inventory_map;
 	private LinkedList<ArrayList<Item>> inventory_list;
 	public Inventory() {

@@ -1,10 +1,12 @@
 package gameLogic;
 
+import java.io.Serializable;
+
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
 import HexTilePlayground.HexTileTable;
 
-public class WarriorsReadyForBattleTable extends HexTileTable{
+public class WarriorsReadyForBattleTable extends HexTileTable implements Serializable{
 
 	public WarriorsReadyForBattleTable(int table_size_x, int table_size_y, double hex_size, Object game) {
 		super(table_size_x, table_size_y, hex_size, game);

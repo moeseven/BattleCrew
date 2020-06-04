@@ -2,6 +2,7 @@ package builders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import gameLogic.Ability;
@@ -11,7 +12,7 @@ import gameLogic.Commander_Class;
 import gameLogic.Game;
 import gameLogic.Item;
 import gameLogic.Player;
-public class BattleUnitBuilder {
+public class BattleUnitBuilder implements Serializable{
 	private HashMap<String,String[]> map;
 	private Game game;
 	public BattleUnitBuilder(Game game) throws IOException {		

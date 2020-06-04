@@ -2,12 +2,13 @@ package builders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import gameLogic.Ability;
 import gameLogic.Game;
 import gameLogic.Item;
-public class ItemBuilder {
+public class ItemBuilder implements Serializable{
 	private HashMap<String,String[]> map;
 	private Game game;
 	public ItemBuilder(Game game) throws IOException {		

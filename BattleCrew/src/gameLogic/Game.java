@@ -29,7 +29,6 @@ public class Game implements Serializable {
 	protected int maximumGroupSize=5;
 	private Shop shop;
 	public ItemBuilder itemBuilder;
-	public AbilityBuilder abilityBuilder;
 	public BattleUnitBuilder unitBuilder;
 	public NameGenerator name_generator;
 	private Campaign campaign;
@@ -81,7 +80,6 @@ public class Game implements Serializable {
 		player = new Player(this,false);
 		lastCaster= null;
 		try {
-			abilityBuilder=new AbilityBuilder();
 			itemBuilder= new ItemBuilder(this);
 			unitBuilder= new BattleUnitBuilder(this);
 			name_generator = new NameGenerator(this);

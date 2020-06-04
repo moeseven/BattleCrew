@@ -1,5 +1,6 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -9,7 +10,7 @@ import HexTilePlayground.HexTileUnit;
 import gameLogic.Behaviour.Behaviour_type;
 import gameLogic.Behaviour.Movespeed;
 
-public class BattleUnit implements HexTileUnit{
+public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
