@@ -29,7 +29,10 @@ public class NameGenerator implements Serializable{
 		public String generate_name(String type) {
 			if (map.containsKey(type)) {
 				int random =  (int) (1+Math.random()* (map.get(type).length-1));
-				return map.get(type)[random]; //all parameters needed to generate a name
+				int random_second =  (int) (1+Math.random()* (map.get(type+"_second").length-1));
+				String name = map.get(type)[random];
+				name += " "+map.get(type+"_second")[random_second];
+				return name; //all parameters needed to generate a name
 			}else {
 				return type+"(no name)";
 			}

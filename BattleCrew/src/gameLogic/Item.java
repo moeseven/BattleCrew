@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Item implements Serializable{
 	private String name;
+	private int number_of_enchantments=0;
 	private String[] ability_names;
 	private LinkedList<Ability> abilities;
 	private int gold_value;
@@ -25,6 +26,10 @@ public class Item implements Serializable{
 	private int armor;
 	private int offense;
 	private int defense;
+	
+	private int strength = 0;
+	private int dexterity = 0;
+	private int vitality = 0;
 	//
 	private int image;
 	private LinkedList<String> description;
@@ -81,16 +86,81 @@ public class Item implements Serializable{
 		// TODO Auto-generated method stub
 		return category;
 	}
+	
+	/**
+	 * only call this when the item is not
+	 * equipped by a hero!
+	 * @param affix
+	 * @return
+	 */
+	public boolean add_affix(ItemAffix affix) {
+		//TODO make sure not to mess up hero
+		if (number_of_enchantments < 2) {
+			number_of_enchantments++;
+			if (number_of_enchantments>1) {
+				name += " and "+affix.getName();
+			}else {
+				name += " of "+affix.getName();
+			}	
+			//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring  //7: Amunition //0: Consumable
+			switch (category) {
+			case 1:
+				damage += affix.getDamage();
+				break;
+			case 2:
+				damage += affix.getDamage();
+				if (block > 0) {
+					block += affix.getBlock();
+				}				
+				break;
+			case 3:
+				//two handed gets double bonus
+				defense += affix.getDefense();
+				offense += affix.getOffense();
+				damage += affix.getDamage();
+				break;	
+			case 4:
+				armor += affix.getArmor();
+				break;
+			case 5:
+				armor += affix.getArmor();
+				break;
+			default:
+				break;
+			}
+			weight += weight*(affix.getWeight()/100.0);
+			defense += affix.getDefense();
+			offense += affix.getOffense();
+			strength += affix.getStrength();
+			dexterity += affix.getDexterity();
+			vitality += affix.getVitality();
+			if (precision > 0) {
+				precision += affix.getPrecision();
+			}								
+			return true;
+		}
+				
+		return false;
+	}
 
 	public void mod(BattleUnit hero) {
-		hero.setArmor(hero.getArmor()+armor);
-		hero.setDefense(hero.getDefense()+defense);
-		hero.setOffense(hero.getOffense()+offense);
+		mod_demod(hero, true);
 	}
 	public void demod(BattleUnit hero) {
-		hero.setArmor(hero.getArmor()-armor);
-		hero.setDefense(hero.getDefense()-defense);
-		hero.setOffense(hero.getOffense()-offense);
+		mod_demod(hero, false);
+	}
+	
+	private void mod_demod(BattleUnit hero, boolean mod) {
+		int factor = 1;
+		if (!mod) {
+			factor = -1;
+		}
+		hero.setArmor(hero.getArmor()+factor*armor);
+		hero.setDefense(hero.getDefense()+factor*defense);
+		hero.setOffense(hero.getOffense()+factor*offense);
+		hero.setStrength(hero.getStrength()+factor*strength);
+		hero.setDexterity(hero.getDexterity()+factor*dexterity);
+		hero.setVitality(hero.getVitality()+factor*vitality);
 	}
 	
 	public void resetAbilityCooldowns() {
@@ -123,6 +193,15 @@ public class Item implements Serializable{
 		}
 		if (offense!=0) {
 			description.add("offense: +"+offense);
+		}
+		if (strength!=0) {
+			description.add("strength: " + strength);
+		}
+		if (dexterity!=0) {
+			description.add("dexterity: " + dexterity);
+		}
+		if (vitality!=0) {
+			description.add("vitality: " + vitality);
 		}
 	}
 	//getters and setters

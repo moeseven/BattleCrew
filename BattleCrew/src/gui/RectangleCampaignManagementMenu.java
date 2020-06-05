@@ -18,12 +18,12 @@ import guiRectangles.RectangleClicker;
 public class RectangleCampaignManagementMenu extends JComponent implements Refreshable_gui{
 	private RectangleClicker rectangle_clicker;
 	private JButton shop_button,warriors_button,prepare_battle_button;
-	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, score_button; //city actions (use up action points)
+	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, enchant_button, score_button; //city actions (use up action points)
 	private CampaignWindow cw;
 	public RectangleCampaignManagementMenu(CampaignWindow cw) {	
 		this.cw=cw;
 		super.setPreferredSize(new Dimension(800,400));
-		setLayout(new GridLayout(3,3));
+		setLayout(new GridLayout(3,4));
 		shop_button= new ShopButton();
 		prepare_battle_button= new PrepareBattleButton();
 		rest_button = new RestButton();
@@ -33,12 +33,14 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		score_button = new ScoreButton();
 		warriors_button = new WarriorsButton();
 		leadership_button = new LeadershipButton();
+		enchant_button = new EnchantButton();
 		add(warriors_button);
 		add(shop_button);
 		add(prepare_battle_button);
 		add(rest_button);
 		add(train_button);
 		add(earn_button);
+		add(enchant_button);
 		add(recruit_button);
 		add(leadership_button);
 		add(score_button);
@@ -130,6 +132,22 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 			} 
 		}
 	}
+	private class EnchantButton extends JButton{
+		public EnchantButton() {
+			setName("enchant");
+			this.setText("enchant item");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new SpecificMouseListener());
+		}
+		private class SpecificMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					City.enchant_item(cw.getGame().getPlayer());
+					handle_action_point_buttons_visibility();
+				}
+			} 
+		}
+	}
 	private class LearnButton extends JButton{
 		public LearnButton() {
 			setName("study");
@@ -216,12 +234,14 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 			earn_button.setVisible(false);
 			recruit_button.setVisible(false);
 			score_button.setVisible(false);
+			enchant_button.setVisible(false);
 		}else {
 			rest_button.setVisible(true);
 			train_button.setVisible(true);
 			earn_button.setVisible(true);
 			recruit_button.setVisible(true);
 			score_button.setVisible(true);
+			enchant_button.setVisible(true);
 		}
 		if (cw.getGame().getPlayer().getAction_points() <= 2) {
 			leadership_button.setVisible(false);
