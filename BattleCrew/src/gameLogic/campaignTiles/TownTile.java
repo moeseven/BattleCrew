@@ -9,7 +9,7 @@ public class TownTile extends CampaignTile {
 	public void enter(Campaign campaign) {
 		// TODO Auto-generated method stub
 		campaign.getGame().set_state(GameState.City);
-		campaign.getGame().getPlayer().setAction_points(3);
+		campaign.getGame().getPlayer().setAction_points(campaign.getGame().getPlayer().getCommander().getAction_points());
 	}
 
 

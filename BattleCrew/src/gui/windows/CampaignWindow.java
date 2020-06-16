@@ -33,7 +33,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		super(gc);
 		state=2;
 		setTitle("campaign");	
-		this.setSize(1300, 680);
+		this.setSize(1300, 780);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());	
 		shop= new ShopinterfaceComponent(this, new Shop(gc.getGame()));

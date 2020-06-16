@@ -8,6 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Item implements Serializable{
+	public int getNumber_of_enchantments() {
+		return number_of_enchantments;
+	}
+	public void setNumber_of_enchantments(int number_of_enchantments) {
+		this.number_of_enchantments = number_of_enchantments;
+	}
 	private String name;
 	private int number_of_enchantments=0;
 	private String[] ability_names;
@@ -195,13 +201,13 @@ public class Item implements Serializable{
 			description.add("offense: +"+offense);
 		}
 		if (strength!=0) {
-			description.add("strength: " + strength);
+			description.add("strength: +" + strength);
 		}
 		if (dexterity!=0) {
-			description.add("dexterity: " + dexterity);
+			description.add("dexterity: +" + dexterity);
 		}
 		if (vitality!=0) {
-			description.add("vitality: " + vitality);
+			description.add("vitality: +" + vitality);
 		}
 	}
 	//getters and setters

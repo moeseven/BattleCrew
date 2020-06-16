@@ -254,15 +254,13 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	public void lvl_up() {
 		level++;
-		base_defense++;
-		base_offense++;
 		increase_random_stat();
 		increase_random_stat();
 		increase_random_stat();
 	}
 	
 	public void increase_random_stat() {
-		int random_stat = (int) (Math.random()*9);
+		int random_stat = (int) (Math.random()*11);
 		switch (random_stat) {
 		case 0:
 			spell_power++;
@@ -290,6 +288,12 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			break;
 		case 8:
 			weapon_skill++;
+			break;
+		case 9:
+		    base_offense+=3;
+			break;
+		case 10:
+			base_defense+=3;
 			break;
 		default:
 			vitality++;

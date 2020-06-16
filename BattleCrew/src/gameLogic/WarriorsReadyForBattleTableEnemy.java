@@ -51,7 +51,7 @@ public class WarriorsReadyForBattleTableEnemy extends HexTileTable implements Se
 			Player p = (Player) player;
 			// TODO Auto-generated method stub
 			if (getWarrior()!=null) {			
-				p.setSelectedUnit(getUnit());
+				player.setSelectedUnit(getUnit());
 			}
 		}
 

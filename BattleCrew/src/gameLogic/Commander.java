@@ -9,6 +9,26 @@ public class Commander extends BattleUnit {
 
 
 
+	public int getAction_points() {
+		return action_points;
+	}
+
+
+	public void setAction_points(int action_points) {
+		this.action_points = action_points;
+	}
+
+
+	public int getEnchant_chance() {
+		return enchant_chance;
+	}
+
+
+	public void setEnchant_chance(int enchant_chance) {
+		this.enchant_chance = enchant_chance;
+	}
+
+
 	public int getGroup_size() {
 		return group_size;
 	}
@@ -58,13 +78,14 @@ public class Commander extends BattleUnit {
 		this.wealth = wealth;
 	}
 
-
+	private int action_points = 3; // number of actions in the city
 	private int command_points = 3; // number of Warriors that can be fielded
 	private int healer_points = 5;  // chance of healing lost units after battles
 	private int recover_points = 0; // recovering of stamina/fear/health
 	private int wealth = 200; // starting money
 	private int gold_bonus = 0; //money bonus
 	private int group_size = 5; // amount of warriors in the team
+	private int enchant_chance = 5; //chance of enchanting an item when buying
 	
 	private Commander_Class commander_class;
 	
@@ -79,20 +100,22 @@ public class Commander extends BattleUnit {
 			command_points++;
 			break;
 		case SupplyMaster:
-			recover_points+=3;
+			recover_points+=5;
+			vitality++;
 			break;
 		case Looter:
 			gold_bonus+=10;
 			break;
 		case Healer:
-			healer_points+=10;
+			healer_points+=35;
 			break;
 		case Warrior:
-			vitality += 3;
+			vitality += 4;
+			dexterity += 1;
 			weapon_skill += 2;
 			strength += 2;
 			base_defense+=5;
-			base_offense+=8;
+			base_offense+=10;
 			break;
 		case Tactician:
 			group_size+=4;
@@ -101,7 +124,13 @@ public class Commander extends BattleUnit {
 			wealth += 500;
 			break;
 		case Hero:
-			player.earn_score(100);
+			player.earn_score(150);
+			break;
+		case Enchanter:
+			enchant_chance += 15;
+			break;
+		case Developer:
+			action_points ++;
 			break;
 		default:
 			break;
@@ -130,6 +159,9 @@ public class Commander extends BattleUnit {
 		}		
 		if (healer_points > 0) {
 			lines.add("revive chance: " + "+" + healer_points + "%");
+		}
+		if (enchant_chance > 0) {
+			lines.add("enchant skill: "+ enchant_chance + "%");
 		}
 		if (wealth > 0) {
 			lines.add("gold: "+wealth);

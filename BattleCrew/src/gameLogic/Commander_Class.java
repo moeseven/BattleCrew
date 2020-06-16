@@ -8,5 +8,7 @@ public enum Commander_Class {
 	Looter,
 	SupplyMaster,
 	Noble,
-	Hero
+	Hero,
+	Enchanter,
+	Developer
 }

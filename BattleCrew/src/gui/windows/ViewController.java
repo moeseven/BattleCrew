@@ -48,6 +48,16 @@ public class ViewController {
 		refreshables = new HashSet<Refreshable_gui>();
 	}
 	
+	public void erase_windows() {
+		battle_window = null;
+		battle_prepare_window = null;
+		battle_summary_window = null;
+		campaign_window = null;
+		leader_board = null;
+		character_builder = null;
+		game_over = null;
+	}
+	
 	public void register_refreshable(Refreshable_gui refreshable) {
 		refreshables.add(refreshable);
 	}
@@ -149,7 +159,7 @@ public class ViewController {
 	}
 	
 	public void load_game() {
-		//TODO make stuff serializable
+		erase_windows();
 		//load from file;
 		ObjectInputStream ois=null;
 		try {
@@ -197,6 +207,7 @@ public class ViewController {
 	}
 	
 	public void new_game() {
+		erase_windows();
 		game = new Game();
 		character_builder = new CharacterBuilderWindow(new CommanderChooser(game), this);
 		game.set_state(GameState.CharacterCreation);

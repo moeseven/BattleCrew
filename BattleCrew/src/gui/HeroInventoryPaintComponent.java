@@ -102,8 +102,16 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 				}
 				@Override
 				public void updateCaption() {
+					
 					setFirstLineColor(Color.black);
 					if(game.getPlayer().getSelectedItem()!=null) {
+						if (game.getPlayer().getSelectedItem().getNumber_of_enchantments() > 0) {
+							if (game.getPlayer().getSelectedItem().getNumber_of_enchantments() > 1) {
+								setFirstLineColor(Color.BLUE);
+							}else {
+								setFirstLineColor(Color.ORANGE);
+							}
+						}
 						game.getPlayer().getSelectedItem().generateItemDescription();
 						caption=game.getPlayer().getSelectedItem().getDescription();
 						String composite = game.getPlayer().getSelectedItem().getName();
@@ -118,7 +126,9 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 	//								}
 	//							}
 	//						}
-							}
+						}else {
+							caption.addFirst(composite);
+						}
 						
 					}else {
 						caption=new LinkedList<String>();

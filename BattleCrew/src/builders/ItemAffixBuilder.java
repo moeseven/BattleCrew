@@ -21,13 +21,15 @@ public class ItemAffixBuilder implements Serializable{
 		String row;
 		BufferedReader csvReader = new BufferedReader(new FileReader(path));
 		while ((row = csvReader.readLine()) != null) {
+
 		    String[] data = row.split(",");
 		    map.put(data[0], data);
-		}
+		}			//don't use first row
 		csvReader.close();
+		map.remove("name");
 	}
 
-	public ItemAffix buildItembyName(String name) {
+	public ItemAffix buildAffixbyName(String name) {
 		if (map.containsKey(name)) {
 			return new ItemAffix(map.get(name),game); //all parameters needed to genarate an item
 		}else {
@@ -40,10 +42,10 @@ public class ItemAffixBuilder implements Serializable{
 		int random =  (int) (1+Math.random()* (map.size()-1));
 		for (Map.Entry<String, String[]> entry : map.entrySet()) {
 			if (random == 0) {
-				return buildItembyName(entry.getKey());
+				return buildAffixbyName(entry.getKey());
 			}
 		   random--;
 		}
-		return buildItembyName("");
+		return buildAffixbyName("");
 	}
 }

@@ -135,14 +135,14 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class EnchantButton extends JButton{
 		public EnchantButton() {
 			setName("enchant");
-			this.setText("enchant item");
+			this.setText("improve enchant skill");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
 		private class SpecificMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					City.enchant_item(cw.getGame().getPlayer());
+					City.learn_enchanting(cw.getGame().getPlayer());
 					handle_action_point_buttons_visibility();
 				}
 			} 

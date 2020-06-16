@@ -40,6 +40,8 @@ public class Shop implements Serializable{
 		inventory.add(game.itemBuilder.buildItembyName("leathercap"));
 		inventory.add(game.itemBuilder.buildItembyName("helmet"));
 		
+		//rings
+		inventory.add(game.itemBuilder.buildItembyName("ring"));
 		
 		//ammunition
 		for (int i = 0; i < 11; i++) {
@@ -56,8 +58,16 @@ public class Shop implements Serializable{
 	}
 	public boolean buy_item(Player player, Item item) {
 		if(player.getGold() >= item.getGold_value()) {
-			if(player.getInventory().add(game.itemBuilder.buildItembyName(item.getName()))) {
+			Item item_built = game.itemBuilder.buildItembyName(item.getName());
+			if (item.getCategory() == 6) {
+				 item_built.add_affix(player.getGame().affix_builder.random_affix());
+			}
+			if (Math.random() < (player.getCommander().getEnchant_chance()/100.0) && item.getCategory() != 7) {
+				item_built.add_affix(player.getGame().affix_builder.random_affix());
+			}
+			if(player.getInventory().add(item_built)) {
 				player.gainGold(-item.getGold_value());
+				
 				return true;
 			}								
 		}

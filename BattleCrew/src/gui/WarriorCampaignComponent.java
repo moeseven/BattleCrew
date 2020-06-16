@@ -23,13 +23,13 @@ import guiRectangles.RectangleClicker;
 public class WarriorCampaignComponent extends JComponent implements Refreshable_gui{
 	private RectangleClicker rc;
 	private ViewControlledWindow window;
-	static int WARRIOR_SIZE_X = 70;
+	static int WARRIOR_SIZE_X = 100;
 	static int WARRIOR_SIZE_Y = 105;
-	static int NEXT_ROW_THRESHOLD = 8;
+	static int NEXT_ROW_THRESHOLD = 6;
 	public WarriorCampaignComponent(ViewControlledWindow window) {
 	this.window=window;
 	setBorder(new LineBorder(Color.WHITE));
-	super.setPreferredSize(new Dimension(600,300));
+	super.setPreferredSize(new Dimension(600,350));
 	MyMouseListener ml = new MyMouseListener();
 	super.addMouseListener(ml);
 	setLayout(new BorderLayout());
@@ -46,8 +46,14 @@ public void set_up_rectangles() {
 		int y_positon = 0;
 		int x_position = WARRIOR_SIZE_X*i;
 		if (i > NEXT_ROW_THRESHOLD-1) {
-			y_positon += WARRIOR_SIZE_Y;
-			x_position = x_position - NEXT_ROW_THRESHOLD*WARRIOR_SIZE_X;
+			if (i > 2*NEXT_ROW_THRESHOLD-1) {
+				y_positon += 2*WARRIOR_SIZE_Y;
+				x_position = x_position - 2*NEXT_ROW_THRESHOLD*WARRIOR_SIZE_X;
+			}else {
+				y_positon += WARRIOR_SIZE_Y;
+				x_position = x_position - NEXT_ROW_THRESHOLD*WARRIOR_SIZE_X;
+			}
+			
 		}
 		ClickableRectangle r = new ClickableRectangle(window.get_view_controller().getGame().getPlayer().getHeroes().get(i).getName(),x_position,y_positon,WARRIOR_SIZE_X,WARRIOR_SIZE_Y) {
 			@Override
@@ -105,7 +111,7 @@ protected void paintComponent(Graphics g){
 	for(int i=0; i<rc.rectAngles.size();i++) {
 		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,rc.getRectAngles().get(i).getImageNumber(), window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY(),null);
 		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getCommander()) {
-			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY(),null);
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
 		}
 	}
 }

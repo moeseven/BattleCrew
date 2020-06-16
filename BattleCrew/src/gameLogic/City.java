@@ -72,12 +72,10 @@ public class City {
 		return false;
 		
 	}
-	public static boolean enchant_item(Player player) {
+	public static boolean learn_enchanting(Player player) {
 		if (player.pay_action_points(1)) {
-			//TODO take to enchant item screen
-			//player.getSelectedItem().add_affix(player.getGame().affix_builder.random_affix());
-			return true;
-		}
+			player.getCommander().setEnchant_chance(player.getCommander().getEnchant_chance()+1);
+		}		
 		return false;
 		
 	}
