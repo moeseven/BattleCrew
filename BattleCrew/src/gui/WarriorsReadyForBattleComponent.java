@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.border.LineBorder;
@@ -29,18 +30,22 @@ import gui.windows.CampaignWindow;
 
 public class WarriorsReadyForBattleComponent extends JComponent{
 	BattlePrepareWindow battle_prepare_window;
+	JPanel battle_tables;
 	
-
 	public WarriorsReadyForBattleComponent(BattlePrepareWindow cw) {
 		super();
 		this.battle_prepare_window = cw;
 		setBorder(new LineBorder(Color.YELLOW));
 		setLayout(new BorderLayout());
-		add(new WarriorsReadyForBattleTableComponent(cw.gui_controller.getGame().getPlayer(), cw.gui_controller.getGame().getPrepareTable(), cw),BorderLayout.CENTER);
+		battle_tables = new JPanel();
+		battle_tables.setLayout(new BorderLayout());
+		battle_tables.add(new WarriorsReadyForBattleTableComponent(cw.gui_controller.getGame().getPlayer(), cw.gui_controller.getGame().getPrepareTable(), cw),BorderLayout.CENTER);
+		battle_tables.add(new WarriorsReadyForBattleTableComponent(cw.gui_controller.getGame().getOpponent(), cw.gui_controller.getGame().getEnemyTable(), cw),BorderLayout.NORTH);
+		add(battle_tables, BorderLayout.CENTER);	
 		add(new StartBattleButton(),BorderLayout.NORTH);
 		add(new WarriorCampaignComponent(cw), BorderLayout.LINE_END);
 		//add(new AvailableHeroList(), BorderLayout.LINE_END);
-		setSize(new Dimension(800,300));
+		setSize(new Dimension(800,430));
 		addMouseListener(new MyMouseListener());
 		setVisible(true);
 	}
@@ -124,6 +129,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 			super(player, table, gf, Resources.IMAGE_PATH);
 			// TODO Auto-generated constructor stub
 			addMouseListener(new MyMouseListener());
+			setPreferredSize(new Dimension(400,250));
 		}
 
 		@Override
@@ -159,4 +165,5 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		
 		
 	}
+
 }

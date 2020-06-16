@@ -16,6 +16,9 @@ import game.Leaderboard.Leaderboard;
 import gameLogic.campaignTiles.CampaignTile;
 
 public class Game implements Serializable {
+	public WarriorsReadyForBattleTableEnemy getEnemyTable() {
+		return enemyTable;
+	}
 	public Campaign getCampaign() {
 		return campaign;
 	}
@@ -26,6 +29,7 @@ public class Game implements Serializable {
 	private Player opponent;
 	private BattleTicked battle;
 	private WarriorsReadyForBattleTable prepareTable;
+	private WarriorsReadyForBattleTableEnemy enemyTable;
 	protected int maximumGroupSize=5;
 	private Shop shop;
 	public ItemBuilder itemBuilder;
@@ -76,7 +80,8 @@ public class Game implements Serializable {
 	public Game() {
 		super();
 		log = new MyLog();	
-		prepareTable= new WarriorsReadyForBattleTable(7, 2, 2, this);
+		prepareTable= new WarriorsReadyForBattleTable(9, 3, 1, this);
+		enemyTable = new WarriorsReadyForBattleTableEnemy(9, 3, 1, this);
 		player = new Player(this,false);
 		lastCaster= null;
 		try {

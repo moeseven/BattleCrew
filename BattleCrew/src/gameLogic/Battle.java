@@ -76,14 +76,26 @@ public class Battle {
 		}
 	}
 	protected void placeDefendersOrderly() {
-		for (int i = 0; i < defender.getHeroes().size(); i++) {
-			if (defender.getHeroes().get(i).isBattle_participant()) {
-				battleParticipants.add(defender.getHeroes().get(i));
-				defender.getHeroes().get(i).setTile(battleField.getTiles().get(battleField.getTable_size_y()*i));
-				battleField.getTiles().get(battleField.getTable_size_y()*i).setUnit(defender.getHeroes().get(i));
-				defender.getHeroes().get(i).battle_begin();
+//		for (int i = 0; i < defender.getHeroes().size(); i++) {
+//			if (defender.getHeroes().get(i).isBattle_participant()) {
+//				battleParticipants.add(defender.getHeroes().get(i));
+//				defender.getHeroes().get(i).setTile(battleField.getTiles().get(battleField.getTable_size_y()*i));
+//				battleField.getTiles().get(battleField.getTable_size_y()*i).setUnit(defender.getHeroes().get(i));
+//				defender.getHeroes().get(i).battle_begin();
+//			}
+//
+//		}
+		for (int i = 0; i < game.getEnemyTable().getTiles().size(); i++) {
+			if (game.getEnemyTable().getTiles().get(i).getUnit()!=null) {
+				if (game.getEnemyTable().getTiles().get(i).getUnit() instanceof BattleUnit) {
+					BattleUnit warrior =(BattleUnit) game.getEnemyTable().getTiles().get(i).getUnit();
+					battleParticipants.add(warrior);
+					warrior.setTile(battleField.getTiles().get(game.getEnemyTable().translateTileIndex(battleField.getTable_size_x(), battleField.getTable_size_y(), i)));
+					battleField.getTiles().get(game.getEnemyTable().translateTileIndex(battleField.getTable_size_x(), battleField.getTable_size_y(), i)).setUnit(warrior);
+					warrior.battle_begin();
+				}
+				
 			}
-
 		}
 	}
 	private void selectActiveWarriorForPlayer() {

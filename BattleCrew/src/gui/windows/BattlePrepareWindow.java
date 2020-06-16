@@ -31,12 +31,12 @@ public class BattlePrepareWindow extends X_to_main_main_menu_window implements R
 		super(gc);
 		state=2;
 		setTitle("prepare for battle");	
-		this.setSize(1300, 680);
+		this.setSize(1400, 780);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		setLayout(new BorderLayout());	
 		warriors_battle=new WarriorsReadyForBattleComponent(this);
-		add(warriors_battle, BorderLayout.NORTH);
+		add(warriors_battle, BorderLayout.CENTER);
 		setLocationRelativeTo(null);
 		setUpWarriorInspectionPanel();
 	}
