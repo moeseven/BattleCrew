@@ -9,6 +9,11 @@ public class Commander extends BattleUnit {
 
 
 
+	public Commander_Class getCommander_class() {
+		return commander_class;
+	}
+
+
 	public int getAction_points() {
 		return action_points;
 	}

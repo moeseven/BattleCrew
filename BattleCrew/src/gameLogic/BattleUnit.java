@@ -86,6 +86,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private boolean fled;
 	
 	private int experience = 0;
+	private int exp_value = 25;
 	private int level = 1;
 	
 	//statistics
@@ -150,6 +151,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
         equippable = Boolean.parseBoolean(stats[25]);
         recovery = Integer.parseInt(stats[26]);
         thorns = Integer.parseInt(stats[27]);
+        exp_value = Integer.parseInt(stats[28]);
         name = player.getGame().name_generator.generate_name(type);
 	}
 	
@@ -346,6 +348,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			health -= damage;
 			player.getGame().log.addLine(name+" took "+(int) damage+"% damage!");
 			if (health<=0) {
+				//give exp to killer;
+				attacker.gain_experience(exp_value);
 				die();
 			}
 		}

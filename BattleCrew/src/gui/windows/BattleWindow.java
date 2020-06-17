@@ -45,7 +45,7 @@ public class BattleWindow extends X_to_main_main_menu_window implements ActionLi
 			if (gui_controller.getGame().getBattle().getWinner() == gui_controller.getGame().getPlayer()) {
 				gui_controller.getGame().set_state(GameState.BattleSummary);
 			}else {
-				gui_controller.getGame().set_state(GameState.GameOver);
+				gui_controller.getGame().game_over();
 			}
 			
 			//TODO Battle Summary Screen

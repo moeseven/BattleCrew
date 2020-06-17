@@ -242,6 +242,7 @@ public class ViewController {
 	}
 	
 	private void show_prepare_battle() {
+		battle_prepare_window = null; // it did not update
 		if (battle_prepare_window == null) {
 			battle_prepare_window = new BattlePrepareWindow(this);
 		}

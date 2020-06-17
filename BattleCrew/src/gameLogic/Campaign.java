@@ -3,6 +3,7 @@ package gameLogic;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import gameLogic.Game.GameState;
 import gameLogic.campaignTiles.BattleTile;
 import gameLogic.campaignTiles.CampaignTile;
 import gameLogic.campaignTiles.TownTile;
@@ -64,7 +65,7 @@ public class Campaign implements Serializable{
 	}
 	
 	public boolean enter_next_tile() {
-		if (current_tile_index < campaign_tiles.size()) {
+		if (current_tile_index < campaign_tiles.size() && game.get_state() != GameState.GameOver) {
 			campaign_tiles.get(current_tile_index).enter(this);
 			current_tile_index++;
 			return true;

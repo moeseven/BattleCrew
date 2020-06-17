@@ -7,6 +7,12 @@ import gameLogic.Game;
 
 
 public class LeaderBoardEntry implements Serializable{
+public String getCommander_class() {
+		return commander_class;
+	}
+	public String getCommander_race() {
+		return commander_race;
+	}
 public int getLevel() {
 		return level;
 	}
@@ -16,6 +22,7 @@ public int getLevel() {
 private int level;
 private String playerName;
 private int points;
+private String commander_class = "filibuster", commander_race = "orc";
 public LeaderBoardEntry(String playerName, int points) {
 	super();
 	this.playerName = playerName;
@@ -25,6 +32,8 @@ public LeaderBoardEntry(Game game) {
 	playerName = game.getPlayer().getCommander().getName();
 	points = game.getPlayer().getScore();
 	level = game.getPlayer().getCommander().getLevel();
+	commander_race = game.getPlayer().getCommander().getType();
+	commander_class = game.getPlayer().getCommander().getCommander_class().toString();
 }
 
 public String getPlayerName() {

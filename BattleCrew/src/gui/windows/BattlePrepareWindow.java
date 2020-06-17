@@ -56,6 +56,7 @@ public class BattlePrepareWindow extends X_to_main_main_menu_window implements R
 		warrior_inventory.refresh();
 		warrior_stats.repaint();
 		warrior_inventory.repaint();
+		warriors_battle.repaint();
 		repaint();
 	}
 	

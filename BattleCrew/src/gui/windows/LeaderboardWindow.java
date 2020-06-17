@@ -88,7 +88,7 @@ public class LeaderboardWindow extends X_to_main_main_menu_window{
 					}			
 					
 					g.drawString(lb.getLeaderboardEntries().get(i).getPoints()+"",250-decimalCounter*6, 20+i*20);
-					g.drawString(" points       (with level "+lb.getLeaderboardEntries().get(i).getLevel()+")",260, 20+i*20);
+					g.drawString(" points       (level "+lb.getLeaderboardEntries().get(i).getLevel()+" "+lb.getLeaderboardEntries().get(i).getCommander_race()+" - "+lb.getLeaderboardEntries().get(i).getCommander_class()+")",260, 20+i*20);
 				}
 			}
 			
