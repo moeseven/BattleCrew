@@ -16,6 +16,14 @@ public class BattleUnit implements HexTileUnit, Serializable{
 
 
 
+	public int getThorns() {
+		return thorns;
+	}
+
+	public void setThorns(int thorns) {
+		this.thorns = thorns;
+	}
+
 	public boolean isAttacked_this_round() {
 		return attacked_this_round;
 	}
@@ -63,7 +71,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	protected int weapon_skill;
 	private int base_damage = 10;
 	private boolean equippable = true; //TODO
-	
+	private int thorns;
 	private Equipment equipment;
 	
 	//dynamic stats
@@ -141,6 +149,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
         weapon_skill = Integer.parseInt(stats[24]);
         equippable = Boolean.parseBoolean(stats[25]);
         recovery = Integer.parseInt(stats[26]);
+        thorns = Integer.parseInt(stats[27]);
         name = player.getGame().name_generator.generate_name(type);
 	}
 	

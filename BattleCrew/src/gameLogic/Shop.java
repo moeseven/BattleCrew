@@ -60,6 +60,7 @@ public class Shop implements Serializable{
 		if(player.getGold() >= item.getGold_value()) {
 			Item item_built = game.itemBuilder.buildItembyName(item.getName());
 			if (item.getCategory() == 6) {
+				item_built.setImage((int) (item_built.getImage()+Math.random()*6));
 				 item_built.add_affix(player.getGame().affix_builder.random_affix());
 			}
 			if (Math.random() < (player.getCommander().getEnchant_chance()/100.0) && item.getCategory() != 7) {

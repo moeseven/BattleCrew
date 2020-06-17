@@ -37,6 +37,7 @@ public class Item implements Serializable{
 	private int dexterity = 0;
 	private int vitality = 0;
 	//
+	private int thorns = 0;
 	private int image;
 	private LinkedList<String> description;
 	public Item(String[] stats,Game game) {
@@ -59,6 +60,7 @@ public class Item implements Serializable{
 		precision = Integer.parseInt(stats[12]);
 		block = Integer.parseInt(stats[13]);
 		ammunition = stats[14];
+		thorns = Integer.parseInt(stats[15]);
 //		attack_ability=Boolean.parseBoolean(stats[10]);
 //		if (attack_ability) {
 //			List<String> subArray = new ArrayList<String>();
@@ -134,15 +136,16 @@ public class Item implements Serializable{
 			default:
 				break;
 			}
-			weight += weight*(affix.getWeight()/100.0);
-			defense += affix.getDefense();
+			weight += weight*(affix.getWeight()/100.0);			
 			offense += affix.getOffense();
+			defense += affix.getDefense();
 			strength += affix.getStrength();
 			dexterity += affix.getDexterity();
 			vitality += affix.getVitality();
 			if (precision > 0) {
 				precision += affix.getPrecision();
-			}								
+			}		
+			thorns += affix.getThorns();
 			return true;
 		}
 				

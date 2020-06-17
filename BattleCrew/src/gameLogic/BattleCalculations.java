@@ -2,6 +2,7 @@ package gameLogic;
 
 import java.util.ArrayList;
 
+
 public class BattleCalculations {
 	
 	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
@@ -249,7 +250,11 @@ public class BattleCalculations {
 		defender.exhaust(getting_attacked_exhaustion(attacker, defender));
 		if (calc_attack_meele_hit(attacker, defender)) {
 			defender.getPlayer().getGame().log.addLine(attacker.getName()+" strikes at "+defender.getName());
-			if (!evade(attacker, defender)) {			
+			if (!evade(attacker, defender)) {
+				//thorns
+				if (defender.getThorns() > 0) {
+					thorn_damage(attacker, defender);
+				}				
 				defender.take_damage(roll_damage(attacker, defender),attacker);
 			}
 		}
@@ -298,5 +303,12 @@ public class BattleCalculations {
 	
 	public static int get_meele_defense_skill(BattleUnit warrior) {
 		return (int) (warrior.getDefense()*(warrior.getWeapon_skill()/10.0))+warrior.getBase_defense();
+	}
+	
+	public static void thorn_damage(BattleUnit attacker, BattleUnit defender) {
+		double thorn = defender.getThorns();
+		//factor in armor
+		thorn = thorn * (1-attacker.getArmor()/2.0);
+		attacker.take_damage(thorn, defender);
 	}
 }
