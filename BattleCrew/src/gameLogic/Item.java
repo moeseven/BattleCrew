@@ -214,6 +214,12 @@ public class Item implements Serializable{
 		if (vitality!=0) {
 			description.add("vitality: +" + vitality);
 		}
+		if (thorns!=0) {
+			description.add("thorns: +" + thorns);
+		}
+		if (regen!=0) {
+			description.add("regen: +" + regen);
+		}
 	}
 	//getters and setters
 	public int getWeight() {

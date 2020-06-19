@@ -62,7 +62,10 @@ public class BattleSummaryWindow extends X_to_main_main_menu_window{
 			//gold
 			gui_controller.getGame().getPlayer().gainGold(gui_controller.getGame().getOpponent().getGold_reward());
 			//score
-			gui_controller.getGame().getPlayer().earn_score(gui_controller.getGame().getOpponent().getScore());
+			if (gui_controller.getGame().getBattle().getWinner() == gui_controller.getGame().getPlayer()) {
+				gui_controller.getGame().getPlayer().earn_score(gui_controller.getGame().getOpponent().getScore());
+			}
+			
 			//
 			gui_controller.getGame().getCampaign().enter_next_tile();
 			gui_controller.update_view();

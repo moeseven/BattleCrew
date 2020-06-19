@@ -117,11 +117,13 @@ public class Game implements Serializable {
 	}
 	
 	public void game_over() {
-		// TODO Game ends here
-		Leaderboard leaderboard = Leaderboard.loadLeaderboard();
-		leaderboard.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(this));
-		leaderboard.writeToFile();
-		state = GameState.GameOver;
+		if (state != GameState.GameOver) {
+			Leaderboard leaderboard = Leaderboard.loadLeaderboard();
+			leaderboard.addLeaderboardEntryInRightOrder(new LeaderBoardEntry(this));
+			leaderboard.writeToFile();
+			state = GameState.GameOver;
+		}
+		
 	}
 	
 //	public void enter_city() {
