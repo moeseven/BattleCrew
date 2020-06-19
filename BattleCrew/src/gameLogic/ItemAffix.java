@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ItemAffix implements Serializable{
+	public int getRegen() {
+		return regen;
+	}
 	public int getThorns() {
 		return thorns;
 	}
@@ -41,6 +44,7 @@ public class ItemAffix implements Serializable{
 	private int dexterity;
 	private int vitality;
 	private int thorns;
+	private int regen;
 	//
 	public ItemAffix(String[] stats,Game game) {
 		super();
@@ -58,6 +62,7 @@ public class ItemAffix implements Serializable{
 		dexterity = Integer.parseInt(stats[9]);
 		vitality = Integer.parseInt(stats[10]);
 		thorns = Integer.parseInt(stats[11]);
+		regen = Integer.parseInt(stats[12]);
 	}
 	public ItemAffix() {
 		name= "unknown";

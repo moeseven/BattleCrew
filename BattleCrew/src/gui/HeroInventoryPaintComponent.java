@@ -107,9 +107,9 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 					if(game.getPlayer().getSelectedItem()!=null) {
 						if (game.getPlayer().getSelectedItem().getNumber_of_enchantments() > 0) {
 							if (game.getPlayer().getSelectedItem().getNumber_of_enchantments() > 1) {
-								setFirstLineColor(Color.BLUE);
-							}else {
 								setFirstLineColor(Color.ORANGE);
+							}else {
+								setFirstLineColor(Color.BLUE);								
 							}
 						}
 						game.getPlayer().getSelectedItem().generateItemDescription();

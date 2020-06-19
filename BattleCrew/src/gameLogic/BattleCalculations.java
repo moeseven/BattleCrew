@@ -152,7 +152,6 @@ public class BattleCalculations {
 			}
 		}
 		damage *=  (1-reduction);
-		damage = 10 * damage /defender.getVitality();
 		return damage;
 	}
 	
@@ -178,7 +177,6 @@ public class BattleCalculations {
 			}
 		}
 		damage *=  (1-reduction);
-		damage = 10 * damage /defender.getVitality();
 		return damage;
 	}
 	public static double calc_amunition_damage(BattleUnit warrior) {

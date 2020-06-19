@@ -38,6 +38,7 @@ public class Item implements Serializable{
 	private int vitality = 0;
 	//
 	private int thorns = 0;
+	private int regen = 0;
 	private int image;
 	private LinkedList<String> description;
 	public Item(String[] stats,Game game) {
@@ -146,6 +147,7 @@ public class Item implements Serializable{
 				precision += affix.getPrecision();
 			}		
 			thorns += affix.getThorns();
+			regen += affix.getRegen();
 			return true;
 		}
 				

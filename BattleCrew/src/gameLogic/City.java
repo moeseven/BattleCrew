@@ -42,7 +42,7 @@ public class City {
 			}
 			//some chance of getting a recruit from another race
 			double roll = Math.random();
-			if (roll < 0.2) {
+			if (roll < 0.25) {
 				player.addHero(player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player));
 			}else {
 				player.addHero(player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player));

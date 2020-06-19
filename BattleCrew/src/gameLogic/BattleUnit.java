@@ -16,6 +16,14 @@ public class BattleUnit implements HexTileUnit, Serializable{
 
 
 
+	public int getRegen() {
+		return regen;
+	}
+
+	public void setRegen(int regen) {
+		this.regen = regen;
+	}
+
 	public int getThorns() {
 		return thorns;
 	}
@@ -72,6 +80,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private int base_damage = 10;
 	private boolean equippable = true; //TODO
 	private int thorns;
+	private int regen=0;
 	private Equipment equipment;
 	
 	//dynamic stats
@@ -152,6 +161,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
         recovery = Integer.parseInt(stats[26]);
         thorns = Integer.parseInt(stats[27]);
         exp_value = Integer.parseInt(stats[28]);
+        regen = Integer.parseInt(stats[29]);
         name = player.getGame().name_generator.generate_name(type);
 	}
 	
@@ -201,6 +211,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void round_begin() {
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
+		//regen
+		heal(regen);
 		tiles_moved_this_round = 0;
 		attacked_this_round = false;
 	}
@@ -232,6 +244,14 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			fear -= c;
 			if (fear<0) {
 				fear = 0;
+			}
+		}
+	}
+	public void heal(double h) {
+		if (h > 0) {
+			health += h/vitality*10;
+			if (health>100) {
+				health = 100;
 			}
 		}
 	}
@@ -341,12 +361,13 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	}
 
 	
-	public void take_damage(double damage,BattleUnit attacker) {
+	public void take_damage(double damage,BattleUnit attacker) {		
 		if (damage > 0) {
-			damage = Math.min(damage, health);
-			attacker.add_to_damage_dealt(damage*vitality/10.0);
-			health -= damage;
-			player.getGame().log.addLine(name+" took "+(int) damage+"% damage!");
+			attacker.add_to_damage_dealt(damage);
+			player.getGame().log.addLine(name+" took "+(int) damage+" damage!");
+			double d = damage*10/vitality;
+			damage = Math.min(damage, health);			
+			health -= damage;			
 			if (health<=0) {
 				//give exp to killer;
 				attacker.gain_experience(exp_value);

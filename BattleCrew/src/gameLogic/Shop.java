@@ -66,6 +66,9 @@ public class Shop implements Serializable{
 			if (Math.random() < (player.getCommander().getEnchant_chance()/100.0) && item.getCategory() != 7) {
 				item_built.add_affix(player.getGame().affix_builder.random_affix());
 			}
+			if (Math.random() < (5/100.0) && item.getCategory() != 7) {
+				item_built.add_affix(player.getGame().affix_builder.random_affix());
+			}
 			if(player.getInventory().add(item_built)) {
 				player.gainGold(-item.getGold_value());
 				
