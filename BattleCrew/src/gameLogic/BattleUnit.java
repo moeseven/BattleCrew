@@ -202,7 +202,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	public void recover() {
 		heal_percent(recovery+player.getCommander().getRecover_points());
-		relax(2*recovery);
+		relax(recovery);
 	}
 	
 	/*

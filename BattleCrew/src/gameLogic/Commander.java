@@ -94,7 +94,7 @@ public class Commander extends BattleUnit {
 	private int action_points = 3; // number of actions in the city
 	private int command_points = 3; // number of Warriors that can be fielded
 	private int healer_points = 5;  // chance of healing lost units after battles
-	private int recover_points = 0; // recovering of stamina/fear/health
+	private int recover_points = 5; // recovering of stamina/fear/health
 	private int wealth = 200; // starting money
 	private int gold_bonus = 0; //money bonus
 	private int group_size = 5; // amount of warriors in the team
@@ -106,6 +106,7 @@ public class Commander extends BattleUnit {
 	public Commander(String[] stats,Commander_Class commander_class, Game game, Player player) {
 		super(stats, game, player);
 		this.commander_class = commander_class;
+		gain_experience(100);
 		vitality++;
 		base_defense++;
 		courage++;
@@ -114,7 +115,7 @@ public class Commander extends BattleUnit {
 			command_points++;
 			break;
 		case SupplyMaster:
-			recover_points+=5;
+			recover_points+=15;
 			vitality++;
 			break;
 		case Looter:
@@ -216,7 +217,7 @@ public class Commander extends BattleUnit {
 	public void lvl_up() {
 		super.lvl_up();
 		//command_points++;
-		player.gain_action_points(2);
+		player.gain_action_points(1);
 	}
 	@Override
 	public void die() {

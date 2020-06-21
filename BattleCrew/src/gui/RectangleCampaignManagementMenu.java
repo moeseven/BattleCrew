@@ -3,12 +3,16 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 import gameLogic.City;
 import gui.windows.CampaignWindow;
@@ -19,6 +23,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private RectangleClicker rectangle_clicker;
 	private JButton shop_button,warriors_button,prepare_battle_button;
 	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, enchant_button, score_button; //city actions (use up action points)
+	private action_point_component action_point;
 	private CampaignWindow cw;
 	public RectangleCampaignManagementMenu(CampaignWindow cw) {	
 		this.cw=cw;
@@ -34,9 +39,8 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		warriors_button = new WarriorsButton();
 		leadership_button = new LeadershipButton();
 		enchant_button = new EnchantButton();
-		add(warriors_button);
-		add(shop_button);
-		add(prepare_battle_button);
+		action_point = new action_point_component();
+		
 		add(rest_button);
 		add(train_button);
 		add(earn_button);
@@ -44,6 +48,10 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		add(recruit_button);
 		add(leadership_button);
 		add(score_button);
+		add(action_point);
+		add(warriors_button);
+		add(shop_button);
+		add(prepare_battle_button);
 		rectangle_clicker=new RectangleClicker();
 	}
 	private void addRectangles() {
@@ -230,18 +238,23 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		// TODO Auto-generated method stub
 		if (cw.getGame().getPlayer().getAction_points() <= 0) {
 			rest_button.setVisible(false);
-			train_button.setVisible(false);
+			
 			earn_button.setVisible(false);
 			recruit_button.setVisible(false);
 			score_button.setVisible(false);
 			enchant_button.setVisible(false);
 		}else {
 			rest_button.setVisible(true);
-			train_button.setVisible(true);
+			
 			earn_button.setVisible(true);
 			recruit_button.setVisible(true);
 			score_button.setVisible(true);
 			enchant_button.setVisible(true);
+		}
+		if (cw.getGame().getPlayer().getAction_points() <= 1) {
+			train_button.setVisible(false);
+		}else {
+			train_button.setVisible(true);
 		}
 		if (cw.getGame().getPlayer().getAction_points() <= 2) {
 			leadership_button.setVisible(false);
@@ -252,5 +265,11 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	@Override
 	public ViewController get_gui_controller() {
 		return cw.gui_controller;
+	}
+	private class action_point_component extends JComponent{
+		protected void paintComponent(Graphics g){
+			super.paintComponent(g);
+			g.drawString("actions remaining: "+cw.getGame().getPlayer().getAction_points(), 20, 20);
+		}
 	}
 }

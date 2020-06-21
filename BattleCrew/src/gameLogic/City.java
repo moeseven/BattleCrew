@@ -63,10 +63,13 @@ public class City {
 	}
 	
 	public static boolean practice(Player player) {
-		if (player.pay_action_points(1)) {
+		if (player.pay_action_points(2)) {
 			for (int i = 0; i < player.getHeroes().size(); i++) {
-				player.getHeroes().get(i).gain_experience(100);
-				player.getHeroes().get(i).exhaust(5);
+				if (player.getHeroes().get(i).getFatigue() < 90) {					
+					player.getHeroes().get(i).exhaust(7);
+					player.getHeroes().get(i).gain_experience(100);					
+				}
+				
 			}
 			return true;
 		}
