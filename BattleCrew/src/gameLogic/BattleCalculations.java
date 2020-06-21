@@ -8,7 +8,7 @@ public class BattleCalculations {
 	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
 	public static double MAXIMUM_DAMAGE_FACTOR = 1;
 	private static double MEELE_STRIKE_CHANCE_FACTOR = 0.5;
-	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0003;
+	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0002;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
 	private static int BASE_EVASION = 17;
 	

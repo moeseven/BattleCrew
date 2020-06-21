@@ -216,7 +216,7 @@ public class Commander extends BattleUnit {
 	public void lvl_up() {
 		super.lvl_up();
 		//command_points++;
-		player.gain_action_points(1);
+		player.gain_action_points(2);
 	}
 	@Override
 	public void die() {
