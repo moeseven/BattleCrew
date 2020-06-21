@@ -104,56 +104,64 @@ public class Item implements Serializable{
 	 */
 	public boolean add_affix(ItemAffix affix) {
 		//TODO make sure not to mess up hero
-		if (number_of_enchantments < 2) {
-			number_of_enchantments++;
-			if (number_of_enchantments>1) {
-				name += " and "+affix.getName();
-			}else {
-				name += " of "+affix.getName();
-			}	
-			//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring  //7: Amunition //0: Consumable
-			switch (category) {
-			case 1:
-				damage += affix.getDamage();
-				break;
-			case 2:
-				damage += affix.getDamage();
-				if (block > 0) {
-					block += affix.getBlock();
-				}				
-				break;
-			case 3:
-				//two handed gets double bonus
-				defense += affix.getDefense();
-				offense += affix.getOffense();
-				damage += affix.getDamage();
-				break;	
-			case 4:
-				armor += affix.getArmor();
-				break;
-			case 5:
-				armor += affix.getArmor();
-				break;
-			default:
-				break;
-			}
-			weight += weight*(affix.getWeight()/100.0);			
-			offense += affix.getOffense();
-			defense += affix.getDefense();
-			strength += affix.getStrength();
-			dexterity += affix.getDexterity();
-			vitality += affix.getVitality();
-			if (precision > 0) {
-				precision += affix.getPrecision();
-			}		
-			thorns += affix.getThorns();
-			regen += affix.getRegen();
-			return true;
-		}
+		if (category != 7 && category != 0) {
+			//allow no affixes for ammunition and consumables
+			if (number_of_enchantments < 3) {
+				number_of_enchantments++;
+				if (number_of_enchantments>1) {
+					name += " and "+affix.getName();
+				}else {
+					name += " of "+affix.getName();
+				}	
+				//1: Hand1  //2: Hand2  //3: BiHand //4: Body //5: Head //6:Ring  //7: Amunition //0: Consumable
+				switch (category) {
+				case 1:
+					damage += affix.getDamage();
+					break;
+				case 2:
+					damage += affix.getDamage();
+					if (block > 0) {
+						block += affix.getBlock();
+					}				
+					break;
+				case 3:
+					//two handed gets double bonus
+					defense += affix.getDefense();
+					offense += affix.getOffense();
+					damage += affix.getDamage();
+					break;	
+				case 4:
+					armor += affix.getArmor();
+					break;
+				case 5:
+					armor += affix.getArmor();
+					break;
+				default:
+					break;
+				}
+				weight += weight*(affix.getWeight()/100.0);			
 				
+				if (precision > 0) {
+					precision += affix.getPrecision();
+				}
+				//hero mods
+				offense += affix.getOffense();
+				defense += affix.getDefense();
+				strength += affix.getStrength();
+				dexterity += affix.getDexterity();
+				vitality += affix.getVitality();		
+				thorns += affix.getThorns();
+				regen += affix.getRegen();
+				//
+				return true;
+			}
+		}				
 		return false;
 	}
+	
 
+	
+	
 	public void mod(BattleUnit hero) {
 		mod_demod(hero, true);
 	}
@@ -162,16 +170,21 @@ public class Item implements Serializable{
 	}
 	
 	private void mod_demod(BattleUnit hero, boolean mod) {
-		int factor = 1;
-		if (!mod) {
-			factor = -1;
+		if (category != 7 && category != 0) {
+					int factor = 1;
+			if (!mod) {
+				factor = -1;
+			}
+			hero.setArmor(hero.getArmor()+factor*armor);
+			hero.setDefense(hero.getDefense()+factor*defense);
+			hero.setOffense(hero.getOffense()+factor*offense);
+			hero.setStrength(hero.getStrength()+factor*strength);
+			hero.setDexterity(hero.getDexterity()+factor*dexterity);
+			hero.setVitality(hero.getVitality()+factor*vitality);
+			hero.setThorns(hero.getThorns()+factor*thorns);
+			hero.setRegen(hero.getRegen()+factor*regen);
 		}
-		hero.setArmor(hero.getArmor()+factor*armor);
-		hero.setDefense(hero.getDefense()+factor*defense);
-		hero.setOffense(hero.getOffense()+factor*offense);
-		hero.setStrength(hero.getStrength()+factor*strength);
-		hero.setDexterity(hero.getDexterity()+factor*dexterity);
-		hero.setVitality(hero.getVitality()+factor*vitality);
+	
 	}
 	
 	public void resetAbilityCooldowns() {
@@ -199,12 +212,13 @@ public class Item implements Serializable{
 		if (armor>0) {
 			description.add("armor: +"+armor);
 		}
-		if(defense!=0) {
-			description.add("defense: +"+defense);
-		}
 		if (offense!=0) {
 			description.add("offense: +"+offense);
 		}
+		if(defense!=0) {
+			description.add("defense: +"+defense);
+		}
+		
 		if (strength!=0) {
 			description.add("strength: +" + strength);
 		}

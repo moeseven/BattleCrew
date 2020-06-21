@@ -43,7 +43,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	//other
 	protected Player player;
 	private String name;
-	private String type;
+	protected String type;
 	private int image_number;
 
 	//stats
@@ -365,7 +365,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		if (damage > 0) {
 			attacker.add_to_damage_dealt(damage);
 			player.getGame().log.addLine(name+" took "+(int) damage+" damage!");
-			double d = damage*10/vitality;
+			damage = damage*10/vitality;
 			damage = Math.min(damage, health);			
 			health -= damage;			
 			if (health<=0) {
@@ -434,7 +434,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("meele hits: "+ meele_attacks_landed);
 		lines.add("meele defends: "+ meele_attacks_defended);
 		if (ranged_attacks_attempted > 0) {
-			lines.add("ranged hits: "+ ranged_attacks_landed + "("+(int)(ranged_attacks_landed/(ranged_attacks_attempted)*100.0)+"%)");
+			double hit_ratio = ranged_attacks_landed/(ranged_attacks_attempted*1.0);
+			lines.add("ranged hits: "+ ranged_attacks_landed + "("+(int) (hit_ratio*100)+"%)");
 		}		
 		lines.add("missed attacks: "+ missed_attacks);
 		lines.add("");
@@ -476,7 +477,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("");
 		lines.add("armor: "+getArmor());
 		lines.add("");
-		lines.add("speed: "+getMove_speed());
+		if(getMove_speed() > 1) {
+			lines.add("speed: "+getMove_speed());
+		}		
 		lines.add("endurance: "+getEndurance());
 		lines.add("");
 		lines.add("strength: "+getStrength());

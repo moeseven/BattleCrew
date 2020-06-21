@@ -15,6 +15,7 @@ public class Behaviour {
 	}
 	
 	public static void behave(BattleUnit warrior, Battle battle) {
+		potion_check_and_use(warrior);
 		if (warrior.getBehaviour() == null) {
 			warrior.setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
 		}else {
@@ -35,7 +36,15 @@ public class Behaviour {
 			
 		}		
 	}
-
+	
+	public static void potion_check_and_use(BattleUnit warrior) {
+		if (warrior.getEquipment().getPotion() != null) {
+			if ((warrior.getMaxHealth()-warrior.getHealth())/10*warrior.getVitality() > warrior.getEquipment().getPotion().getDamage()) {
+				warrior.getEquipment().drinkPotion();
+			}
+		}
+		
+	}
 	
 	
 	public static void tactic_move_to_and_attack_closest_enemy(BattleUnit warrior, Battle battle, Movespeed speed) {

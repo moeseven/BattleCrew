@@ -1,5 +1,6 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
@@ -7,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import HexTilePlayground.HexTile;
 import pathfinding.Pathfinder;
 
-public class Battle {
+public class Battle implements Serializable{
 	protected LinkedList<BattleUnit> battleParticipants;
 	protected Battlefield battleField;
 	protected Player attacker,defender;

@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -24,6 +25,7 @@ public class CharcterBuilderInfoComponent extends JComponent implements Refresha
 		jp.add(new HeroStatsPaintComponent(fcb.gui_controller.getGame().getPlayer().getSelectedUnit(), this, 30, true,false,false));
 		this.add(jp,BorderLayout.CENTER);
 		this.setVisible(true);
+
 	}
 	public JTextField getTf() {
 		return tf;

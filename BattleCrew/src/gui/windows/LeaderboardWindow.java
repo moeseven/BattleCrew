@@ -79,7 +79,7 @@ public class LeaderboardWindow extends X_to_main_main_menu_window{
 				g.drawString("Type your name to join the Leaderboard:",20, 22);
 			}else {
 				for (int i = 0; i < lb.getLeaderboardEntries().size(); i++) {
-					g.drawString(lb.getLeaderboardEntries().get(i).getPlayerName(),140, 20+i*20);
+					g.drawString(lb.getLeaderboardEntries().get(i).getPlayerName(),120, 20+i*20);
 					g.drawString("Rank "+(i+1),30, 20+i*20);
 					int divisor=10;int decimalCounter=1;
 					while (lb.getLeaderboardEntries().get(i).getPoints()/divisor>=1) {
@@ -87,8 +87,8 @@ public class LeaderboardWindow extends X_to_main_main_menu_window{
 						decimalCounter++;
 					}			
 					
-					g.drawString(lb.getLeaderboardEntries().get(i).getPoints()+"",250-decimalCounter*6, 20+i*20);
-					g.drawString(" points       (level "+lb.getLeaderboardEntries().get(i).getLevel()+" "+lb.getLeaderboardEntries().get(i).getCommander_race()+" - "+lb.getLeaderboardEntries().get(i).getCommander_class()+")",260, 20+i*20);
+					g.drawString(lb.getLeaderboardEntries().get(i).getPoints()+"",270-decimalCounter*6, 20+i*20);
+					g.drawString(" points       (level "+lb.getLeaderboardEntries().get(i).getLevel()+" "+lb.getLeaderboardEntries().get(i).getCommander_race()+" - "+lb.getLeaderboardEntries().get(i).getCommander_class()+")",280, 20+i*20);
 				}
 			}
 			

@@ -100,7 +100,11 @@ public class Player implements HexTilePlayer,Serializable{
 			return false;
 		}
 	}
-	
+	public void gain_action_points(int p) {
+		if (p > 0) {
+			action_points += p;
+		}		
+	}
 	public void recover_warriors() {
 		for (Iterator iterator = warriors.iterator(); iterator.hasNext();) {
 			BattleUnit battleUnit = (BattleUnit) iterator.next();

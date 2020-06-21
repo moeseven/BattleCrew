@@ -51,7 +51,8 @@ public class Shop implements Serializable{
 			inventory.add(game.itemBuilder.buildItembyName("stone"));
 		}
 		
-		
+		//potions
+		inventory.add(game.itemBuilder.buildItembyName("healing potion"));
 		
 		
 		

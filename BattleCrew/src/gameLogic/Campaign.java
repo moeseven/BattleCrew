@@ -31,7 +31,7 @@ public class Campaign implements Serializable{
 	private void standard_campaign_setup() {
 		campaign_tiles.add(new TownTile());
 		Player defender = new Player(game,true);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			defender.addHero(game.unitBuilder.buildUnitbyName("giant_rat", defender));	
 		}	
 		campaign_tiles.add(new BattleTile(defender,120,200,105));
@@ -43,7 +43,7 @@ public class Campaign implements Serializable{
 		campaign_tiles.add(new BattleTile(defender,140,250,125));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			BattleUnit goblin = game.unitBuilder.buildUnitbyName("goblin", defender);
 			goblin.getEquipment().equipItemDirectly(game.itemBuilder.buildItembyName("skimtar"));
 			goblin.getEquipment().equipItemDirectly(game.itemBuilder.buildItembyName("armor"));
@@ -52,11 +52,20 @@ public class Campaign implements Serializable{
 		campaign_tiles.add(new BattleTile(defender,370,350,145));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			BattleUnit goblin = game.unitBuilder.buildUnitbyName("thornbiter", defender);
 			defender.addHero(goblin);	
 		}
 		campaign_tiles.add(new BattleTile(defender,170,350,165));
+		campaign_tiles.add(new TownTile());
+		defender = new Player(game,true);
+		for (int i = 0; i < 7; i++) {
+			BattleUnit goblin = game.unitBuilder.buildUnitbyName("goblin", defender);
+			goblin.getEquipment().equipItemDirectly(game.itemBuilder.buildItembyName("longsword"));
+			goblin.getEquipment().equipItemDirectly(game.itemBuilder.buildItembyName("armor"));
+			defender.addHero(goblin);	
+		}
+		campaign_tiles.add(new BattleTile(defender,370,350,145));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		defender.addHero(game.unitBuilder.buildUnitbyName("cave_troll", defender));	

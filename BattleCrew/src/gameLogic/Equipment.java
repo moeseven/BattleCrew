@@ -114,7 +114,9 @@ public class Equipment implements Serializable{
 		return allItems;
 	}
 	public boolean drinkPotion() {
+		//healing potion
 		if(potion!=null) {
+			hero.heal(potion.getDamage());
 			potion.mod(hero);
 			potion=null;
 			return true;

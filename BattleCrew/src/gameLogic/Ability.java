@@ -12,7 +12,6 @@ public class Ability {
 	private int heal_target;
 	private int stamina_damage;
 	private int range;
-	private int dexterity_demand;
 	private boolean self_target_allowed;
 	private boolean has_target;
 	private boolean ground_target;
@@ -38,11 +37,10 @@ public class Ability {
 		heal_target= Integer.parseInt(stats[3]);
 		stamina_damage= Integer.parseInt(stats[4]);
 		range= Integer.parseInt(stats[5]);
-		dexterity_demand= Integer.parseInt(stats[6]);
-		self_target_allowed= Boolean.parseBoolean(stats[7]);
-		has_target=Boolean.parseBoolean(stats[8]);
-		ground_target=Boolean.parseBoolean(stats[9]);
-		friendly=Boolean.parseBoolean(stats[10]);
+		self_target_allowed= Boolean.parseBoolean(stats[6]);
+		has_target=Boolean.parseBoolean(stats[7]);
+		ground_target=Boolean.parseBoolean(stats[8]);
+		friendly=Boolean.parseBoolean(stats[9]);
 	}
 	public boolean attempt(BattleUnit origin_warrior, BattleUnit target_warrior) {
 		//TODO

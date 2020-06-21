@@ -42,7 +42,7 @@ public class City {
 			}
 			//some chance of getting a recruit from another race
 			double roll = Math.random();
-			if (roll < 0.25) {
+			if (roll < player.getCommander().getRecruit_foreign_chance()/100.0) {
 				player.addHero(player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player));
 			}else {
 				player.addHero(player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player));
@@ -54,7 +54,8 @@ public class City {
 	
 	public static boolean earn_money(Player player) {
 		if (player.pay_action_points(1)) {
-			player.gainGold(50);
+			//interest
+			player.gainGold((int) (player.getGold()*0.15));
 			return true;
 		}
 		return false;

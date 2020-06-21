@@ -67,8 +67,8 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	}
 	private class EarnButton extends JButton{
 		public EarnButton() {
-			setName("earn gold");
-			this.setText("earn gold");
+			setName("earn interest");
+			this.setText("15% interest");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}

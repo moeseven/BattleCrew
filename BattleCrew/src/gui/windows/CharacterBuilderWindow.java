@@ -1,6 +1,7 @@
 package gui.windows;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -51,6 +52,7 @@ public class CharacterBuilderWindow extends X_to_main_main_menu_window{
 		jpDraw.setLayout(new BorderLayout());
 		jpDraw.add(cbi, BorderLayout.CENTER);
 		add(jpDraw, BorderLayout.CENTER);
+		getContentPane().setBackground(Color.black);
 		setVisible(true);
 	}
 	private class ButtonRaceListener extends MouseAdapter{

@@ -8,9 +8,11 @@ public class BattleCalculations {
 	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
 	public static double MAXIMUM_DAMAGE_FACTOR = 1;
 	private static double MEELE_STRIKE_CHANCE_FACTOR = 0.5;
-	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0005;
+	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0003;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
 	private static int BASE_EVASION = 17;
+	
+	
 	
 	public static double calc_movement_exhaustion(BattleUnit unit) {
 		double exhaustion;
@@ -251,6 +253,7 @@ public class BattleCalculations {
 			if (!evade(attacker, defender)) {
 				//thorns
 				if (defender.getThorns() > 0) {
+					defender.getPlayer().getGame().log.addLine("thorns");
 					thorn_damage(attacker, defender);
 				}				
 				defender.take_damage(roll_damage(attacker, defender),attacker);

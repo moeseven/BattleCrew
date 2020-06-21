@@ -9,6 +9,14 @@ public class Commander extends BattleUnit {
 
 
 
+
+
+
+	public int getRecruit_foreign_chance() {
+		return recruit_foreign_chance;
+	}
+
+
 	public Commander_Class getCommander_class() {
 		return commander_class;
 	}
@@ -91,6 +99,7 @@ public class Commander extends BattleUnit {
 	private int gold_bonus = 0; //money bonus
 	private int group_size = 5; // amount of warriors in the team
 	private int enchant_chance = 5; //chance of enchanting an item when buying
+	private int recruit_foreign_chance = 20;
 	
 	private Commander_Class commander_class;
 	
@@ -109,9 +118,11 @@ public class Commander extends BattleUnit {
 			vitality++;
 			break;
 		case Looter:
+			dexterity++;
 			gold_bonus+=10;
 			break;
 		case Healer:
+			vitality++;
 			healer_points+=35;
 			break;
 		case Warrior:
@@ -136,6 +147,37 @@ public class Commander extends BattleUnit {
 			break;
 		case Developer:
 			action_points ++;
+			wealth = wealth/2;
+			enchant_chance --;
+			break;
+		default:
+			break;
+		}
+		switch (type) {
+		case "human":
+			player.earn_score(15);
+			gain_experience(100);
+			recruit_foreign_chance += 5;
+			setImage_number(39);
+			break;
+		case "elf":
+			enchant_chance += 3;
+			healer_points += 5;
+			group_size--;
+			setImage_number(122);
+			break;
+		case "dwarf":
+			wealth += 100;
+			command_points--;
+			group_size--;
+			setImage_number(38);
+			break;
+		case "halfling":
+			dexterity+=3;
+			command_points++;
+			group_size++;			
+			action_points++;
+			setImage_number(31);
 			break;
 		default:
 			break;
@@ -168,12 +210,14 @@ public class Commander extends BattleUnit {
 		if (enchant_chance > 0) {
 			lines.add("enchant skill: "+ enchant_chance + "%");
 		}
-		if (wealth > 0) {
-			lines.add("gold: "+wealth);
-		}
 		return lines;
 	}
-	
+	@Override
+	public void lvl_up() {
+		super.lvl_up();
+		//command_points++;
+		player.gain_action_points(1);
+	}
 	@Override
 	public void die() {
 		// TODO Game over if commander dies
