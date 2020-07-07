@@ -77,7 +77,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private int resist_pirce;
 	
 	protected int weapon_skill;
-	private int base_damage = 10;
+	private int base_damage = 1;
 	private boolean equippable = true; //TODO
 	private int thorns;
 	private int regen=0;
@@ -274,7 +274,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	public void gain_experience(int exp) {
 		int exp_missing_for_lvlup = experience_threshold_for_next_level(level+1)-experience;
-		if(exp_missing_for_lvlup < exp) {
+		if(exp_missing_for_lvlup <= exp) {
 			experience = experience_threshold_for_next_level(level+1);
 			lvl_up();	
 			gain_experience(exp - exp_missing_for_lvlup);

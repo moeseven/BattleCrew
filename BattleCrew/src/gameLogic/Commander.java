@@ -95,7 +95,7 @@ public class Commander extends BattleUnit {
 	private int command_points = 3; // number of Warriors that can be fielded
 	private int healer_points = 5;  // chance of healing lost units after battles
 	private int recover_points = 5; // recovering of stamina/fear/health
-	private int wealth = 200; // starting money
+	private int wealth = 300; // starting money
 	private int gold_bonus = 0; //money bonus
 	private int group_size = 5; // amount of warriors in the team
 	private int enchant_chance = 5; //chance of enchanting an item when buying
@@ -106,7 +106,6 @@ public class Commander extends BattleUnit {
 	public Commander(String[] stats,Commander_Class commander_class, Game game, Player player) {
 		super(stats, game, player);
 		this.commander_class = commander_class;
-		gain_experience(100);
 		vitality++;
 		base_defense++;
 		courage++;
@@ -127,12 +126,12 @@ public class Commander extends BattleUnit {
 			healer_points+=35;
 			break;
 		case Warrior:
-			vitality += 4;
+			vitality += 5;
 			dexterity += 1;
-			weapon_skill += 2;
-			strength += 2;
-			base_defense+=5;
-			base_offense+=10;
+			weapon_skill += 3;
+			strength += 5;
+			base_defense+=8;
+			base_offense+=14;
 			break;
 		case Tactician:
 			group_size+=4;
@@ -157,7 +156,6 @@ public class Commander extends BattleUnit {
 		switch (type) {
 		case "human":
 			player.earn_score(15);
-			gain_experience(100);
 			recruit_foreign_chance += 5;
 			setImage_number(39);
 			break;
@@ -168,7 +166,7 @@ public class Commander extends BattleUnit {
 			setImage_number(122);
 			break;
 		case "dwarf":
-			wealth += 100;
+			wealth += 150;
 			command_points--;
 			group_size--;
 			setImage_number(38);

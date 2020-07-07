@@ -10,7 +10,7 @@ public class BattleCalculations {
 	private static double MEELE_STRIKE_CHANCE_FACTOR = 0.5;
 	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0002;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
-	private static int BASE_EVASION = 17;
+	private static int BASE_EVASION = 20;
 	
 	
 	
@@ -118,11 +118,11 @@ public class BattleCalculations {
 	public static double calc_maximum_damage(BattleUnit warrior) {
 		double damage = MAXIMUM_DAMAGE_FACTOR;
 		if (warrior.getEquipment().getHand1() != null) {
-			damage *= Math.max(warrior.getBase_damage(), warrior.getEquipment().getHand1().getDamage());
+			damage *= Math.max(warrior.getBase_damage(), warrior.getEquipment().getHand1().getDamage()*warrior.getWeapon_skill()/10);
 		}else {
 			damage *= warrior.getBase_damage();
 		}
-		damage *= warrior.getStrength()/10.0;
+		damage += warrior.getStrength();
 		return damage;
 	}
 	public static double calc_minimum_damage(BattleUnit warrior) {
