@@ -31,6 +31,7 @@ import gui.windows.CampaignWindow;
 public class WarriorsReadyForBattleComponent extends JComponent{
 	BattlePrepareWindow battle_prepare_window;
 	JPanel battle_tables;
+	JPanel behaviour_panel;
 	
 	public WarriorsReadyForBattleComponent(BattlePrepareWindow cw) {
 		super();
@@ -41,8 +42,14 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 		battle_tables.setLayout(new BorderLayout());
 		battle_tables.add(new WarriorsReadyForBattleTableComponent(cw.gui_controller.getGame().getPlayer(), cw.gui_controller.getGame().getPrepareTable(), cw),BorderLayout.CENTER);
 		battle_tables.add(new WarriorsReadyForBattleTableComponent(cw.gui_controller.getGame().getOpponent(), cw.gui_controller.getGame().getEnemyTable(), cw),BorderLayout.NORTH);
+		//TODO add option to set behaviour of individual warriors
+		//drop text box Borderlayout.Line_END
 		add(battle_tables, BorderLayout.CENTER);	
-		add(new StartBattleButton(),BorderLayout.NORTH);
+		behaviour_panel = new JPanel();
+		behaviour_panel.setLayout(new BorderLayout());
+		behaviour_panel.add(new StartBattleButton(),BorderLayout.NORTH);
+		add(behaviour_panel, BorderLayout.NORTH);
+		
 		add(new WarriorCampaignComponent(cw), BorderLayout.LINE_END);
 		//add(new AvailableHeroList(), BorderLayout.LINE_END);
 		setSize(new Dimension(800,430));

@@ -183,7 +183,7 @@ public class BattleCalculations {
 	}
 	public static double calc_amunition_damage(BattleUnit warrior) {
 		if (warrior.getEquipment().getAmunition().size()>0) {
-			return warrior.getEquipment().getAmunition().get(0).getDamage();
+			return warrior.getEquipment().getAmunition().get(0).getDamage()*(warrior.getWeapon_skill()/10.0);
 		}else {
 			return 0;
 		}

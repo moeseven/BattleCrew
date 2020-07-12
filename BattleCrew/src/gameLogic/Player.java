@@ -105,10 +105,10 @@ public class Player implements HexTilePlayer,Serializable{
 			action_points += p;
 		}		
 	}
-	public void recover_warriors() {
+	public void recover_warriors(boolean commander_help) {
 		for (Iterator iterator = warriors.iterator(); iterator.hasNext();) {
 			BattleUnit battleUnit = (BattleUnit) iterator.next();
-			battleUnit.recover();
+			battleUnit.recover(commander_help);
 		}
 	}
 //	public void removeHeroFromTavern(Warrior hero) {

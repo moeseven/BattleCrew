@@ -11,7 +11,8 @@ public class Behaviour {
 		  CHARGE
 	}
 	enum Behaviour_type {
-		ATTACK_CLOSEST_ENEMY
+		ATTACK_CLOSEST_ENEMY,
+		FLANK
 	}
 	
 	public static void behave(BattleUnit warrior, Battle battle) {
@@ -26,6 +27,9 @@ public class Behaviour {
 				switch (warrior.getBehaviour()) {
 				case ATTACK_CLOSEST_ENEMY:
 					tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+					break;
+				case FLANK:
+					tactic_flank(warrior, battle, Movespeed.WALK);
 					break;
 	
 				default:
@@ -51,6 +55,34 @@ public class Behaviour {
 		find_closest_target(warrior, battle);
 		if (move_into_attack_range(warrior, battle, speed)) {
 			attack(warrior);
+		}
+	}
+	
+	public static void tactic_flank(BattleUnit warrior, Battle battle, Movespeed speed) {
+		//move to right or left center of battlefield and then change tactic to attack closest enemy
+		boolean enemy_close = false;
+		for (int i = 0; i < battle.getBattleField().get_adjacent_tiles(warrior.getTile()).size(); i++) {
+			if (battle.getBattleField().get_adjacent_tiles(warrior.getTile()).get(i).getUnit() != null) {
+				if (battle.getBattleField().get_adjacent_tiles(warrior.getHexTile()).get(i).getUnit().getPlayer() != warrior.getPlayer()) {
+					enemy_close = true;
+				}
+			}			
+		}
+		if (enemy_close) {
+			tactic_move_to_and_attack_closest_enemy(warrior, battle, speed);
+		}
+		int right_most_x = battle.getBattleField().getTable_size_x()-1;
+		int flanking_turnpoint_y = battle.getBattleField().getTable_size_y()/2;
+		HexTile tile;
+		if (warrior.getTile().getx() < battle.getBattleField().getTable_size_x()/2) {
+			//left flank
+			tile = battle.getBattleField().getTiles().get(battle.getBattleField().getTable_size_y()/2);
+		}else {
+			//right flank
+			tile = battle.getBattleField().getTiles().get(right_most_x * battle.getBattleField().getTable_size_y()+flanking_turnpoint_y);
+		}
+		if (move_towards_tile(battle, warrior, tile, speed)) {
+			warrior.setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
 		}
 	}
 	

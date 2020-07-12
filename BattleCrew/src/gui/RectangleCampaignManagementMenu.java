@@ -60,7 +60,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class RestButton extends JButton{
 		public RestButton() {
 			setName("recover");
-			this.setText("recover");
+			this.setText("treat wounds"+"("+cw.getGame().getPlayer().getCommander().getRecover_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -76,7 +76,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class EarnButton extends JButton{
 		public EarnButton() {
 			setName("earn interest");
-			this.setText("15% interest");
+			this.setText("5% interest"+"("+cw.getGame().getPlayer().getCommander().getEarn_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -92,7 +92,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class RecruitButton extends JButton{
 		public RecruitButton() {
 			setName("recruit");
-			this.setText("recruit");
+			this.setText("recruit"+"("+cw.getGame().getPlayer().getCommander().getRecruit_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -111,7 +111,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class LeadershipButton extends JButton{
 		public LeadershipButton() {
 			setName("leadership");
-			this.setText("improve leadership");
+			this.setText("improve leadership"+"("+cw.getGame().getPlayer().getCommander().getCommand_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -127,7 +127,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class ScoreButton extends JButton{
 		public ScoreButton() {
 			setName("score");
-			this.setText("score");
+			this.setText("score"+"("+cw.getGame().getPlayer().getCommander().getPrestige_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -143,7 +143,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class EnchantButton extends JButton{
 		public EnchantButton() {
 			setName("enchant");
-			this.setText("improve enchant skill");
+			this.setText("improve enchant skill"+"("+cw.getGame().getPlayer().getCommander().getEnchant_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -159,7 +159,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class LearnButton extends JButton{
 		public LearnButton() {
 			setName("study");
-			this.setText("training");
+			this.setText("training"+"("+cw.getGame().getPlayer().getCommander().getTrain_cost()+"ap)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -235,32 +235,32 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	}
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		if (cw.getGame().getPlayer().getAction_points() <= 0) {
-			rest_button.setVisible(false);
-			
-			earn_button.setVisible(false);
-			recruit_button.setVisible(false);
-			score_button.setVisible(false);
-			enchant_button.setVisible(false);
-		}else {
-			rest_button.setVisible(true);
-			
-			earn_button.setVisible(true);
-			recruit_button.setVisible(true);
-			score_button.setVisible(true);
-			enchant_button.setVisible(true);
-		}
-		if (cw.getGame().getPlayer().getAction_points() <= 1) {
-			train_button.setVisible(false);
-		}else {
-			train_button.setVisible(true);
-		}
-		if (cw.getGame().getPlayer().getAction_points() <= 2) {
-			leadership_button.setVisible(false);
-		}else {
-			leadership_button.setVisible(true);
-		}
+//		// TODO Auto-generated method stub
+//		if (cw.getGame().getPlayer().getAction_points() <= 0) {
+//			rest_button.setVisible(false);
+//			
+//			earn_button.setVisible(false);
+//			recruit_button.setVisible(false);
+//			score_button.setVisible(false);
+//			enchant_button.setVisible(false);
+//		}else {
+//			rest_button.setVisible(true);
+//			
+//			earn_button.setVisible(true);
+//			recruit_button.setVisible(true);
+//			score_button.setVisible(true);
+//			enchant_button.setVisible(true);
+//		}
+//		if (cw.getGame().getPlayer().getAction_points() <= 1) {
+//			train_button.setVisible(false);
+//		}else {
+//			train_button.setVisible(true);
+//		}
+//		if (cw.getGame().getPlayer().getAction_points() <= 2) {
+//			leadership_button.setVisible(false);
+//		}else {
+//			leadership_button.setVisible(true);
+//		}
 	}
 	@Override
 	public ViewController get_gui_controller() {

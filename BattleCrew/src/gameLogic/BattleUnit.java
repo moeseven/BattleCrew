@@ -96,7 +96,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	private int experience = 0;
 	private int exp_value = 25;
-	private int level = 1;
+	protected int level = 1;
 	
 	//statistics
 	public double damage_dealt=0;
@@ -163,6 +163,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
         exp_value = Integer.parseInt(stats[28]);
         regen = Integer.parseInt(stats[29]);
         name = player.getGame().name_generator.generate_name(type);
+
 	}
 	
 	public BattleUnit() {
@@ -200,9 +201,14 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		return false;
 	}
 	
-	public void recover() {
-		heal_percent(recovery+player.getCommander().getRecover_points());
-		relax(recovery);
+	public void recover(boolean commander_recover) {		
+		if (commander_recover) {
+			heal_percent(player.getCommander().getRecover_points());
+		}else {
+			heal(regen*10);
+			heal_percent(recovery);
+			relax(recovery);
+		}		
 	}
 	
 	/*
@@ -285,49 +291,48 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	public void lvl_up() {
 		level++;
-		increase_random_stat();
-		increase_random_stat();
+		vitality++;
 		increase_random_stat();
 	}
 	
 	public void increase_random_stat() {
-		int random_stat = (int) (Math.random()*11);
+		int random_stat = (int) (Math.random()*12);
 		switch (random_stat) {
 		case 0:
-			spell_power++;
+			spell_power+=3;
 			break;
 		case 1:
-			wisdom++;
+			wisdom+=3;
 			break;
 		case 2:
-			precision++;
+			precision+=4;
 			break;
 		case 3:
-			courage++;
+			courage+=3;
 			break;
 		case 4:
-			vitality++;
+			recovery+=5;
 			break;
 		case 5:
-			dexterity++;
+			dexterity+=3;
 			break;
 		case 6:
-			strength++;
+			strength+=3;
 			break;
 		case 7:
-			endurance++;
+			endurance+=3;
 			break;
 		case 8:
-			weapon_skill++;
+			weapon_skill+=1;
 			break;
 		case 9:
-		    base_offense+=3;
+		    base_offense+=7;
 			break;
 		case 10:
-			base_defense+=3;
+			base_defense+=7;
 			break;
 		default:
-			vitality++;
+			vitality+=2;
 			break;
 		}		
 	}
@@ -446,10 +451,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		LinkedList<String> lines=new LinkedList<String>();
 		lines.add(name+" (Level "+level+" "+type+")");
 		lines.add("");
-		lines.add("health: "+(int)(getHealth())+"%");
-		lines.add("fatigue: "+(int)(getFatigue())+"%");
-		lines.add("fear: "+(int) getFear()+"%");
-		//lines.add("moral: "+player.getSelectedHero().getStress()+"/"+player.getSelectedHero().getStressCap());
+		lines.add("vitality: "+vitality+"/"+(int)(getHealth())+"%");
+		lines.add("endurance: "+endurance+"/"+(int)(100-getFatigue())+"%");
+		lines.add("moral: "+courage+"/"+(int) (100-getFear())+"%");
 		lines.add("");
 		//main stats
 		
@@ -472,26 +476,33 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			}
 		}
 		lines.add("precision: "+concat_string);
-		lines.add("courage: "+courage);
+		//lines.add("courage: "+courage);
+		lines.add("strength: "+getStrength());
+		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
 		lines.add("armor: "+getArmor());
+		if (thorns > 0) {
+			lines.add("thorns: "+thorns);
+		}
 		lines.add("");
 		if(getMove_speed() > 1) {
 			lines.add("speed: "+getMove_speed());
 		}		
-		lines.add("endurance: "+getEndurance());
-		lines.add("");
-		lines.add("strength: "+getStrength());
-		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));		
-		lines.add("vitality: "+getVitality());
+		//lines.add("endurance: "+getEndurance());
+		lines.add("recovery: "+recovery);
+		if (regen > 0) {
+			lines.add("regen: "+regen);
+		}
+			
+		//lines.add("vitality: "+getVitality());
 		
 		//defensive
 		
 		
 		//TODO lines.add("experience: "+player.getSelectedHero().getExperience()+"/"+GameEquations.experienceThresholdForLevelUp(player.getSelectedHero().getLevel()));		
 		//Quirks
-		lines.add("");
+		//lines.add("");
 	//TODO if(player.getSelectedHero().getQuirks().size()>0) { 
 //			lines.add("Quirks:");
 //			for(int a=0; a<player.getSelectedHero().getQuirks().size();a++) {
