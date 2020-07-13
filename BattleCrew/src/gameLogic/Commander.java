@@ -12,6 +12,16 @@ public class Commander extends BattleUnit {
 
 
 
+	public int getScore_gain() {
+		return score_gain;
+	}
+
+
+	public void setScore_gain(int score_gain) {
+		this.score_gain = score_gain;
+	}
+
+
 	public int getDrill() {
 		return drill;
 	}
@@ -184,6 +194,7 @@ public class Commander extends BattleUnit {
 	private int train_cost = 4;
 	private int command_cost = 6;		
 	
+	private int score_gain = 100;
 	private int action_points = 7; // number of actions in the city
 	private int command_points = 3; // number of Warriors that can be fielded
 	private int healer_points = 5;  // chance of healing lost units after battles
@@ -235,7 +246,7 @@ public class Commander extends BattleUnit {
 			wealth += 500;
 			break;
 		case Hero:
-			player.earn_score(350);			
+			score_gain += 10;	
 			break;
 		case Enchanter:
 			enchant_chance += 13;
@@ -250,7 +261,6 @@ public class Commander extends BattleUnit {
 		}
 		switch (type) {
 		case "human":
-			player.earn_score(15);
 			recruit_foreign_chance += 5;
 			drill += 10;
 			setImage_number(39);

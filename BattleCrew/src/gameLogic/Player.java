@@ -45,6 +45,9 @@ public class Player implements HexTilePlayer,Serializable{
 		return score;
 	}
 	public void earn_score(int score) {
+		if (commander != null) {
+			score =  score * commander.getScore_gain()/100;
+		}
 		this.score += score;
 	}
 	private BattleUnit selectedWarrior;
