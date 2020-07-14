@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
 import gameLogic.Game;
+import gameLogic.Game.GameState;
 
 
 public class BattleSummaryWindow extends X_to_main_main_menu_window{
@@ -62,6 +63,8 @@ public class BattleSummaryWindow extends X_to_main_main_menu_window{
 			if (gui_controller.getGame().getBattle().getWinner() == gui_controller.getGame().getPlayer()) {
 				gui_controller.getGame().getPlayer().earn_score(gui_controller.getGame().getOpponent().getScore());
 				gui_controller.getGame().getCampaign().enter_next_tile();
+			}else {
+				gui_controller.getGame().set_state(GameState.GameOver);
 			}
 			
 			//

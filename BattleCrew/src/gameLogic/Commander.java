@@ -189,16 +189,16 @@ public class Commander extends BattleUnit {
 	private int prestige_cost = 1;
 	private int earn_cost = 1;
 	private int enchant_cost = 2;
-	private int recover_cost = 3;
+	private int recover_cost = 1;
 	private int recruit_cost = 3;
-	private int train_cost = 4;
+	private int train_cost = 5;
 	private int command_cost = 6;		
 	
 	private int score_gain = 100;
 	private int action_points = 7; // number of actions in the city
 	private int command_points = 3; // number of Warriors that can be fielded
 	private int healer_points = 5;  // chance of healing lost units after battles
-	private int recover_points = 25; // recovering of stamina/fear/health
+	private int recover_points = 7; // recovering of stamina/fear/health
 	private int wealth = 300; // starting money
 	private int gold_bonus = 0; //money bonus
 	private int group_size = 5; // amount of warriors in the team
@@ -227,7 +227,7 @@ public class Commander extends BattleUnit {
 		case Healer:
 			vitality++;
 			healer_points+=35;
-			recover_cost--;
+			recover_points+=3;
 			break;
 		case Warrior:
 			vitality += 5;
@@ -262,13 +262,13 @@ public class Commander extends BattleUnit {
 		switch (type) {
 		case "human":
 			recruit_foreign_chance += 5;
-			drill += 10;
+			drill += 50;
 			setImage_number(39);
 			break;
 		case "elf":
 			enchant_chance += 3;
 			healer_points += 5;
-			recover_points += 3;
+			recover_points += 1;
 			group_size--;
 			setImage_number(122);
 			break;
@@ -316,31 +316,20 @@ public class Commander extends BattleUnit {
 		super.lvl_up();
 		//command_points++;
 		switch (level) {
-		case 2:
-			base_offense++;
-			break;
 		case 3:
-			enchant_chance++;
-			break;
-		case 4:
 			command_points++;
 			break;
+		case 4:
+			enchant_chance++;
+			break;
 		case 5:
-			action_points++;
-			break;
-		case 6:
-			recover_points++;
-			break;
-		case 7:
-			healer_points+=2;
-			break;
-		case 8:
 			command_points++;
 			break;
 		default:
-			increase_random_stat();
+			healer_points++;			
 			break;
 		}
+		action_points++;
 	}
 	@Override
 	public void die() {

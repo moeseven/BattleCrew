@@ -63,9 +63,6 @@ public class ViewController {
 	}
 	public void update_view() {
 		if (game.get_state() == GameState.Menu) {
-			if (game.get_state() == GameState.GameOver) {
-				game = new Game();
-			}
 			show_menu();
 		}else {
 			if (game.get_state() == GameState.GameOver) {

@@ -29,6 +29,7 @@ public class Campaign implements Serializable{
 	}
 	
 	private void standard_campaign_setup() {
+		campaign_tiles.add(new VictoryTile());
 		campaign_tiles.add(new TownTile());
 		Player defender = new Player(game,true);
 		for (int i = 0; i < 4; i++) {
@@ -91,12 +92,13 @@ public class Campaign implements Serializable{
 		defender.addHero(game.unitBuilder.buildUnitbyName("cave_troll", defender));	
 		campaign_tiles.add(new BattleTile(defender,230,450,325));
 		campaign_tiles.add(new VictoryTile());
+		campaign_tiles.add(new VictoryTile());
 	}
 	
 	public boolean enter_next_tile() {
-		if (current_tile_index < campaign_tiles.size() && game.get_state() != GameState.GameOver) {
-			campaign_tiles.get(current_tile_index).enter(this);
+		if (current_tile_index < campaign_tiles.size()-1 && game.get_state() != GameState.GameOver) {			
 			current_tile_index++;
+			campaign_tiles.get(current_tile_index).enter(this);
 			return true;
 		}
 		return false;
