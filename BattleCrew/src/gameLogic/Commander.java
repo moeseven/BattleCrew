@@ -199,12 +199,12 @@ public class Commander extends BattleUnit {
 	private int command_points = 3; // number of Warriors that can be fielded
 	private int healer_points = 5;  // chance of healing lost units after battles
 	private int recover_points = 7; // recovering of stamina/fear/health
-	private int wealth = 300; // starting money
+	private int wealth = 400; // starting money
 	private int gold_bonus = 0; //money bonus
 	private int group_size = 5; // amount of warriors in the team
 	private int enchant_chance = 4; //chance of enchanting an item when buying
 	private int recruit_foreign_chance = 18;
-	private int drill = 150;
+	private int drill = 100;
 	
 	private Commander_Class commander_class;
 	
@@ -262,7 +262,7 @@ public class Commander extends BattleUnit {
 		switch (type) {
 		case "human":
 			recruit_foreign_chance += 5;
-			drill += 50;
+			drill += 20;
 			setImage_number(39);
 			break;
 		case "elf":
@@ -273,7 +273,7 @@ public class Commander extends BattleUnit {
 			setImage_number(122);
 			break;
 		case "dwarf":
-			wealth += 150;
+			wealth += 200;
 			recruit_cost++;
 			setImage_number(38);
 			break;
@@ -325,11 +325,14 @@ public class Commander extends BattleUnit {
 		case 5:
 			command_points++;
 			break;
-		default:
-			healer_points++;			
+		case 6:
+			healer_points++;
+			break;
+		default:			
+			action_points++;			
 			break;
 		}
-		action_points++;
+		
 	}
 	@Override
 	public void die() {

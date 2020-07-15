@@ -175,7 +175,6 @@ public class Item implements Serializable{
 			if (!mod) {
 				factor = -1;
 			}
-			hero.setArmor(hero.getArmor()+factor*armor);
 			hero.setDefense(hero.getDefense()+factor*defense);
 			hero.setOffense(hero.getOffense()+factor*offense);
 			hero.setStrength(hero.getStrength()+factor*strength);

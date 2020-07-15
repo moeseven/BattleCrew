@@ -134,7 +134,12 @@ public class BattleCalculations {
 	
 	public static double roll_damage(BattleUnit attacker, BattleUnit defender) {
 		//TODO factor in size
-		double damage = calc_maximum_damage(attacker)*(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
+		double damage = calc_maximum_damage(attacker);
+		return roll_damage(damage,attacker,defender);
+	}
+	
+	private static double roll_damage(double max_damage, BattleUnit attacker, BattleUnit defender) {
+		double damage = max_damage*(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
 		//shield hit
 		if (shield_hit(defender, false)) {
 			damage = damage_reduced_by_block(damage, defender);
@@ -146,13 +151,13 @@ public class BattleCalculations {
 			//Head hit (use head armor)					
 			defender.getPlayer().getGame().log.addLine("hit on the head!");
 			if (defender.getEquipment().getHead() != null) {
-				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getHead().getArmor());
+				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getHead().getArmor()+defender.getArmor());
 			}
 			damage *= 2;			
 		}else {
 			//body hit (use body armor)
 			if (defender.getEquipment().getBody() != null) {
-				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getBody().getArmor());
+				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getBody().getArmor()+defender.getArmor());
 			}
 		}
 		return damage;
@@ -166,26 +171,24 @@ public class BattleCalculations {
 		}
 		//absobed damage
 		defender.damage_absorbed += damage;
-		double reduction = 0;
 		if (Math.random()*100 < get_weight_corrected_dexterity(attacker)) {
-			//Head hit
-			damage *= 2;		
+			//Head hit				
 			defender.getPlayer().getGame().log.addLine("hit on the head!");
 			if (defender.getEquipment().getHead() != null) {
-				reduction = defender.getEquipment().getHead().getArmor()/100.0;
-			}			
+				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getHead().getArmor()+defender.getArmor());
+			}
+			damage *= 2;				
 		}else {
 			//body hit
 			if (defender.getEquipment().getBody() != null) {
-				reduction = defender.getEquipment().getBody().getArmor()/100.0;
+				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getBody().getArmor()+defender.getArmor());
 			}
 		}
-		damage *=  (1-reduction);
 		return damage;
 	}
 	
 	public static double calc_damage_reduced_by_armor(double damage, int armor) {
-		double armor_dampered_damage = Math.max(damage,armor);
+		double armor_dampered_damage = Math.min(Math.max(damage,armor),armor);
 		damage = (damage - armor_dampered_damage) + armor_dampered_damage * (1-ARMOR_EFFECTIVENESS);
 		return damage;
 	}

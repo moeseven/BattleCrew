@@ -481,7 +481,10 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
-		lines.add("armor: "+getArmor());
+		if (protection > 0) {
+			lines.add("armor: "+getArmor());
+		}
+		
 		if (thorns > 0) {
 			lines.add("thorns: "+thorns);
 		}
