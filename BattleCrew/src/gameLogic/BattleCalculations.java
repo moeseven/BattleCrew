@@ -11,7 +11,7 @@ public class BattleCalculations {
 	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0002;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
 	private static int BASE_EVASION = 20;
-	
+	private static double ARMOR_EFFECTIVENESS = 0.75;
 	
 	
 	public static double calc_movement_exhaustion(BattleUnit unit) {
@@ -142,21 +142,19 @@ public class BattleCalculations {
 		//absobed damage
 		defender.damage_absorbed += damage;
 		//head hit?
-		double reduction = 0;
 		if (Math.random()*100 < (attacker.getSize()-defender.getSize()+get_weight_corrected_dexterity(attacker))) {
-			//Head hit (use head armor)
-			damage *= 2;		
+			//Head hit (use head armor)					
 			defender.getPlayer().getGame().log.addLine("hit on the head!");
 			if (defender.getEquipment().getHead() != null) {
-				reduction = defender.getEquipment().getHead().getArmor()/100.0;
-			}			
+				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getHead().getArmor());
+			}
+			damage *= 2;			
 		}else {
 			//body hit (use body armor)
 			if (defender.getEquipment().getBody() != null) {
-				reduction = defender.getEquipment().getBody().getArmor()/100.0;
+				damage = calc_damage_reduced_by_armor(damage, defender.getEquipment().getBody().getArmor());
 			}
 		}
-		damage *=  (1-reduction);
 		return damage;
 	}
 	
@@ -177,6 +175,7 @@ public class BattleCalculations {
 				reduction = defender.getEquipment().getHead().getArmor()/100.0;
 			}			
 		}else {
+			//body hit
 			if (defender.getEquipment().getBody() != null) {
 				reduction = defender.getEquipment().getBody().getArmor()/100.0;
 			}
@@ -184,6 +183,13 @@ public class BattleCalculations {
 		damage *=  (1-reduction);
 		return damage;
 	}
+	
+	public static double calc_damage_reduced_by_armor(double damage, int armor) {
+		double armor_dampered_damage = Math.max(damage,armor);
+		damage = (damage - armor_dampered_damage) + armor_dampered_damage * (1-ARMOR_EFFECTIVENESS);
+		return damage;
+	}
+	
 	public static double calc_amunition_damage(BattleUnit warrior) {
 		if (warrior.getEquipment().getAmunition().size()>0) {
 			return warrior.getEquipment().getAmunition().get(0).getDamage()*(warrior.getWeapon_skill()/10.0);

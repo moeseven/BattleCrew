@@ -20,6 +20,8 @@ public class Shop implements Serializable{
 		inventory.add(game.itemBuilder.buildItembyName("longsword"));
 		//two handed meele weapon
 		
+		inventory.add(game.itemBuilder.buildItembyName("staff"));
+		inventory.add(game.itemBuilder.buildItembyName("pike"));
 		inventory.add(game.itemBuilder.buildItembyName("broadsword"));
 		inventory.add(game.itemBuilder.buildItembyName("helebard"));
 		

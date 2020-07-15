@@ -14,7 +14,7 @@ public class Main2_Menu {
 //		l.writeToFile();
 		
 		ViewController gc = new ViewController();
-		//StaticImageLoader.prepareImage(Resources.IMAGE_PATH,gc.getGame().image_scale);
+		//StaticImageLoader.prepareImage(Resources.IMAGE_PATH,gc.image_scale);
 	}
 
 }
