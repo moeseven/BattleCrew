@@ -119,6 +119,9 @@ public class BattleCalculations {
 		double damage = MAXIMUM_DAMAGE_FACTOR;
 		if (warrior.getEquipment().getHand1() != null) {
 			damage *= Math.max(warrior.getBase_damage(), warrior.getEquipment().getHand1().getDamage()*warrior.getWeapon_skill()/10);
+			if (warrior.getEquipment().getHand1() == warrior.getEquipment().getHand2()) {
+				damage += warrior.getStrength()*0.33;
+			}
 		}else {
 			damage *= warrior.getBase_damage();
 		}
