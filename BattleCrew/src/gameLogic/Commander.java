@@ -249,7 +249,7 @@ public class Commander extends BattleUnit {
 			score_gain += 10;	
 			break;
 		case Enchanter:
-			enchant_chance += 13;
+			enchant_chance += 5;
 			enchant_cost--;
 			break;
 		case Developer:
@@ -302,13 +302,14 @@ public class Commander extends BattleUnit {
 	public LinkedList<String> generateStatLines() {
 		LinkedList<String> lines = super.generateStatLines();
 		lines.add("");
-		lines.add("Commander - " + commander_class);
+		lines.add(""+commander_class);
 		lines.add("");
 		lines.add("leadership: " + command_points + " (-"+ command_cost+")");
 		lines.add("recruiting: " + group_size + "(-"+ recruit_cost+")");			
 		lines.add("healing: " + recover_points +"%/"+healer_points + "% (-"+ recover_cost+")");				
 		lines.add("drilling: " + drill + "ep (-"+ train_cost+")");
 		lines.add("enchanting: " + enchant_chance + "% (-"+ enchant_cost+")");	
+		lines.add("action points: " + action_points);
 		return lines;
 	}
 	@Override
@@ -326,7 +327,7 @@ public class Commander extends BattleUnit {
 			command_points++;
 			break;
 		case 6:
-			healer_points++;
+			healer_points+=5;
 			break;
 		default:			
 			action_points++;			
