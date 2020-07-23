@@ -8,7 +8,7 @@ public class BattleCalculations {
 	public static double MINIMUM_DAMAGE_FACTOR = 0.6;
 	public static double MAXIMUM_DAMAGE_FACTOR = 1;
 	private static double MEELE_HIT_CHANCE_BASE = 0.5;
-	private static double MEELE_HIT_CHANCE_MIN = 0.1;
+	private static double MEELE_HIT_CHANCE_MIN = 0.05;
 	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0002;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
 	private static int BASE_EVASION = 20;
@@ -55,9 +55,10 @@ public class BattleCalculations {
 	public static double calc_attack_ranged_actual_hit_chance(BattleUnit attacker, BattleUnit defender) {
 		double chance = calc_attack_ranged_base_hit_chance(attacker);
 		if (attacker.getEquipment().getHand1() != null) {
-			chance *= 0.7+(1-(0.3*attacker.getTile().getDistance(defender.getTile())/attacker.getEquipment().getHand1().getRange()));	
-			chance *= defender.getSize()/10.0;				
-		}				
+			chance -= Math.max(0, attacker.getTile().getDistance(defender.getTile())-(attacker.getEquipment().getHand1().getRange()/3));	
+						
+		}
+		chance += (defender.getSize()-10.0)/100;					
 		return chance;
 	}
 	public static double calc_attack_ranged_base_hit_chance(BattleUnit warrior) {
