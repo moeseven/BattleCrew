@@ -69,11 +69,14 @@ public class BattleCalculations {
 		return chance;
 	}
 	
-	
+	public static double calc_meele_hit_chance(BattleUnit attacker, BattleUnit defender) {
+		double attack_vs_defense = get_fatigue_fear_corrected_offense_skill(attacker)-get_fatigue_fear_corrected_defense_skill(defender);
+		double chance = Math.max(MEELE_HIT_CHANCE_MIN, MEELE_HIT_CHANCE_BASE + attack_vs_defense/100.0);
+		return chance;
+	}
 	
 	public static boolean calc_attack_meele_hit(BattleUnit attacker, BattleUnit defender) {
-		double attack_vs_defense = get_fatigue_fear_corrected_offense_skill(attacker)-get_fatigue_fear_corrected_defense_skill(defender);
-		double chance = Math.min(MEELE_HIT_CHANCE_MIN, MEELE_HIT_CHANCE_BASE + attack_vs_defense/100);
+		double chance = calc_meele_hit_chance(attacker, defender);
 		if (Math.random()<chance) {
 			attacker.meele_attacks_landed++;
 			return true;

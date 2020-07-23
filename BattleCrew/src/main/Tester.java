@@ -1,5 +1,6 @@
 package main;
 
+import gameLogic.BattleCalculations;
 import gameLogic.BattleUnit;
 import gui.windows.GameOverWindow;
 
@@ -15,6 +16,8 @@ public class Tester {
 		System.out.println(""+BattleUnit.experience_threshold_for_next_level(5));
 		System.out.println(""+BattleUnit.experience_threshold_for_next_level(6));
 		System.out.println(""+BattleUnit.experience_threshold_for_next_level(7));
+		
+		System.out.println(BattleCalculations.calc_meele_hit_chance(test, test));
 	}
 
 }

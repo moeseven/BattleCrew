@@ -110,6 +110,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public int meele_attacks_landed=0;
 	public int ranged_attacks_landed=0;
 	public int ranged_attacks_attempted=0;
+	public int kills = 0;
 	//other things
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
@@ -376,6 +377,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			if (health<=0) {
 				//give exp to killer;
 				attacker.gain_experience(exp_value);
+				attacker.kills++;
 				die();
 			}
 		}
@@ -443,6 +445,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			lines.add("ranged hits: "+ ranged_attacks_landed + "("+(int) (hit_ratio*100)+"%)");
 		}		
 		lines.add("missed attacks: "+ missed_attacks);
+		lines.add("kills: " + kills);
 		lines.add("");
 		return lines;
 	}
