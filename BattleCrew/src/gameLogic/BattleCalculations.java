@@ -285,7 +285,7 @@ public class BattleCalculations {
 		return warrior.getDexterity()*WEIGHT_WITHOUT_EQUIPMENT/(WEIGHT_WITHOUT_EQUIPMENT+warrior.getEquipment().getTotalWeight());
 	}
 	
-	private static int FATIGUE_EFFECT_THRESHOLD = 80;
+	private static int FATIGUE_EFFECT_THRESHOLD = 10;
 	private static double FEAR_EFFECTIVENESS = 0.005;
 	
 	public static double get_fatigue_fear_corrected_offense_skill(BattleUnit warrior) {

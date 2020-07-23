@@ -326,10 +326,10 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			weapon_skill+=1;
 			break;
 		case 9:
-		    base_offense+=4;
+		    base_offense+=5;
 			break;
 		case 10:
-			base_defense+=4;
+			base_defense+=5;
 			break;
 		default:
 			vitality+=2;

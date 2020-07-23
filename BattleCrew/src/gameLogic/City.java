@@ -66,7 +66,7 @@ public class City {
 		if (player.pay_action_points(player.getCommander().getTrain_cost())) {
 			for (int i = 0; i < player.getHeroes().size(); i++) {
 				if (player.getHeroes().get(i).getFatigue() < 90) {					
-					player.getHeroes().get(i).exhaust(7);
+					player.getHeroes().get(i).exhaust(15);
 					player.getHeroes().get(i).gain_experience(player.getCommander().getDrill());					
 				}
 				
