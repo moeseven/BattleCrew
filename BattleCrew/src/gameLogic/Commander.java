@@ -230,7 +230,8 @@ public class Commander extends BattleUnit {
 			recover_points+=3;
 			break;
 		case Warrior:
-			vitality += 5;
+			vitality += 1;
+			protection += 3;
 			dexterity += 1;
 			weapon_skill += 3;
 			strength += 5;

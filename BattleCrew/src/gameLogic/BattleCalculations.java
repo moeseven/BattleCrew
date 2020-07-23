@@ -5,13 +5,14 @@ import java.util.ArrayList;
 
 public class BattleCalculations {
 	
-	public static double MINIMUM_DAMAGE_FACTOR = 0.7;
+	public static double MINIMUM_DAMAGE_FACTOR = 0.6;
 	public static double MAXIMUM_DAMAGE_FACTOR = 1;
-	private static double MEELE_STRIKE_CHANCE_FACTOR = 0.5;
+	private static double MEELE_HIT_CHANCE_BASE = 0.5;
+	private static double MEELE_HIT_CHANCE_MIN = 0.1;
 	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0002;
 	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
 	private static int BASE_EVASION = 20;
-	private static double ARMOR_EFFECTIVENESS = 0.75;
+	private static double ARMOR_EFFECTIVENESS = 0.8;
 	
 	
 	public static double calc_movement_exhaustion(BattleUnit unit) {
@@ -70,8 +71,9 @@ public class BattleCalculations {
 	
 	
 	public static boolean calc_attack_meele_hit(BattleUnit attacker, BattleUnit defender) {
-		double chance = MEELE_STRIKE_CHANCE_FACTOR*get_fatigue_fear_corrected_defense_skill(defender)/(Math.max(1, (get_fatigue_fear_corrected_offense_skill(attacker))+get_fatigue_fear_corrected_defense_skill(defender)));
-		if (Math.random()>chance) {
+		double attack_vs_defense = get_fatigue_fear_corrected_offense_skill(attacker)-get_fatigue_fear_corrected_defense_skill(defender);
+		double chance = Math.min(MEELE_HIT_CHANCE_MIN, MEELE_HIT_CHANCE_BASE + attack_vs_defense/100);
+		if (Math.random()<chance) {
 			attacker.meele_attacks_landed++;
 			return true;
 		}

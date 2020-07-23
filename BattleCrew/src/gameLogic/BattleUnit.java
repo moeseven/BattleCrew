@@ -54,7 +54,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	private int move_speed;
 	
-	private int protection;
+	protected int protection;
 	protected int endurance;
 	protected int wisdom;
 	protected int spell_power;
@@ -326,10 +326,10 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			weapon_skill+=1;
 			break;
 		case 9:
-		    base_offense+=7;
+		    base_offense+=5;
 			break;
 		case 10:
-			base_defense+=7;
+			base_defense+=5;
 			break;
 		default:
 			vitality+=2;
@@ -481,9 +481,15 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
-		if (protection > 0) {
-			lines.add("armor: "+getArmor());
+		int a = 2*getArmor();
+		if (this.getEquipment().getHead()!=null) {
+			a += this.getEquipment().getHead().getArmor();
 		}
+		if (this.getEquipment().getBody()!=null) {
+			a += this.getEquipment().getBody().getArmor();
+		}
+		a = a/2;
+		lines.add("armor: "+a);
 		
 		if (thorns > 0) {
 			lines.add("thorns: "+thorns);
