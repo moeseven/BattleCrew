@@ -24,18 +24,24 @@ public class Behaviour {
 				//flee you fools
 				retreat(battle, warrior);				
 			}else {
-				switch (warrior.getBehaviour()) {
-				case ATTACK_CLOSEST_ENEMY:
-					tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
-					break;
-				case FLANK:
-					tactic_flank(warrior, battle, Movespeed.WALK);
-					break;
-	
-				default:
-					tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
-					break;
+				if(Math.random()*100 < warrior.getFatigue()) {
+					// take a rest
+					warrior.relax(1);
+				}else {
+					switch (warrior.getBehaviour()) {
+					case ATTACK_CLOSEST_ENEMY:
+						tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+						break;
+					case FLANK:
+						tactic_flank(warrior, battle, Movespeed.WALK);
+						break;
+		
+					default:
+						tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+						break;
+					}					
 				}
+
 			}
 			
 		}		

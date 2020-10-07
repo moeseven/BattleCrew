@@ -53,7 +53,7 @@ public class BattleTicked  extends Battle{
 					battleParticipants.get(w).frighten(warrior.getVitality()/(total_vit+1.0));
 				}else {
 					//maybe gain some moral back through kills
-					battleParticipants.get(w).gain_courage(5*warrior.getVitality()/10);
+					battleParticipants.get(w).gain_courage(warrior.getVitality()/(total_vit+1.0)*25);
 				}
 				
 			}

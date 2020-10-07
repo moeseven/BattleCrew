@@ -35,13 +35,13 @@ public class Campaign implements Serializable{
 		for (int i = 0; i < 4; i++) {
 			defender.addHero(game.unitBuilder.buildUnitbyName("giant_rat", defender));	
 		}	
-		campaign_tiles.add(new BattleTile(defender,120,200,105));
+		campaign_tiles.add(new BattleTile(defender,220,200,105));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		for (int i = 0; i <4; i++) {
 			defender.addHero(game.unitBuilder.buildUnitbyName("zombie", defender));	
 		}	
-		campaign_tiles.add(new BattleTile(defender,140,250,125));
+		campaign_tiles.add(new BattleTile(defender,240,250,125));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		for (int i = 0; i < 5; i++) {
@@ -50,14 +50,14 @@ public class Campaign implements Serializable{
 			goblin.getEquipment().equipItemDirectly(game.itemBuilder.buildItembyName("armor"));
 			defender.addHero(goblin);	
 		}
-		campaign_tiles.add(new BattleTile(defender,370,350,145));
+		campaign_tiles.add(new BattleTile(defender,470,350,145));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		for (int i = 0; i < 2; i++) {
 			BattleUnit goblin = game.unitBuilder.buildUnitbyName("thornbiter", defender);
 			defender.addHero(goblin);	
 		}
-		campaign_tiles.add(new BattleTile(defender,170,470,165));
+		campaign_tiles.add(new BattleTile(defender,270,470,165));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		for (int i = 0; i < 7; i++) {
@@ -66,7 +66,7 @@ public class Campaign implements Serializable{
 			goblin.getEquipment().equipItemDirectly(game.itemBuilder.buildItembyName("armor"));
 			defender.addHero(goblin);	
 		}
-		campaign_tiles.add(new BattleTile(defender,570,550,145));
+		campaign_tiles.add(new BattleTile(defender,670,550,145));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		for (int i = 0; i < 6; i++) {
@@ -86,11 +86,11 @@ public class Campaign implements Serializable{
 			}			
 			defender.addHero(goblin);	
 		}
-		campaign_tiles.add(new BattleTile(defender,670,650,160));
+		campaign_tiles.add(new BattleTile(defender,770,650,160));
 		campaign_tiles.add(new TownTile());
 		defender = new Player(game,true);
 		defender.addHero(game.unitBuilder.buildUnitbyName("cave_troll", defender));	
-		campaign_tiles.add(new BattleTile(defender,230,750,325));
+		campaign_tiles.add(new BattleTile(defender,330,750,325));
 		campaign_tiles.add(new VictoryTile());
 		campaign_tiles.add(new VictoryTile());
 	}

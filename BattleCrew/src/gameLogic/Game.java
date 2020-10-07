@@ -135,6 +135,8 @@ public class Game implements Serializable {
 		set_state(GameState.Battle);
 		for (int i = 0; i < opponent.getHeroes().size(); i++) {
 			opponent.getHeroes().get(i).setBattle_participant(true);
+			//salary
+			
 		}
 		battle= new BattleTicked(this, new Battlefield(38, 19, 1, this), player, opponent);		
 		battle.start();

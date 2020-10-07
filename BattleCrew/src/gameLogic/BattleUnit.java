@@ -16,6 +16,10 @@ public class BattleUnit implements HexTileUnit, Serializable{
 
 
 
+	public short getAttacks_taken_this_round() {
+		return attacks_taken_this_round;
+	}
+
 	public int getRegen() {
 		return regen;
 	}
@@ -90,6 +94,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private double fear = 0;
 	private boolean stunned;
 	private int tiles_moved_this_round;
+	private boolean attacked_this_round;
+	private short attacks_taken_this_round;
 	private HexTile tile;
 	private HexTile retreat_tile;
 	private boolean fled;
@@ -99,6 +105,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	protected int level = 1;
 	
 	//statistics
+	public int accumulated_sallery=0;
 	public double damage_dealt=0;
 	public double damage_blocked=0;
 	public int evaded_attacks=0;
@@ -115,7 +122,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
 	private BattleUnit target;
-	private boolean attacked_this_round;
+	
 	
 	public BattleUnit(String[] stats,Game game, Player player) {
 		super();
@@ -181,6 +188,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		tiles_moved_this_round = 0;
 		retreat_tile =tile;
 		attacked_this_round = false;
+		attacks_taken_this_round = 0;
 	}
 	
 	/*
@@ -218,10 +226,12 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void round_begin() {
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
+		frighten(0.01);
 		//regen
 		heal(regen);
 		tiles_moved_this_round = 0;
 		attacked_this_round = false;
+		attacks_taken_this_round = 0;
 	}
 	
 	
@@ -251,6 +261,21 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			fear -= c;
 			if (fear<0) {
 				fear = 0;
+			}
+		}
+	}
+	public int calculate_salary() {
+		return 17+3*level;
+	}
+	public void pay_salary() {
+		if(this.getPlayer().pay_gold(calculate_salary())) {
+			accumulated_sallery += calculate_salary();
+		}else {
+			if (courage > 5) {
+				courage --;
+				//no salary!
+			}else {
+				player.getHeroes().remove(this);
 			}
 		}
 	}
@@ -346,7 +371,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			BattleCalculations.perform_ranged_attack(this, target);
 		}else {
 			//meele
-			BattleCalculations.perform_meele_attack(this, target);			
+			BattleCalculations.perform_meele_attack(this, target);
+			//harassment
+			target.attacks_taken_this_round = (short) (target.attacks_taken_this_round + 1);
 		}
 		attacked_this_round = true;
 		return true;
@@ -434,6 +461,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		LinkedList<String> lines=new LinkedList<String>();		
 		lines.add("statistics:");
 		lines.add("");
+		lines.add("acumulated salary: "+accumulated_sallery);
 		lines.add("damage dealt: "+(int)damage_dealt);
 		lines.add("attacks evaded: " +(int)evaded_attacks);
 		lines.add("damage blocked: " +(int)damage_blocked);
@@ -468,11 +496,11 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			}
 		}
 		lines.add(damage_line);
-		lines.add("offese: "+(int) BattleCalculations.get_fatigue_fear_corrected_offense_skill(this)+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
-		lines.add("defense: "+(int) BattleCalculations.get_fatigue_fear_corrected_defense_skill(this)+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
+		lines.add("offese: "+ base_offense+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
+		lines.add("defense: "+ base_defense+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
 		
 		//precison and accuracy
-		String concat_string = ""+(int) BattleCalculations.get_fatigue_fear_corrected_accuracy(this);
+		String concat_string = ""+(int) BattleCalculations.get_combat_accuracy(this);
 		if (equipment.getHand1()!=null) {
 			if (equipment.getHand1().getRange()>2) {
 				concat_string = (int)(BattleCalculations.calc_attack_ranged_base_hit_chance(this)*100)+"% ("+concat_string+")";

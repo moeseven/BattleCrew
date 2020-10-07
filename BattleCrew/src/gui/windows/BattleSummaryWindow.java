@@ -47,26 +47,35 @@ public class BattleSummaryWindow extends X_to_main_main_menu_window{
 				if (gui_controller.getGame().getPlayer().getHeroes().get(i).isBattle_participant()) {
 					survivors++;
 				}
+			}								
+			if (gui_controller.getGame().getBattle().getWinner() == gui_controller.getGame().getPlayer()) {
+				for (int i = 0; i < gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
+					if (gui_controller.getGame().getPlayer().getHeroes().get(i).isBattle_participant()) {
+						gui_controller.getGame().getPlayer().getHeroes().get(i).gain_experience(gui_controller.getGame().getOpponent().getExperience_reward()/survivors);
+					}
+				}
+				//score
+				gui_controller.getGame().getPlayer().earn_score(gui_controller.getGame().getOpponent().getScore());
+				//gold
+				gui_controller.getGame().getPlayer().gainGold(gui_controller.getGame().getOpponent().getGold_reward());
+				for (int i = 0; i < gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
+					
+				}	
 			}
+//			}else {
+//				gui_controller.getGame().set_state(GameState.GameOver);
+//			}
+			//soldier sallary
 			for (int i = 0; i < gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
 				if (gui_controller.getGame().getPlayer().getHeroes().get(i).isBattle_participant()) {
-					gui_controller.getGame().getPlayer().getHeroes().get(i).gain_experience(gui_controller.getGame().getOpponent().getExperience_reward()/survivors);
+					gui_controller.getGame().getPlayer().getHeroes().get(i).pay_salary();					
 				}
 			}
 			for (int i = 0; i < gui_controller.getGame().getPlayer().getHeroes().size(); i++) {
 				gui_controller.getGame().getPlayer().getHeroes().get(i).setBattle_participant(false);
-				
-			}
-			//gold
-			gui_controller.getGame().getPlayer().gainGold(gui_controller.getGame().getOpponent().getGold_reward());
-			//score
-			if (gui_controller.getGame().getBattle().getWinner() == gui_controller.getGame().getPlayer()) {
-				gui_controller.getGame().getPlayer().earn_score(gui_controller.getGame().getOpponent().getScore());
-				gui_controller.getGame().getCampaign().enter_next_tile();
-			}else {
-				gui_controller.getGame().set_state(GameState.GameOver);
 			}
 			
+			gui_controller.getGame().getCampaign().enter_next_tile();
 			//
 			
 			gui_controller.update_view();

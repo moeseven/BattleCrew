@@ -33,9 +33,9 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setAction_points(int action_points) {
 		this.action_points = action_points;
 	}
-	public boolean pay_action_points(int p) {
-		if (action_points >= p) {
-			action_points -= p;
+	public boolean pay_gold(int p) {
+		if (getGold() >= p) {
+			gainGold(-p);
 			return true;
 		}else {
 			return false;
@@ -58,6 +58,14 @@ public class Player implements HexTilePlayer,Serializable{
 	protected LinkedList<BattleUnit> warriors;
 	private Inventory inventory;
 	private Commander commander;
+	// special professions
+	private BattleUnit healer;
+	private BattleUnit smith;
+	private BattleUnit treasurer;
+	private BattleUnit champion;
+	private BattleUnit leader;
+	private BattleUnit recruiter;
+	//
 	private int action_points=0;
 	private Game game;
 	private boolean cheat=false;

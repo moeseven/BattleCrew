@@ -43,12 +43,12 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		
 		add(rest_button);
 		add(train_button);
-		add(earn_button);
-		add(enchant_button);
+		//add(earn_button);
+		//add(enchant_button);
 		add(recruit_button);
-		add(leadership_button);
-		add(score_button);
-		add(action_point);
+		//add(leadership_button);
+		//add(score_button);
+		//add(action_point);
 		add(warriors_button);
 		add(shop_button);
 		add(prepare_battle_button);
@@ -60,7 +60,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class RestButton extends JButton{
 		public RestButton() {
 			setName("recover");
-			this.setText("treat wounds"+"("+cw.getGame().getPlayer().getCommander().getRecover_cost()+"ap)");
+			this.setText("heal"+"("+City.RECOVER_COST+")");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -76,7 +76,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class EarnButton extends JButton{
 		public EarnButton() {
 			setName("earn interest");
-			this.setText("5% interest"+"("+cw.getGame().getPlayer().getCommander().getEarn_cost()+"ap)");
+			this.setText("5% interest"+"("+cw.getGame().getPlayer().getCommander().getEarn_cost()+"gold)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -92,7 +92,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class RecruitButton extends JButton{
 		public RecruitButton() {
 			setName("recruit");
-			this.setText("recruit"+"("+cw.getGame().getPlayer().getCommander().getRecruit_cost()+"ap)");
+			this.setText("recruit"+"("+City.RECRUIT_COST+"gold)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -159,7 +159,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class LearnButton extends JButton{
 		public LearnButton() {
 			setName("study");
-			this.setText("training"+"("+cw.getGame().getPlayer().getCommander().getTrain_cost()+"ap)");
+			this.setText("training"+"("+City.TRAIN_COST+"gold)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
