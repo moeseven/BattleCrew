@@ -65,6 +65,7 @@ public class Commander extends BattleUnit {
 		switch (commander_class) {
 		case Leader:
 			command_points++;
+			wealth += 50;
 			break;
 		case Thief:
 			dexterity+=5;
@@ -85,6 +86,7 @@ public class Commander extends BattleUnit {
 			recovery+=7;
 			break;
 		case Tactician:
+			recruit_points += 10;
 			break;
 		case Noble:
 			wealth += 500;
@@ -96,6 +98,7 @@ public class Commander extends BattleUnit {
 			enchant_chance += 7;
 			break;
 		case Developer:
+			wealth += 10;
 			gold_bonus+=4;
 			score_gain +=4;
 			break;

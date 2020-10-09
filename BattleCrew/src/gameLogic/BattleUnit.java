@@ -236,18 +236,21 @@ public class BattleUnit implements HexTileUnit, Serializable{
         switch (type) {
 		case "human":
 			command_points++;
+			recruit_points+=2;
+			healer_points +=1;
 			drill += 40;
 			break;
 		case "elf":
-			enchant_chance += 2;
-			healer_points += 5;
+			enchant_chance += 5;
+			healer_points += 6;
 			break;
 		case "dwarf":
-			enchant_chance += 5;	
-			drill += 20;
+			enchant_chance += 7;	
+			drill += 15;
 			break;
 		case "halfling":	
-			recruit_points += 3;
+			enchant_chance += 2;
+			recruit_points += 6;
 			drill += 20;
 			break;
 		default:
@@ -402,7 +405,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		increase_random_stat();
 		if (player.getChampion() == this) {
 			increase_random_stat();
-			increase_random_stat();
+			base_offense++;
+			base_defense++;
 		}
 		if (player.getHealer() == this) {
 			healer_points++;

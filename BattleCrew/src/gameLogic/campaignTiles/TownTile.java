@@ -10,7 +10,6 @@ public class TownTile extends CampaignTile {
 		// TODO Auto-generated method stub
 		campaign.getGame().getPlayer().recover_warriors();
 		campaign.getGame().set_state(GameState.City);
-		//give idle experience to appointed units
 	}
 
 

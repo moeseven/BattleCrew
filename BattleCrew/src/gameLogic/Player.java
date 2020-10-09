@@ -118,8 +118,11 @@ public class Player implements HexTilePlayer,Serializable{
 //	public void setAction_points(int action_points) {
 //		this.action_points = action_points;
 //	}
+	public int getGold() {
+		return gold;
+	}
 	public boolean pay_gold(int p) {
-		if (getGold() >= p) {
+		if (gold >= p) {
 			gainGold(-p);
 			return true;
 		}else {
@@ -282,9 +285,6 @@ public class Player implements HexTilePlayer,Serializable{
 	}
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
-	}
-	public int getGold() {
-		return commander.getWealth();
 	}
 
 	public Game getGame() {
