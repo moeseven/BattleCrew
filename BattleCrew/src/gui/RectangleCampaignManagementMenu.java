@@ -176,7 +176,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class LearnButton extends JButton{
 		public LearnButton() {
 			setName("study");
-			this.setText("training"+"("+City.TRAIN_COST+"gold)");
+			this.setText("drill"+"("+City.TRAIN_COST+"gold)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}

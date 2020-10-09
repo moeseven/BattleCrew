@@ -48,8 +48,11 @@ public class City {
 			}
 			//some chance of getting a recruit from another race
 			double roll = Math.random()*100;
+			if (player.getRecruiter() != null) {
+				roll -= player.getRecruiter().recruit_points;
+			}
 			BattleUnit recruit;
-			if (roll < 18) {
+			if (roll < 17) {
 				recruit = player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player);
 				
 			}else {

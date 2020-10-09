@@ -663,11 +663,11 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			lines.add("regen: "+regen);
 		}
 		lines.add("");
-		lines.add("leadership: " + command_points );		
+		lines.add("leadership/drill: " + command_points+"/"+drill );		
 		lines.add("healing: " + healer_points);					
 		lines.add("smithing: " + enchant_chance);		
 		lines.add("recruiting: " + recruit_points);	
-		lines.add("drilling: " + drill + "exp");
+		lines.add("treasuring: " + gold_bonus);
 		//lines.add("vitality: "+getVitality());
 		
 		//defensive
