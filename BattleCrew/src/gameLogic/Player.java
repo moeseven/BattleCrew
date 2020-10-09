@@ -11,7 +11,92 @@ import HexTilePlayground.HexTileUnit;
 
 
 public class Player implements HexTilePlayer,Serializable{
+	public void setGold(int gold) {
+		this.gold = gold;
+	}
 
+	public void prevent_double_appoint(BattleUnit warrior) {
+		if(healer == warrior) {
+			healer = null;
+		}
+		if(smith == warrior) {
+			smith = null;
+		}
+		if(treasurer == warrior) {
+			treasurer = null;
+		}
+		if(leader == warrior) {
+			leader = null;
+		}
+		if(champion == warrior) {
+			champion = null;
+		}
+		if(recruiter == warrior) {
+			recruiter = null;
+		}
+	}
+	
+	public BattleUnit getHealer() {
+		if(getHeroes().contains(healer)) {
+			return healer;
+		}
+		return null;
+	}
+	public void appointHealer(BattleUnit healer) {
+		prevent_double_appoint(healer);
+		this.healer = healer;
+	}
+	public BattleUnit getSmith() {
+		if(getHeroes().contains(smith)) {
+			return smith;
+		}
+		return null;
+	}
+	public void appointSmith(BattleUnit smith) {
+		prevent_double_appoint(smith);
+		this.smith = smith;
+	}
+	public BattleUnit getTreasurer() {
+		if(getHeroes().contains(treasurer)) {
+			return treasurer;
+		}
+		return null;
+	}
+	public void appointTreasurer(BattleUnit treasurer) {
+		prevent_double_appoint(treasurer);
+		this.treasurer = treasurer;
+	}
+	public BattleUnit getChampion() {
+		if(getHeroes().contains(champion)) {
+			return champion;
+		}
+		return null;
+	}
+	public void appointChampion(BattleUnit champion) {
+		prevent_double_appoint(champion);
+		this.champion = champion;
+	}
+	public BattleUnit getLeader() {
+		if(getHeroes().contains(leader)) {
+			return leader;
+		}
+		return null;
+	}
+	public void appointLeader(BattleUnit leader) {
+		prevent_double_appoint(leader);
+		this.leader = leader;
+	}
+	public BattleUnit getRecruiter() {
+		if(getHeroes().contains(recruiter)) {
+			return recruiter;
+		}
+		return null;
+	}	
+	public void appointRecruiter(BattleUnit recruiter) {
+		prevent_double_appoint(recruiter);
+		this.recruiter = recruiter;
+	}
+	//
 	public int getExperience_reward() {
 		return experience_reward;
 	}
@@ -27,12 +112,12 @@ public class Player implements HexTilePlayer,Serializable{
 	public void setScore(int score) {
 		this.score = score;
 	}
-	public int getAction_points() {
-		return action_points;
-	}
-	public void setAction_points(int action_points) {
-		this.action_points = action_points;
-	}
+//	public int getAction_points() {
+//		return action_points;
+//	}
+//	public void setAction_points(int action_points) {
+//		this.action_points = action_points;
+//	}
 	public boolean pay_gold(int p) {
 		if (getGold() >= p) {
 			gainGold(-p);
@@ -66,10 +151,10 @@ public class Player implements HexTilePlayer,Serializable{
 	private BattleUnit leader;
 	private BattleUnit recruiter;
 	//
-	private int action_points=0;
 	private Game game;
 	private boolean cheat=false;
 	private int score = 0;
+	private int gold = 0;
 	private int experience_reward;
 	private int gold_reward;
 	public Player(Game game, Boolean AI) {
@@ -79,8 +164,16 @@ public class Player implements HexTilePlayer,Serializable{
 		inventory=new Inventory();
 		
 	}
-	public void gainGold(int gold) {
-		commander.gain_gold(gold);		
+	public void gainGold(int g) {	
+		if(g>0) {
+			if (treasurer != null) {
+				g= (int) (g*(1+treasurer.gold_bonus/100.0));
+			}	
+			getGame().log.addLine("gained "+g+" gold.");			
+		}else {
+			getGame().log.addLine("lost "+(-g)+" gold.");
+		}
+		gold += g;
 	}
 	public boolean addSummon(BattleUnit hero) {
 		for(int a=0; a<warriors.size();a++) {// prevent equal names
@@ -111,15 +204,10 @@ public class Player implements HexTilePlayer,Serializable{
 			return false;
 		}
 	}
-	public void gain_action_points(int p) {
-		if (p > 0) {
-			action_points += p;
-		}		
-	}
-	public void recover_warriors(boolean commander_help) {
+	public void recover_warriors() {
 		for (Iterator iterator = warriors.iterator(); iterator.hasNext();) {
 			BattleUnit battleUnit = (BattleUnit) iterator.next();
-			battleUnit.recover(commander_help);
+			battleUnit.recover();
 		}
 	}
 //	public void removeHeroFromTavern(Warrior hero) {

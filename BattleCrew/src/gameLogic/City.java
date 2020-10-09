@@ -47,12 +47,37 @@ public class City {
 				player.getCommander().setGroup_size(player.getGroupSize()+1);
 			}
 			//some chance of getting a recruit from another race
-			double roll = Math.random();
-			if (roll < player.getCommander().getRecruit_foreign_chance()/100.0) {
-				player.addHero(player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player));
+			double roll = Math.random()*100;
+			BattleUnit recruit;
+			if (roll < 18) {
+				recruit = player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player);
+				
 			}else {
-				player.addHero(player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player));
-			}			
+				recruit = player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player);
+			}
+			if (player.getRecruiter() != null) {
+				roll = Math.random()*100;
+				if(roll < player.getRecruiter().recruit_points) {
+					switch (recruit.getType()) {
+					case "human":
+						recruit.setImage_number(39);
+						break;
+					case "elf":
+						recruit.setImage_number(122);
+						break;
+					case "dwarf":
+						recruit.setImage_number(38);
+						break;
+					case "halfling":		
+						recruit.setImage_number(31);
+						break;
+					default:
+						break;
+					}
+					recruit.increase_random_stat();
+				}
+			}
+			player.addHero(recruit);			
 			return true;
 		}
 		return false;	

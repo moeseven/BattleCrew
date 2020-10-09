@@ -66,9 +66,11 @@ public class Shop implements Serializable{
 				item_built.setImage((int) (item_built.getImage()+Math.random()*6));
 				 item_built.add_affix(player.getGame().affix_builder.random_affix());
 			}
-			if (Math.random() < (player.getCommander().getEnchant_chance()/100.0) && item.getCategory() != 7) {
-				item_built.add_affix(player.getGame().affix_builder.random_affix());
-			}
+			if(player.getSmith() != null) {
+				if (Math.random() < (player.getSmith().getEnchant_chance()/100.0) && item.getCategory() != 7) {
+					item_built.add_affix(player.getGame().affix_builder.random_affix());
+				}
+			}			
 			if (Math.random() < (5/100.0) && item.getCategory() != 7) {
 				item_built.add_affix(player.getGame().affix_builder.random_affix());
 			}

@@ -55,8 +55,11 @@ public class WarriorsReadyForBattleTable extends HexTileTable implements Seriali
 					}
 					
 				}
-				
-				if (p.getCommander().getCommand_points()>units_in_preparation) {
+				int commandable_units = 2;
+				if(p.getLeader() != null) {
+					commandable_units = p.getLeader().getCommand_points();
+				}
+				if (commandable_units > units_in_preparation) {
 					setUnit(player.getSelectedUnit());
 				}else {
 					p.getGame().log.addLine("your commander can't field more units!");

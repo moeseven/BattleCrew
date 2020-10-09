@@ -113,6 +113,24 @@ protected void paintComponent(Graphics g){
 		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getCommander()) {
 			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
 		}
+		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getRecruiter()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,385, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
+		}
+		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getHealer()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,390, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
+		}
+		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getSmith()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,389, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
+		}
+		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getTreasurer()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,388, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
+		}
+		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getLeader()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,387, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
+		}
+		if (window.get_view_controller().getGame().getPlayer().getHeroes().get(i) == window.get_view_controller().getGame().getPlayer().getChampion()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,386, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
+		}
 	}
 }
 

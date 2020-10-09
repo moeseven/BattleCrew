@@ -14,7 +14,53 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public int getEnchant_chance() {
+		return enchant_chance;
+	}
 
+
+	public void setEnchant_chance(int enchant_chance) {
+		this.enchant_chance = enchant_chance;
+	}
+
+
+	public int getGroup_size() {
+		return group_size;
+	}
+
+
+	public void setGroup_size(int group_size) {
+		this.group_size = group_size;
+	}
+
+
+	public int getCommand_points() {
+		return command_points;
+	}
+
+
+	public void setCommand_points(int command_points) {
+		this.command_points = command_points;
+	}
+
+
+	public int getHealer_points() {
+		return healer_points;
+	}
+
+
+	public void setHealer_points(int healer_points) {
+		this.healer_points = healer_points;
+	}
+
+	public int getWealth() {
+		return wealth;
+	}
+
+
+	public void setWealth(int wealth) {
+		this.wealth = wealth;
+	}
 
 	public short getAttacks_taken_this_round() {
 		return attacks_taken_this_round;
@@ -87,6 +133,21 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private int regen=0;
 	private Equipment equipment;
 	
+	// leader skills
+	protected int wealth = 400; // starting money
+	protected int group_size = 5; // amount of warriors in the team
+	
+	
+	//job effects
+	protected int command_points = 3; // number of Warriors that can be fielded	
+	protected int healer_points = 1;  // chance of healing lost units after battles
+	protected int gold_bonus = 1; //money bonus
+	protected int enchant_chance = 1; //chance of enchanting an item when buying
+	protected int recruit_points = 1;
+	protected int drill = 60;
+	
+	//unused
+	
 	//dynamic stats
 	private double health;
 	private double fatigue = 0;
@@ -118,6 +179,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public int ranged_attacks_landed=0;
 	public int ranged_attacks_attempted=0;
 	public int kills = 0;
+
 	//other things
 	private Behaviour_type behaviour;
 	private boolean battle_participant;
@@ -171,7 +233,26 @@ public class BattleUnit implements HexTileUnit, Serializable{
         exp_value = Integer.parseInt(stats[28]);
         regen = Integer.parseInt(stats[29]);
         name = player.getGame().name_generator.generate_name(type);
-
+        switch (type) {
+		case "human":
+			command_points++;
+			drill += 40;
+			break;
+		case "elf":
+			enchant_chance += 2;
+			healer_points += 5;
+			break;
+		case "dwarf":
+			enchant_chance += 5;	
+			drill += 20;
+			break;
+		case "halfling":	
+			recruit_points += 3;
+			drill += 20;
+			break;
+		default:
+			break;
+		}
 	}
 	
 	public BattleUnit() {
@@ -210,14 +291,10 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		return false;
 	}
 	
-	public void recover(boolean commander_recover) {		
-		if (commander_recover) {
-			heal_percent(player.getCommander().getRecover_points());
-		}else {
-			heal(regen*10);
-			heal_percent(recovery);
-			relax(recovery);
-		}		
+	public void recover() {		
+		heal(regen*10);
+		heal_percent(recovery);
+		relax(recovery);	
 	}
 	
 	/*
@@ -226,6 +303,10 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void round_begin() {
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
+		double battle_fright = 0.02;
+		if (player.getLeader() != null) {
+			battle_fright = 0.01 + 0.01/player.getLeader().command_points;
+		}
 		frighten(0.01);
 		//regen
 		heal(regen);
@@ -319,37 +400,61 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		level++;
 		vitality++;
 		increase_random_stat();
+		if (player.getChampion() == this) {
+			increase_random_stat();
+			increase_random_stat();
+		}
+		if (player.getHealer() == this) {
+			healer_points++;
+			wisdom++;
+		}
+		if (player.getSmith() == this) {
+			enchant_chance++;
+			strength++;
+		}
+		if (player.getTreasurer() == this) {
+			gold_bonus++;
+			
+		}
+		if (player.getLeader() == this) {			
+			command_points++;
+			courage++;
+		}
+		if (player.getRecruiter() == this) {
+			recruit_points++;
+			endurance++;
+		}
 	}
 	
 	public void increase_random_stat() {
-		int random_stat = (int) (Math.random()*12);
+		int random_stat = (int) (Math.random()*17);
 		switch (random_stat) {
 		case 0:
-			spell_power+=3;
+			spell_power+=5;
 			break;
 		case 1:
-			wisdom+=3;
+			wisdom+=5;
 			break;
 		case 2:
-			precision+=4;
+			precision+=5;
 			break;
 		case 3:
-			courage+=3;
+			courage+=5;
 			break;
 		case 4:
 			recovery+=5;
 			break;
 		case 5:
-			dexterity+=3;
+			dexterity+=5;
 			break;
 		case 6:
-			strength+=3;
+			strength+=5;
 			break;
 		case 7:
-			endurance+=3;
+			endurance+=5;
 			break;
 		case 8:
-			weapon_skill+=1;
+			weapon_skill+=3;
 			break;
 		case 9:
 		    base_offense+=5;
@@ -357,8 +462,27 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		case 10:
 			base_defense+=5;
 			break;
+		//campaign skills
+		case 11:
+			enchant_chance+=4;
+			break;
+		case 12:
+			gold_bonus+=4;
+			break;
+		case 13:
+			healer_points+=4;
+			break;
+		case 14:
+			drill+=5;
+			break;
+		case 15:
+			command_points+=2;
+			break;
+		case 16:
+			recruit_points+=4;
+			break;
 		default:
-			vitality+=2;
+			//unlucky
 			break;
 		}		
 	}
@@ -413,8 +537,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void die() {		
 		this.tile.setUnit(null);
 		equipment.unequipAll();
-		if (player.getCommander()!=null) {
-			if (Math.random() < player.getCommander().getHealer_points()/100.0) { //recover chance
+		if (player.getHealer()!=null) {
+			if (Math.random() < player.getHealer().getHealer_points()/100.0) { //recover chance
 				health = 1;
 				player.getGame().log.addLine(name+" is wounded");
 			}else {
@@ -534,7 +658,12 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		if (regen > 0) {
 			lines.add("regen: "+regen);
 		}
-			
+		lines.add("");
+		lines.add("leadership: " + command_points );		
+		lines.add("healing: " + healer_points);					
+		lines.add("smithing: " + enchant_chance);		
+		lines.add("recruiting: " + recruit_points);	
+		lines.add("drilling: " + drill + "exp");
 		//lines.add("vitality: "+getVitality());
 		
 		//defensive

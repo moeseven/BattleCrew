@@ -23,35 +23,52 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private RectangleClicker rectangle_clicker;
 	private JButton shop_button,warriors_button,prepare_battle_button;
 	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, enchant_button, score_button; //city actions (use up action points)
-	private action_point_component action_point;
+	private JButton appoint_healer_button, appoint_smith_button, appoint_treasurer_button, appoint_champion_button, appoint_recruiter_button, appoint_commander_button;//job buttons
+	private JPanel appoint_panel, pay_action_panel, view_change_panel;
 	private CampaignWindow cw;
+	private static int APPOINT_COST = 100;
 	public RectangleCampaignManagementMenu(CampaignWindow cw) {	
 		this.cw=cw;
 		super.setPreferredSize(new Dimension(800,400));
-		setLayout(new GridLayout(3,4));
+		setLayout(new GridLayout(1,3));
 		shop_button= new ShopButton();
 		prepare_battle_button= new PrepareBattleButton();
 		rest_button = new RestButton();
-		train_button = new LearnButton();
-		earn_button = new EarnButton();
-		recruit_button = new RecruitButton();
-		score_button = new ScoreButton();
+		train_button = new LearnButton();		
+		recruit_button = new RecruitButton();		
 		warriors_button = new WarriorsButton();
-		leadership_button = new LeadershipButton();
-		enchant_button = new EnchantButton();
-		action_point = new action_point_component();
+		//
+		appoint_champion_button = new AppointChampionButton();
+		appoint_commander_button = new AppointCommanderButton();
+		appoint_healer_button = new AppointHealerButton();
+		appoint_recruiter_button = new AppointRecruiterButton();
+		appoint_smith_button = new AppointSmithButton();
+		appoint_treasurer_button = new AppointTreasurerButton();
+		//
+		appoint_panel = new JPanel();
+		appoint_panel.setLayout(new GridLayout(3,2));
+		appoint_panel.add(appoint_champion_button);
+		appoint_panel.add(appoint_commander_button);
+		appoint_panel.add(appoint_healer_button);
+		appoint_panel.add(appoint_recruiter_button);
+		appoint_panel.add(appoint_smith_button);
+		appoint_panel.add(appoint_treasurer_button);
+		//
+		pay_action_panel = new JPanel();
+		pay_action_panel.setLayout(new GridLayout(3,1));
+		pay_action_panel.add(rest_button);
+		pay_action_panel.add(train_button);
+		pay_action_panel.add(recruit_button);
 		
-		add(rest_button);
-		add(train_button);
-		//add(earn_button);
-		//add(enchant_button);
-		add(recruit_button);
-		//add(leadership_button);
-		//add(score_button);
-		//add(action_point);
-		add(warriors_button);
-		add(shop_button);
-		add(prepare_battle_button);
+		view_change_panel = new JPanel();
+		view_change_panel.setLayout(new GridLayout(3,1));
+		view_change_panel.add(warriors_button);
+		view_change_panel.add(shop_button);
+		view_change_panel.add(prepare_battle_button);
+		add(appoint_panel);
+		add(pay_action_panel);
+		add(view_change_panel);
+		
 		rectangle_clicker=new RectangleClicker();
 	}
 	private void addRectangles() {
@@ -60,7 +77,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class RestButton extends JButton{
 		public RestButton() {
 			setName("recover");
-			this.setText("heal"+"("+City.RECOVER_COST+")");
+			this.setText("heal"+"("+City.RECOVER_COST+"gold)");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new SpecificMouseListener());
 		}
@@ -73,22 +90,22 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 			} 
 		}
 	}
-	private class EarnButton extends JButton{
-		public EarnButton() {
-			setName("earn interest");
-			this.setText("5% interest"+"("+cw.getGame().getPlayer().getCommander().getEarn_cost()+"gold)");
-			setPreferredSize(new Dimension(100, 40));
-			addMouseListener(new SpecificMouseListener());
-		}
-		private class SpecificMouseListener extends MouseAdapter{
-			public void mousePressed(MouseEvent e){	
-				if(e.getButton()==1){
-					City.earn_money(cw.getGame().getPlayer());
-					handle_action_point_buttons_visibility();
-				}
-			} 
-		}
-	}
+//	private class EarnButton extends JButton{
+//		public EarnButton() {
+//			setName("earn interest");
+//			this.setText("5% interest"+"("+cw.getGame().getPlayer().getCommander().getEarn_cost()+"gold)");
+//			setPreferredSize(new Dimension(100, 40));
+//			addMouseListener(new SpecificMouseListener());
+//		}
+//		private class SpecificMouseListener extends MouseAdapter{
+//			public void mousePressed(MouseEvent e){	
+//				if(e.getButton()==1){
+//					City.earn_money(cw.getGame().getPlayer());
+//					handle_action_point_buttons_visibility();
+//				}
+//			} 
+//		}
+//	}
 	private class RecruitButton extends JButton{
 		public RecruitButton() {
 			setName("recruit");
@@ -108,54 +125,54 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		
 	}
 	
-	private class LeadershipButton extends JButton{
-		public LeadershipButton() {
-			setName("leadership");
-			this.setText("improve leadership"+"("+cw.getGame().getPlayer().getCommander().getCommand_cost()+"ap)");
-			setPreferredSize(new Dimension(100, 40));
-			addMouseListener(new SpecificMouseListener());
-		}
-		private class SpecificMouseListener extends MouseAdapter{
-			public void mousePressed(MouseEvent e){	
-				if(e.getButton()==1){
-					City.improve_leadership(cw.getGame().getPlayer());
-					handle_action_point_buttons_visibility();
-				}
-			} 
-		}
-	}
-	private class ScoreButton extends JButton{
-		public ScoreButton() {
-			setName("score");
-			this.setText("score"+"("+cw.getGame().getPlayer().getCommander().getPrestige_cost()+"ap)");
-			setPreferredSize(new Dimension(100, 40));
-			addMouseListener(new SpecificMouseListener());
-		}
-		private class SpecificMouseListener extends MouseAdapter{
-			public void mousePressed(MouseEvent e){	
-				if(e.getButton()==1){
-					City.get_prestige(cw.getGame().getPlayer());
-					handle_action_point_buttons_visibility();
-				}
-			} 
-		}
-	}
-	private class EnchantButton extends JButton{
-		public EnchantButton() {
-			setName("enchant");
-			this.setText("improve enchant skill"+"("+cw.getGame().getPlayer().getCommander().getEnchant_cost()+"ap)");
-			setPreferredSize(new Dimension(100, 40));
-			addMouseListener(new SpecificMouseListener());
-		}
-		private class SpecificMouseListener extends MouseAdapter{
-			public void mousePressed(MouseEvent e){	
-				if(e.getButton()==1){
-					City.learn_enchanting(cw.getGame().getPlayer());
-					handle_action_point_buttons_visibility();
-				}
-			} 
-		}
-	}
+//	private class LeadershipButton extends JButton{
+//		public LeadershipButton() {
+//			setName("leadership");
+//			this.setText("improve leadership"+"("+cw.getGame().getPlayer().getCommander().getCommand_cost()+"ap)");
+//			setPreferredSize(new Dimension(100, 40));
+//			addMouseListener(new SpecificMouseListener());
+//		}
+//		private class SpecificMouseListener extends MouseAdapter{
+//			public void mousePressed(MouseEvent e){	
+//				if(e.getButton()==1){
+//					City.improve_leadership(cw.getGame().getPlayer());
+//					handle_action_point_buttons_visibility();
+//				}
+//			} 
+//		}
+//	}
+//	private class ScoreButton extends JButton{
+//		public ScoreButton() {
+//			setName("score");
+//			this.setText("score"+"("+cw.getGame().getPlayer().getCommander().getPrestige_cost()+"ap)");
+//			setPreferredSize(new Dimension(100, 40));
+//			addMouseListener(new SpecificMouseListener());
+//		}
+//		private class SpecificMouseListener extends MouseAdapter{
+//			public void mousePressed(MouseEvent e){	
+//				if(e.getButton()==1){
+//					City.get_prestige(cw.getGame().getPlayer());
+//					handle_action_point_buttons_visibility();
+//				}
+//			} 
+//		}
+//	}
+//	private class EnchantButton extends JButton{
+//		public EnchantButton() {
+//			setName("enchant");
+//			this.setText("improve enchant skill"+"("+cw.getGame().getPlayer().getCommander().getEnchant_cost()+"ap)");
+//			setPreferredSize(new Dimension(100, 40));
+//			addMouseListener(new SpecificMouseListener());
+//		}
+//		private class SpecificMouseListener extends MouseAdapter{
+//			public void mousePressed(MouseEvent e){	
+//				if(e.getButton()==1){
+//					City.learn_enchanting(cw.getGame().getPlayer());
+//					handle_action_point_buttons_visibility();
+//				}
+//			} 
+//		}
+//	}
 	private class LearnButton extends JButton{
 		public LearnButton() {
 			setName("study");
@@ -219,7 +236,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	private class PrepareBattleButton extends JButton{
 		public PrepareBattleButton() {
 			setName("leave city");
-			this.setText("leave city");
+			this.setText("to battle!");
 			setPreferredSize(new Dimension(100, 40));
 			addMouseListener(new PrepareButtonMouseListener());
 		}
@@ -233,6 +250,121 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 			} 
 		}
 	}
+	
+	private class AppointHealerButton extends JButton{
+		public AppointHealerButton() {
+			setName("appoint healer");
+			this.setText("appoint healer"+"("+APPOINT_COST+"gold)");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new MyMouseListener());
+		}
+		private class MyMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+						cw.gui_controller.getGame().getPlayer().appointHealer(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+						cw.refresh();
+					}					
+				}
+			} 
+		}
+	}
+	private class AppointCommanderButton extends JButton{
+		public AppointCommanderButton() {
+			setName("appoint commander");
+			this.setText("appoint commander"+"("+APPOINT_COST+"gold)");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new MyMouseListener());
+		}
+		private class MyMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+						cw.gui_controller.getGame().getPlayer().appointLeader(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+						cw.refresh();
+					}
+					
+				}
+			} 
+		}
+	}
+	private class AppointRecruiterButton extends JButton{
+		public AppointRecruiterButton() {
+			setName("appoint recruiter");
+			this.setText("appoint recruiter"+"("+APPOINT_COST+"gold)");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new MyMouseListener());
+		}
+		private class MyMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+						cw.gui_controller.getGame().getPlayer().appointRecruiter(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+						cw.refresh();
+					}
+					
+				}
+			} 
+		}
+	}
+	private class AppointSmithButton extends JButton{
+		public AppointSmithButton() {
+			setName("appoint smith");
+			this.setText("appoint smith"+"("+APPOINT_COST+"gold)");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new MyMouseListener());
+		}
+		private class MyMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+						cw.gui_controller.getGame().getPlayer().appointSmith(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+						cw.refresh();
+					}
+					
+				}
+			} 
+		}
+	}
+	private class AppointTreasurerButton extends JButton{
+		public AppointTreasurerButton() {
+			setName("appoint treasurer");
+			this.setText("appoint treasurer"+"("+APPOINT_COST+"gold)");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new MyMouseListener());
+		}
+		private class MyMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+						cw.gui_controller.getGame().getPlayer().appointTreasurer(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+						cw.refresh();
+					}
+					
+				}
+			} 
+		}
+	}
+	private class AppointChampionButton extends JButton{
+		public AppointChampionButton() {
+			setName("appoint champion");
+			this.setText("appoint champion"+"("+APPOINT_COST+"gold)");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new MyMouseListener());
+		}
+		private class MyMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+						cw.gui_controller.getGame().getPlayer().appointChampion(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+						cw.refresh();
+					}
+					
+				}
+			} 
+		}
+	}
+	
 	@Override
 	public void refresh() {
 //		// TODO Auto-generated method stub
@@ -265,11 +397,5 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 	@Override
 	public ViewController get_gui_controller() {
 		return cw.gui_controller;
-	}
-	private class action_point_component extends JComponent{
-		protected void paintComponent(Graphics g){
-			super.paintComponent(g);
-			g.drawString("actions remaining: "+cw.getGame().getPlayer().getAction_points(), 20, 20);
-		}
 	}
 }
