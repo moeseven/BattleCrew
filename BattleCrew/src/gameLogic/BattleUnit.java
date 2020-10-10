@@ -14,13 +14,28 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public void setMeele_image(int meele_image) {
+		this.meele_image = meele_image;
+	}
+
+
+	public int getRanged_image() {
+		return ranged_image;
+	}
+
+
+	public int getMeele_image() {
+		return meele_image;
+	}
+
+
 	public int getEnchant_chance() {
-		return enchant_chance;
+		return smith_points;
 	}
 
 
 	public void setEnchant_chance(int enchant_chance) {
-		this.enchant_chance = enchant_chance;
+		this.smith_points = enchant_chance;
 	}
 
 
@@ -95,7 +110,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private String name;
 	protected String type;
 	private int image_number;
-
+	private int ranged_image,meele_image;
 	//stats
 	protected int vitality;
 	protected int strength;
@@ -131,6 +146,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private boolean equippable = true; //TODO
 	private int thorns;
 	private int regen=0;
+	private int salary=5;
 	private Equipment equipment;
 	
 	// leader skills
@@ -142,7 +158,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	protected int command_points = 3; // number of Warriors that can be fielded	
 	protected int healer_points = 1;  // chance of healing lost units after battles
 	protected int gold_bonus = 1; //money bonus
-	protected int enchant_chance = 1; //chance of enchanting an item when buying
+	protected int smith_points = 1; //chance of enchanting an item when buying
 	protected int recruit_points = 1;
 	protected int drill = 60;
 	
@@ -192,7 +208,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		equipment = new Equipment(this);
 		health = 100;
 		type=stats[0];
-		image_number =Integer.parseInt(stats[1]);
+		meele_image =Integer.parseInt(stats[1]);
 		
 		//stats
 		vitality = Integer.parseInt(stats[2]);
@@ -231,31 +247,17 @@ public class BattleUnit implements HexTileUnit, Serializable{
         recovery = Integer.parseInt(stats[26]);
         thorns = Integer.parseInt(stats[27]);
         exp_value = Integer.parseInt(stats[28]);
-        regen = Integer.parseInt(stats[29]);
+        regen = Integer.parseInt(stats[29]); 
+        ranged_image = Integer.parseInt(stats[30]);
+        healer_points = Integer.parseInt(stats[31]);
+        smith_points = Integer.parseInt(stats[32]);
+        gold_bonus = Integer.parseInt(stats[33]);
+        command_points = Integer.parseInt(stats[34]);
+        recruit_points = Integer.parseInt(stats[35]);
+        salary = Integer.parseInt(stats[36]);
+        drill = Integer.parseInt(stats[37]);
         name = player.getGame().name_generator.generate_name(type);
-        switch (type) {
-		case "human":
-			command_points++;
-			recruit_points+=2;
-			healer_points +=1;
-			drill += 40;
-			break;
-		case "elf":
-			enchant_chance += 5;
-			healer_points += 6;
-			break;
-		case "dwarf":
-			enchant_chance += 7;	
-			drill += 15;
-			break;
-		case "halfling":	
-			enchant_chance += 2;
-			recruit_points += 6;
-			drill += 20;
-			break;
-		default:
-			break;
-		}
+        image_number = meele_image;
 	}
 	
 	public BattleUnit() {
@@ -348,12 +350,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			}
 		}
 	}
-	public int calculate_salary() {
-		return 17+3*level;
-	}
 	public void pay_salary() {
-		if(this.getPlayer().pay_gold(calculate_salary())) {
-			accumulated_sallery += calculate_salary();
+		if(this.getPlayer().pay_gold(salary)) {
+			accumulated_sallery += salary;
 		}else {
 			if (courage > 5) {
 				courage --;
@@ -401,9 +400,11 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	public void lvl_up() {
 		level++;
+		salary++;
 		vitality++;
 		increase_random_stat();
 		if (player.getChampion() == this) {
+			salary++;
 			increase_random_stat();
 			base_offense++;
 			base_defense++;
@@ -413,7 +414,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			wisdom++;
 		}
 		if (player.getSmith() == this) {
-			enchant_chance++;
+			smith_points++;
 			strength++;
 		}
 		if (player.getTreasurer() == this) {
@@ -468,7 +469,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			break;
 		//campaign skills
 		case 11:
-			enchant_chance+=4;
+			smith_points+=4;
 			break;
 		case 12:
 			gold_bonus+=4;
@@ -477,7 +478,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			healer_points+=4;
 			break;
 		case 14:
-			drill+=5;
+			drill+=10;
 			break;
 		case 15:
 			command_points+=2;
@@ -494,15 +495,22 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	 * attack enemy with main Hand weapon
 	 */
 	public boolean basic_attack(BattleUnit target) {
-		if (BattleCalculations.calc_actual_attack_range(this)>2) {
-			//ranged
-			BattleCalculations.perform_ranged_attack(this, target);
+		if (this.getEquipment().getHand1()!=null) {
+			if (this.getEquipment().getHand1().getAmunitionType().equals("0")) {
+				//meele weapon used
+				BattleCalculations.perform_meele_attack(this, target);
+				//harassment
+				target.attacks_taken_this_round = (short) (target.attacks_taken_this_round + 1);
+			}else {
+				if (BattleCalculations.perform_ranged_attack(this, target)) {
+					
+				}else {
+					return false;
+				}
+			}
 		}else {
-			//meele
 			BattleCalculations.perform_meele_attack(this, target);
-			//harassment
-			target.attacks_taken_this_round = (short) (target.attacks_taken_this_round + 1);
-		}
+		}		
 		attacked_this_round = true;
 		return true;
 	}
@@ -631,7 +639,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		String concat_string = ""+(int) BattleCalculations.get_combat_accuracy(this);
 		if (equipment.getHand1()!=null) {
 			if (equipment.getHand1().getRange()>2) {
-				concat_string = (int)(BattleCalculations.calc_attack_ranged_base_hit_chance(this)*100)+"% ("+concat_string+")";
+				concat_string = (int)(BattleCalculations.calc_attack_ranged_base_hit_chance(this))+"% ("+concat_string+")";
 			}
 		}
 		lines.add("precision: "+concat_string);
@@ -670,12 +678,12 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			lines.add("regen: "+regen);
 		}
 		lines.add("");
-		lines.add("leadership/drill: " + command_points+"/"+drill );		
+		lines.add("commanding: " + command_points+"/"+drill +" drill");		
 		lines.add("healing: " + healer_points);					
-		lines.add("smithing: " + enchant_chance);		
+		lines.add("smithing: " + smith_points);		
 		lines.add("recruiting: " + recruit_points);	
 		lines.add("treasuring: " + gold_bonus);
-		//lines.add("vitality: "+getVitality());
+		lines.add("salary: "+salary);
 		
 		//defensive
 		

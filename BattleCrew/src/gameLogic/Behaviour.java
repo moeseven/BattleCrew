@@ -176,7 +176,12 @@ public class Behaviour {
 	
 	
 	public static void attack(BattleUnit active_warrior) {
-		// TODO attack!
-		active_warrior.basic_attack(active_warrior.getTarget());
+		if (active_warrior.basic_attack(active_warrior.getTarget())) {
+			//attack worked out
+		}else {
+			//change weapon
+			active_warrior.getEquipment().swapWeapons();
+		}
+		
 	}
 }

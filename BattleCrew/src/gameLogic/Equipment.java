@@ -42,11 +42,18 @@ public class Equipment implements Serializable{
 		return success;
 	}
 	
+	private void adjustImage(Item item) {
+		if (item.getAmunitionType().equals("0")) {
+				hero.setImage_number(hero.getMeele_image());
+		}else {
+				hero.setImage_number(hero.getRanged_image());
+		}
+	}
 	
 	public boolean equipItem(Item item) {
 		boolean success=false;
 		if (hero.getPlayer().getInventory().contains(item)) {
-			equipItemDirectly(item);
+			equipItemDirectly(item);			
 		}		
 		return success;
 	}
@@ -130,16 +137,22 @@ public class Equipment implements Serializable{
 		hand2_vol=hand2b;
 		hand1b=hand1;
 		hand2b=hand2;
-		unequipHand1();
-		unequipHand2();
+		if(hand1!=null) {
+			hand1.demod(hero);	
+		}
+		hand1=null;
+		if(hand2!=null) {
+			hand2.demod(hero);	
+		}
+		hand2=null;
 		if (hand1_vol!=null) {
 			equipHand1(hand1_vol);
 		}
 		if (hand2_vol!=null) {
-			if(hand1_vol!=hand2_vol) {
+			if(hand1_vol != hand2_vol) {
 				equipHand2(hand2_vol);
-			}
-		}		
+			}			
+		}
 	}
 	//equip
 	public void equipAmunition(Item item) {
@@ -165,6 +178,7 @@ public class Equipment implements Serializable{
 	
 	public void equipHand1(Item item) {
 		if(item.getCategory()==1) {
+			adjustImage(item);
 			unequipHand1();
 			hero.getPlayer().getInventory().remove(item);			
 			hand1=item;					
@@ -175,6 +189,7 @@ public class Equipment implements Serializable{
 	}
 	public void equipHand2(Item item) {
 		if(item.getCategory()==2) {
+			adjustImage(item);
 			unequipHand2();
 			hand2=item;	
 			hero.getPlayer().getInventory().remove(item);	
@@ -220,6 +235,7 @@ public class Equipment implements Serializable{
 	}
 	public void equipBiHand(Item item) {
 		if(item.getCategory()==3) {
+			adjustImage(item);
 			unequipHand1();
 			unequipHand2();
 			hand1=item;
@@ -241,7 +257,9 @@ public class Equipment implements Serializable{
 		unequipPotion();
 		unequipRing1();
 		unequipRing2();
-		
+		swapWeapons();
+		unequipHand1();
+		unequipHand2();	
 	}
 	public void unequipPotion() {
 		if(potion!=null) {

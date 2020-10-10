@@ -167,6 +167,7 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 							}else{g.drawImage(StaticImageLoader.getScaledImage(sprite_path,3,table.getHex_size()),f.getPolygon().xpoints[0]-(int)(0.5*hex_pixel_size),f.getPolygon().ypoints[0],null);}
 						}else{g.drawImage(StaticImageLoader.getScaledImage(sprite_path,2,table.getHex_size()),f.getPolygon().xpoints[0]-(int)(0.5*hex_pixel_size),f.getPolygon().ypoints[0],null);}
 					}
+					TableComponent.show_proffession(table, f, g, f.getPolygon().xpoints[0]-(int)(0.5*hex_pixel_size),f.getPolygon().ypoints[0], sprite_path);
 				}
 		}
 		

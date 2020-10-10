@@ -95,7 +95,7 @@ public class Commander extends BattleUnit {
 			score_gain += 10;	
 			break;
 		case Enchanter:
-			enchant_chance += 7;
+			smith_points += 7;
 			break;
 		case Developer:
 			wealth += 10;
@@ -107,18 +107,22 @@ public class Commander extends BattleUnit {
 		}
 		switch (type) {
 		case "human":
+			setMeele_image(39);
 			setImage_number(39);
 			break;
 		case "elf":
 			group_size--;
+			setMeele_image(122);
 			setImage_number(122);
 			break;
 		case "dwarf":
 			wealth += 200;
+			setMeele_image(38);
 			setImage_number(38);
 			break;
 		case "halfling":
-			group_size+=2;			
+			group_size+=2;		
+			setMeele_image(31);
 			setImage_number(31);
 			break;
 		default:

@@ -14,6 +14,7 @@ import HexTilePlayground.GUI.HexTileTableComponent;
 import SpriteSheet.StaticImageLoader;
 import gameLogic.BattleUnit;
 import gameLogic.Commander;
+import gameLogic.Player;
 import gameLogic.Tile;
 import gui.windows.BattleWindow;
 
@@ -26,6 +27,7 @@ public class TableComponent extends HexTileTableComponent {
 		//g.drawString(f.getx()+"/"+f.gety(), x_start+20, y_start+45);
 		//g.drawString(f.getX()+"/"+f.getY()+"/"+f.getZ(), x_start+5, y_start+25);
 		//
+		
 		if (f.getUnit() != null) {
 			
 			BattleUnit warrior = (BattleUnit) f.getUnit();
@@ -35,9 +37,8 @@ public class TableComponent extends HexTileTableComponent {
 			if(f.getUnit().isFleeing()){
 				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,14, table.getHex_size()),x_start, y_start,null);
 			}
-			if (f.getUnit() instanceof Commander) {
-				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,391, table.getHex_size()),x_start, y_start,null);
-			}
+			
+			show_proffession(table,f,g,x_start,y_start,sprite_path);
 			// attack direction image numbers:
 			/*
 			 * north: 395
@@ -114,6 +115,38 @@ public class TableComponent extends HexTileTableComponent {
 				}
 			}
 		}
+	}
+	public static void show_proffession(HexTileTable table, HexTile f,Graphics g, int x_start, int y_start,String sprite_path) {
+		//show different jobs
+		if (f.getUnit() != null) {
+			if (f.getUnit() instanceof Commander) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,391, table.getHex_size()),x_start, y_start,null);
+			}
+			Player player = (Player) f.getUnit().getPlayer();
+			if (player.getHealer() == f.getUnit()) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,390, table.getHex_size()),x_start, y_start,null);
+			}
+			if (player.getSmith() == f.getUnit()) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,389, table.getHex_size()),x_start, y_start,null);
+			}
+			if (player.getTreasurer() == f.getUnit()) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,388, table.getHex_size()),x_start, y_start,null);
+			}
+			if (player.getLeader() == f.getUnit()) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,387, table.getHex_size()),x_start, y_start,null);
+			}
+			if (player.getChampion() == f.getUnit()) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,386, table.getHex_size()),x_start, y_start,null);
+			}
+			if (player.getRecruiter() == f.getUnit()) {
+				g.drawImage(StaticImageLoader.getScaledImage(sprite_path,385, table.getHex_size()),x_start, y_start,null);
+			}
+			if (f.getUnit() == player.getGame().getPlayer().getSelectedUnit()) {
+				g.setColor(Color.YELLOW);
+				g.drawPolygon(f.getPolygon());
+				g.setColor(Color.BLACK);
+			}
+		}		
 	}
 	@Override
 	public void on_click(MouseEvent e) {

@@ -61,6 +61,17 @@ public class HeroStatsPaintComponent extends JComponent{
 			rc=new RectangleClicker();
 			if (paint_equipment) {
 				//rectangles
+				//swap weapon
+				rc.addRect(new ClickableRectangle("swap",10+offset,10+offset_horizontal,50,20) {
+					@Override
+					public void onClick(MouseEvent e) {
+						warrior.getPlayer().getSelectedUnit().getEquipment().swapWeapons();
+					}
+					@Override
+					public void updateCaption() {				
+					}		
+				});
+				
 				
 				//potion
 				rc.addRect(new ClickableRectangle("potion",60+offset,142+offset_horizontal,50,34) {

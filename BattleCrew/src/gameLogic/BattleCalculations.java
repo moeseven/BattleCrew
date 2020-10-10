@@ -46,7 +46,7 @@ public class BattleCalculations {
 	
 	public static boolean calc_attack_ranged_hit(BattleUnit attacker, BattleUnit defender) {
 		attacker.ranged_attacks_attempted++; //stats update
-		if (Math.random()< calc_attack_ranged_actual_hit_chance(attacker, defender)) {
+		if (Math.random()*100< calc_attack_ranged_actual_hit_chance(attacker, defender)) {
 			attacker.ranged_attacks_landed++;
 			return true;
 		}
@@ -57,8 +57,7 @@ public class BattleCalculations {
 	public static double calc_attack_ranged_actual_hit_chance(BattleUnit attacker, BattleUnit defender) {
 		double chance = calc_attack_ranged_base_hit_chance(attacker);
 		if (attacker.getEquipment().getHand1() != null) {
-			chance -= Math.max(0, attacker.getTile().getDistance(defender.getTile())-(attacker.getEquipment().getHand1().getRange()/3));	
-						
+			chance -= Math.max(0, attacker.getTile().getDistance(defender.getTile())-(attacker.getEquipment().getHand1().getRange()/3.0));							
 		}
 		chance += (defender.getSize()-10.0)/100;					
 		return chance;
@@ -66,7 +65,7 @@ public class BattleCalculations {
 	public static double calc_attack_ranged_base_hit_chance(BattleUnit warrior) {
 		double chance = 0;
 		if (warrior.getEquipment().getHand1() != null) {
-			chance = (warrior.getEquipment().getHand1().getPrecision()+get_combat_accuracy(warrior)-10)/100.0;
+			chance = warrior.getEquipment().getHand1().getPrecision()+get_combat_accuracy(warrior)-10;
 		}
 		return chance;
 	}
@@ -218,15 +217,7 @@ public class BattleCalculations {
 			if (adjacent_enemies.size()>0) {
 				return 1;
 			}
-			if (warrior.getEquipment().getHand1().getAmunitionType().equals("0")) {
-				return warrior.getEquipment().getHand1().getRange();
-			}else {
-				if (amunition_ready(warrior)) {
-					return warrior.getEquipment().getHand1().getRange();
-				}else {
-					return 1;
-				}
-			}
+			return warrior.getEquipment().getHand1().getRange();
 		}
 	}
 	public static boolean amunition_ready(BattleUnit warrior) {
@@ -245,19 +236,22 @@ public class BattleCalculations {
 		return false;
 	}
 	
-	public static void perform_ranged_attack(BattleUnit attacker, BattleUnit defender) {
+	public static boolean perform_ranged_attack(BattleUnit attacker, BattleUnit defender) {
 		if (amunition_ready(attacker)) {
-			use_amunition(attacker);
-			defender.getPlayer().getGame().log.addLine(attacker.getName()+" takes a shot at "+defender.getName());
-			attacker.exhaust(calc_attack_exhaustion(attacker));
-			if (calc_attack_ranged_hit(attacker, defender)) {
-				if (!evade(attacker, defender)) {
-					defender.take_damage(roll_ranged_damage(attacker, defender),attacker);
-					
+			//check distance
+			if (attacker.get_adjacent_enemies().size()==0) {
+				use_amunition(attacker);
+				defender.getPlayer().getGame().log.addLine(attacker.getName()+" takes a shot at "+defender.getName());
+				attacker.exhaust(calc_attack_exhaustion(attacker));
+				if (calc_attack_ranged_hit(attacker, defender)) {
+					if (!evade(attacker, defender)) {
+						defender.take_damage(roll_ranged_damage(attacker, defender),attacker);						
+					}
 				}
-			}
+				return true;
+			}					
 		}
-		
+		return false;
 	}
 	
 	public static void perform_meele_attack(BattleUnit attacker, BattleUnit defender) {
@@ -316,7 +310,6 @@ public class BattleCalculations {
 	public static void thorn_damage(BattleUnit attacker, BattleUnit defender) {
 		double thorn = defender.getThorns();
 		//factor in armor
-		thorn = thorn * (1-attacker.getArmor()/2.0);
 		attacker.take_damage(thorn, defender);
 	}
 }

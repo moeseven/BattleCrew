@@ -63,15 +63,19 @@ public class City {
 				if(roll < player.getRecruiter().recruit_points) {
 					switch (recruit.getType()) {
 					case "human":
+						recruit.setMeele_image(39);
 						recruit.setImage_number(39);
 						break;
 					case "elf":
+						recruit.setMeele_image(122);
 						recruit.setImage_number(122);
 						break;
 					case "dwarf":
+						recruit.setMeele_image(38);
 						recruit.setImage_number(38);
 						break;
-					case "halfling":		
+					case "halfling":	
+						recruit.setMeele_image(31);
 						recruit.setImage_number(31);
 						break;
 					default:
