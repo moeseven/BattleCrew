@@ -206,7 +206,7 @@ public class Item implements Serializable{
 			description.add("precision: "+precision);
 		}
 		if (block > 0) {
-			description.add("block: "+damage+"("+block+"%)");
+			description.add("block: "+block+"%");
 		}
 		if (armor>0) {
 			description.add("armor: +"+armor);

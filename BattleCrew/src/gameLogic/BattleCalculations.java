@@ -114,10 +114,10 @@ public class BattleCalculations {
 		return false;
 	}
 	
-	public static double damage_reduced_by_block(double damage, BattleUnit shield_bearer) {
+	public static double damage_reduced_by_shield(double damage, BattleUnit shield_bearer) {
 		double after_block_damage = damage;
 		if (shield_bearer.getEquipment().getHand2()!=null) {
-			after_block_damage = Math.max(0, damage - shield_bearer.getEquipment().getHand2().getDamage()); //for shileds use damage field for damage block amount
+			after_block_damage = Math.max(0, damage - shield_bearer.getEquipment().getHand2().getArmor()); //for shileds use damage field for damage block amount
 			shield_bearer.damage_blocked+=damage-after_block_damage;
 		}
 		return after_block_damage;
@@ -150,7 +150,7 @@ public class BattleCalculations {
 		double damage = max_damage*(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
 		//shield hit
 		if (shield_hit(defender, false)) {
-			damage = damage_reduced_by_block(damage, defender);
+			damage = damage_reduced_by_shield(damage, defender);
 		}
 		//absobed damage
 		defender.damage_absorbed += damage;
@@ -175,7 +175,7 @@ public class BattleCalculations {
 		double damage = calc_amunition_damage(attacker) *(MINIMUM_DAMAGE_FACTOR+(MAXIMUM_DAMAGE_FACTOR-MINIMUM_DAMAGE_FACTOR)*Math.random()); //60%-100% damage range
 		//shield hit
 		if (shield_hit(defender, true)) {
-			damage = damage_reduced_by_block(damage, defender);
+			damage = damage_reduced_by_shield(damage, defender);
 		}
 		//absobed damage
 		defender.damage_absorbed += damage;

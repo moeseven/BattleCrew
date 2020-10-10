@@ -640,16 +640,23 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
-		int a = 2*getArmor();
+		int a_body = protection,a_head=protection,a_shield=0;
+		String armor_line = "armor: ";
 		if (this.getEquipment().getHead()!=null) {
-			a += this.getEquipment().getHead().getArmor();
+			a_head += this.getEquipment().getHead().getArmor();
 		}
-		if (this.getEquipment().getBody()!=null) {
-			a += this.getEquipment().getBody().getArmor();
-		}
-		a = a/2;
-		lines.add("armor: "+a);
 		
+		if (this.getEquipment().getBody()!=null) {
+			a_body += this.getEquipment().getBody().getArmor();
+		}
+		armor_line+= a_head+"/"+a_body;
+		if (this.getEquipment().getHand2()!=null) {
+			if (this.getEquipment().getHand2().getBlock()>0) {
+				armor_line+= "/";
+				armor_line += this.getEquipment().getHand2().getArmor()+"("+this.getEquipment().getHand2().getBlock()+"%)";
+			}			
+		}
+		lines.add(armor_line);		
 		if (thorns > 0) {
 			lines.add("thorns: "+thorns);
 		}
