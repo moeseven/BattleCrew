@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Random;
 
 import gameLogic.Ability;
 import gameLogic.BattleUnit;
@@ -15,9 +16,12 @@ import gameLogic.Player;
 public class BattleUnitBuilder implements Serializable{
 	private HashMap<String,String[]> map;
 	private Game game;
+	private Random random;
 	public BattleUnitBuilder(Game game) throws IOException {		
 		super();		
 		this.game=game;
+		random = new Random();
+		double test = random.nextGaussian();
 		map= new HashMap<String,String[]>();
 		String path ="./resources/Units.csv";
 		String row;
@@ -30,20 +34,22 @@ public class BattleUnitBuilder implements Serializable{
 	}
 
 	public BattleUnit buildUnitbyName(String name,Player player) {
+		BattleUnit unit;
 		if (map.containsKey(name)) {
-			return new BattleUnit(map.get(name),game,player); //all parameters needed to genarate an item
+			unit = new BattleUnit(map.get(name),game,player,random); //all parameters needed to genarate an item
 		}else {
 			System.out.println("there is no unit with the name "+name);
-			return new BattleUnit();
+			unit = new BattleUnit();
 		}
-		
+		unit.randomizeStats(random);
+		return unit;
 	}
 	public Commander buildCommanderbyName(String name, Commander_Class commander_class, Player player) {
 		if (map.containsKey(name)) {
-			return new Commander(map.get(name),commander_class,game,player); //all parameters needed to genarate an item
+			return new Commander(map.get(name),commander_class,game,player, random); //all parameters needed to genarate an item
 		}else {
 			System.out.println("there is no unit with the name "+name);
-			return new Commander(map.get("human"),commander_class, game, player);
+			return new Commander(map.get("human"),commander_class, game, player, random);
 		}
 		
 	}

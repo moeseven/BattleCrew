@@ -3,6 +3,7 @@ package gameLogic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 import HexTilePlayground.HexTile;
 import HexTilePlayground.HexTilePlayer;
@@ -130,6 +131,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	protected int precision;
 	protected int courage;
 	protected int recovery = 5;
+	protected int learning = 1;
 	
 	private int resist_cold;
 	private int resist_heat;
@@ -201,14 +203,14 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private boolean battle_participant;
 	private BattleUnit target;
 	
-	
-	public BattleUnit(String[] stats,Game game, Player player) {
+	static private double STAT_VARIANCE;
+	public BattleUnit(String[] stats,Game game, Player player, Random random) {
 		super();
 		this.player = player;
 		equipment = new Equipment(this);
 		health = 100;
 		type=stats[0];
-		meele_image =Integer.parseInt(stats[1]);
+		meele_image = Integer.parseInt(stats[1]);
 		
 		//stats
 		vitality = Integer.parseInt(stats[2]);
@@ -256,8 +258,34 @@ public class BattleUnit implements HexTileUnit, Serializable{
         recruit_points = Integer.parseInt(stats[35]);
         salary = Integer.parseInt(stats[36]);
         drill = Integer.parseInt(stats[37]);
+        learning = Integer.parseInt(stats[38]);
         name = player.getGame().name_generator.generate_name(type);
         image_number = meele_image;
+	}
+	public void randomizeStats(Random random) {
+		//TODO
+		vitality += Math.min(3, Math.max(-3, random.nextGaussian()));
+		strength  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		dexterity  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		size  +=Math.min(3, Math.max(-3, 0.5*random.nextGaussian()));
+		endurance  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		wisdom  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		spell_power +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		base_offense  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		base_defense += Math.min(3, Math.max(-3, random.nextGaussian()));
+		precision += Math.min(3, Math.max(-3, random.nextGaussian()));
+		courage += Math.min(3, Math.max(-3, random.nextGaussian()));
+		weapon_skill += Math.min(3, Math.max(-3, random.nextGaussian()));
+		recovery += Math.min(3, Math.max(-3, random.nextGaussian()));
+		healer_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		smith_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		gold_bonus +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		command_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		recruit_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		salary +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		drill +=Math.min(15, Math.max(-15, 4*random.nextGaussian()));
+		learning +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		
 	}
 	
 	public BattleUnit() {
@@ -403,11 +431,13 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		salary++;
 		vitality++;
 		increase_random_stat();
+		increase_random_stat();
 		if (player.getChampion() == this) {
 			salary++;
 			increase_random_stat();
 			base_offense++;
 			base_defense++;
+			vitality++;
 		}
 		if (player.getHealer() == this) {
 			healer_points++;
@@ -432,59 +462,69 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	}
 	
 	public void increase_random_stat() {
-		int random_stat = (int) (Math.random()*17);
+		int random_stat = (int) (Math.random()*19);
+		double random_factor = (Math.random()*100+learning)/100.0;
+//		if (player.getCommander() != null) {
+//			random_factor += player.getCommander().getDrill()/100.0;
+//		}
 		switch (random_stat) {
 		case 0:
-			spell_power+=5;
+			spell_power+=5*random_factor;
 			break;
 		case 1:
-			wisdom+=5;
+			wisdom+=5*random_factor;
 			break;
 		case 2:
-			precision+=5;
+			precision+=5*random_factor;
 			break;
 		case 3:
-			courage+=5;
+			courage+=5*random_factor;
 			break;
 		case 4:
-			recovery+=5;
+			recovery+=5*random_factor;
 			break;
 		case 5:
-			dexterity+=5;
+			dexterity+=5*random_factor;
 			break;
 		case 6:
-			strength+=5;
+			strength+=4*random_factor;
 			break;
 		case 7:
-			endurance+=5;
+			endurance+=5*random_factor;
 			break;
 		case 8:
-			weapon_skill+=3;
+			weapon_skill+=3*random_factor;
 			break;
 		case 9:
-		    base_offense+=5;
+		    base_offense+=5*random_factor;
 			break;
 		case 10:
-			base_defense+=5;
+			base_defense+=5*random_factor;
 			break;
 		//campaign skills
 		case 11:
-			smith_points+=4;
+			smith_points+=4*random_factor;
 			break;
 		case 12:
-			gold_bonus+=4;
+			gold_bonus+=4*random_factor;
 			break;
 		case 13:
-			healer_points+=4;
+			healer_points+=4*random_factor;
 			break;
 		case 14:
-			drill+=10;
+			drill+=10*random_factor;
 			break;
 		case 15:
-			command_points+=2;
+			command_points+=2*random_factor;
 			break;
 		case 16:
-			recruit_points+=4;
+			recruit_points+=4*random_factor;
+			break;
+		case 17:
+			learning += 10*random_factor;
+			break;
+		case 18:
+			vitality += 4*random_factor;
 			break;
 		default:
 			//unlucky
@@ -621,6 +661,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("vitality: "+vitality+"/"+(int)(getHealth())+"%");
 		lines.add("endurance: "+endurance+"/"+(int)(100-getFatigue())+"%");
 		lines.add("moral: "+courage+"/"+(int) (100-getFear())+"%");
+		lines.add("size: "+size);
 		lines.add("");
 		//main stats
 		
@@ -632,8 +673,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			}
 		}
 		lines.add(damage_line);
-		lines.add("offese: "+ base_offense+" ("+BattleCalculations.get_meele_attack_skill(this)+")");
-		lines.add("defense: "+ base_defense+" ("+BattleCalculations.get_meele_defense_skill(this)+")");
+		lines.add("offese: "+ BattleCalculations.get_meele_attack_skill(this));
+		lines.add("defense: "+ BattleCalculations.get_meele_defense_skill(this));
 		
 		//precison and accuracy
 		String concat_string = ""+(int) BattleCalculations.get_combat_accuracy(this);

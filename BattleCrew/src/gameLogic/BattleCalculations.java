@@ -10,7 +10,7 @@ public class BattleCalculations {
 	private static double MEELE_HIT_CHANCE_BASE = 0.5;
 	private static double MEELE_HIT_CHANCE_MIN = 0.05;
 	private static double WEIGHT_EXHAUSTION_FACTOR = 0.0002;
-	private static int WEIGHT_WITHOUT_EQUIPMENT = 10000;
+	private static int WEIGHT_PER_SIZE = 1000;
 	private static int BASE_EVASION = 20;
 	private static double ARMOR_EFFECTIVENESS = 0.8;
 	private static int HARASSMENT_VALUE_DEFENSE = 5;
@@ -23,7 +23,7 @@ public class BattleCalculations {
 		if (unit.getTiles_moved_this_round() > unit.getMove_speed()) {
 			exhaustion *= 2;
 		}			
-		return exhaustion*weight_endurance_exhaustion_factor(unit.getEquipment().getTotalWeight(),unit.getEndurance());
+		return exhaustion*unit.size*weight_endurance_exhaustion_factor(unit.getEquipment().getTotalWeight(),unit.getEndurance());
 	}
 	
 	public static double calc_attack_exhaustion(BattleUnit unit) {
@@ -32,16 +32,16 @@ public class BattleCalculations {
 		if (unit.getEquipment().getHand1() != null) {
 			weight += 2 * unit.getEquipment().getHand1().getWeight();
 		}
-		return exhaustion * weight_endurance_exhaustion_factor(weight, unit.getEndurance());		
+		return exhaustion * unit.size*weight_endurance_exhaustion_factor(weight, unit.getEndurance());		
 	}
 	
 	public static double getting_attacked_exhaustion(BattleUnit attacker_unit, BattleUnit attacked_unit) {
 		double exhaustion = 1 *attacker_unit.getStrength()/attacked_unit.getStrength();
-		return exhaustion * weight_endurance_exhaustion_factor(attacked_unit.getEquipment().getTotalWeight(), attacked_unit.getEndurance());		
+		return exhaustion * attacked_unit.size * weight_endurance_exhaustion_factor(attacked_unit.getEquipment().getTotalWeight(), attacked_unit.getEndurance());		
 	}
 	
 	public static double weight_endurance_exhaustion_factor(int weight, int endurance) {
-		return WEIGHT_EXHAUSTION_FACTOR*(WEIGHT_WITHOUT_EQUIPMENT+weight)/endurance;
+		return WEIGHT_EXHAUSTION_FACTOR*(WEIGHT_PER_SIZE+weight)/endurance;
 	}
 	
 	public static boolean calc_attack_ranged_hit(BattleUnit attacker, BattleUnit defender) {
@@ -88,7 +88,7 @@ public class BattleCalculations {
 	
 	public static boolean evade(BattleUnit attacker, BattleUnit defender) {
 		int hit_roll = (int) (Math.random()*100.0);
-		int evade_chance = (int) (BASE_EVASION+get_weight_corrected_dexterity(defender)-get_weight_corrected_dexterity(attacker));
+		int evade_chance = (int) (BASE_EVASION+get_weight_corrected_dexterity(defender)-get_weight_corrected_dexterity(attacker)+10-defender.getSize());
 		if (evade_chance > hit_roll) {
 			defender.evaded_attacks++;
 			attacker.missed_attacks++;
@@ -127,12 +127,13 @@ public class BattleCalculations {
 		if (warrior.getEquipment().getHand1() != null) {
 			damage *= Math.max(warrior.getBase_damage(), warrior.getEquipment().getHand1().getDamage()*warrior.getWeapon_skill()/10);
 			if (warrior.getEquipment().getHand1() == warrior.getEquipment().getHand2()) {
-				damage += warrior.getStrength()*0.33;
+				damage += warrior.getStrength()*0.33*(warrior.getSize()/10.0);
 			}
 		}else {
 			damage *= warrior.getBase_damage();
-		}
-		damage += warrior.getStrength();
+		}//size factor
+		damage += warrior.getStrength()*(warrior.getSize()/10.0);
+		
 		return damage;
 	}
 	public static double calc_minimum_damage(BattleUnit warrior) {
@@ -154,7 +155,7 @@ public class BattleCalculations {
 		//absobed damage
 		defender.damage_absorbed += damage;
 		//head hit?
-		if (Math.random()*100 < (attacker.getSize()-defender.getSize()+get_weight_corrected_dexterity(attacker))) {
+		if (Math.random()*100 < (attacker.getSize()-defender.getSize()+get_weight_corrected_dexterity(attacker)/3+10)) {
 			//Head hit (use head armor)					
 			defender.getPlayer().getGame().log.addLine("hit on the head!");
 			if (defender.getEquipment().getHead() != null) {
@@ -202,7 +203,7 @@ public class BattleCalculations {
 	
 	public static double calc_amunition_damage(BattleUnit warrior) {
 		if (warrior.getEquipment().getAmunition().size()>0) {
-			return warrior.getEquipment().getAmunition().get(0).getDamage()*(warrior.getWeapon_skill()/10.0);
+			return warrior.getEquipment().getAmunition().get(0).getDamage()*(warrior.getWeapon_skill()/10.0)*warrior.getStrength()*0.33;
 		}else {
 			return 0;
 		}
@@ -281,7 +282,20 @@ public class BattleCalculations {
 	 * @return dexterity
 	 */
 	public static double get_weight_corrected_dexterity(BattleUnit warrior) {
-		return warrior.getDexterity()*WEIGHT_WITHOUT_EQUIPMENT/(WEIGHT_WITHOUT_EQUIPMENT+warrior.getEquipment().getTotalWeight());
+		return warrior.getDexterity()-9*get_effective_weight(warrior);
+	}
+	
+	public static double get_effective_weight(BattleUnit warrior) {
+		double retVal =  warrior.getEquipment().getTotalWeight();
+		if(warrior.getEquipment().getHand1() != null) {
+			retVal += warrior.getEquipment().getHand1().getWeight();
+		}
+		if(warrior.getEquipment().getHand1() != warrior.getEquipment().getHand2()) {
+			if (warrior.getEquipment().getHand2() != null) {
+				retVal += warrior.getEquipment().getHand2().getWeight();
+			}			
+		}
+		return retVal/(WEIGHT_PER_SIZE*warrior.size);
 	}
 	
 	
@@ -300,11 +314,11 @@ public class BattleCalculations {
 	
 	
 	public static int get_meele_attack_skill(BattleUnit warrior) {
-		return (int) (warrior.getOffense()*(warrior.getWeapon_skill()/10.0))+warrior.getBase_offense();
+		return (int) (warrior.getOffense()*(warrior.getWeapon_skill()/10.0)+warrior.getBase_offense()+get_weight_corrected_dexterity(warrior));
 	}
 	
 	public static int get_meele_defense_skill(BattleUnit warrior) {
-		return (int) (warrior.getDefense()*(warrior.getWeapon_skill()/10.0))+warrior.getBase_defense();
+		return (int) (warrior.getDefense()*(warrior.getWeapon_skill()/10.0)+get_weight_corrected_dexterity(warrior))+warrior.getBase_defense();
 	}
 	
 	public static void thorn_damage(BattleUnit attacker, BattleUnit defender) {

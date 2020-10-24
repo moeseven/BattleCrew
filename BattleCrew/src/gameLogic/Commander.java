@@ -1,6 +1,7 @@
 package gameLogic;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import game.Leaderboard.LeaderBoardEntry;
 import game.Leaderboard.Leaderboard;
@@ -56,8 +57,8 @@ public class Commander extends BattleUnit {
 	
 	private Commander_Class commander_class;
 	
-	public Commander(String[] stats,Commander_Class commander_class, Game game, Player player) {
-		super(stats, game, player);
+	public Commander(String[] stats,Commander_Class commander_class, Game game, Player player, Random random) {
+		super(stats, game, player,random);
 		this.commander_class = commander_class;
 		vitality++;
 		base_defense++;
