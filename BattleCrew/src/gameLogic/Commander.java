@@ -99,9 +99,10 @@ public class Commander extends BattleUnit {
 			smith_points += 7;
 			break;
 		case Developer:
+			learning+=10;
 			wealth += 10;
-			gold_bonus+=4;
-			score_gain +=4;
+			gold_bonus+=1;
+			score_gain +=1;
 			break;
 		default:
 			break;
@@ -112,7 +113,6 @@ public class Commander extends BattleUnit {
 			setImage_number(39);
 			break;
 		case "elf":
-			group_size--;
 			setMeele_image(122);
 			setImage_number(122);
 			break;
@@ -122,7 +122,7 @@ public class Commander extends BattleUnit {
 			setImage_number(38);
 			break;
 		case "halfling":
-			group_size+=2;		
+			wealth+=50;	
 			setMeele_image(31);
 			setImage_number(31);
 			break;
@@ -137,8 +137,7 @@ public class Commander extends BattleUnit {
 		LinkedList<String> lines = super.generateStatLines();
 		lines.add("");
 		lines.add(""+commander_class);
-		lines.add("");
-		lines.add("units: " + group_size);	
+		lines.add("wealth: "+wealth);
 		return lines;
 	}
 	

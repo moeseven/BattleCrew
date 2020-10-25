@@ -8,6 +8,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ItemAffix implements Serializable{
+	public int getLearning() {
+		return learning;
+	}
+	public int getHealer_points() {
+		return healer_points;
+	}
+	public int getGold_bonus() {
+		return gold_bonus;
+	}
+	public int getSmith_points() {
+		return smith_points;
+	}
+	public int getRecruit_points() {
+		return recruit_points;
+	}
+	public int getDrill() {
+		return drill;
+	}
 	public int getRegen() {
 		return regen;
 	}
@@ -45,6 +63,12 @@ public class ItemAffix implements Serializable{
 	private int vitality;
 	private int thorns;
 	private int regen;
+	private int learning;
+	private int healer_points;
+	private int gold_bonus;
+	private int smith_points;
+	private int recruit_points;
+	private int drill;
 	//
 	public ItemAffix(String[] stats,Game game) {
 		super();
@@ -63,6 +87,12 @@ public class ItemAffix implements Serializable{
 		vitality = Integer.parseInt(stats[10]);
 		thorns = Integer.parseInt(stats[11]);
 		regen = Integer.parseInt(stats[12]);
+		learning = Integer.parseInt(stats[13]);
+		healer_points = Integer.parseInt(stats[14]);
+		gold_bonus = Integer.parseInt(stats[15]);
+		smith_points = Integer.parseInt(stats[16]);
+		recruit_points = Integer.parseInt(stats[17]);
+		drill = Integer.parseInt(stats[18]);
 	}
 	public ItemAffix() {
 		name= "unknown";

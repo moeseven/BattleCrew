@@ -88,7 +88,7 @@ public class BattleCalculations {
 	
 	public static boolean evade(BattleUnit attacker, BattleUnit defender) {
 		int hit_roll = (int) (Math.random()*100.0);
-		int evade_chance = (int) (BASE_EVASION+get_weight_corrected_dexterity(defender)-get_weight_corrected_dexterity(attacker)+10-defender.getSize());
+		int evade_chance = (int) (BASE_EVASION+get_weight_corrected_dexterity(defender)-get_weight_corrected_dexterity(attacker)+3*(10-defender.getSize()));
 		if (evade_chance > hit_roll) {
 			defender.evaded_attacks++;
 			attacker.missed_attacks++;

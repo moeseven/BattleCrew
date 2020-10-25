@@ -15,6 +15,56 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public int getLearning() {
+		return learning;
+	}
+
+
+	public void setLearning(int learning) {
+		this.learning = learning;
+	}
+
+
+	public int getGold_bonus() {
+		return gold_bonus;
+	}
+
+
+	public void setGold_bonus(int gold_bonus) {
+		this.gold_bonus = gold_bonus;
+	}
+
+
+	public int getSmith_points() {
+		return smith_points;
+	}
+
+
+	public void setSmith_points(int smith_points) {
+		this.smith_points = smith_points;
+	}
+
+
+	public int getRecruit_points() {
+		return recruit_points;
+	}
+
+
+	public void setRecruit_points(int recruit_points) {
+		this.recruit_points = recruit_points;
+	}
+
+
+	public int getDrill() {
+		return drill;
+	}
+
+
+	public void setDrill(int drill) {
+		this.drill = drill;
+	}
+
+
 	public void setMeele_image(int meele_image) {
 		this.meele_image = meele_image;
 	}
@@ -152,8 +202,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private Equipment equipment;
 	
 	// leader skills
-	protected int wealth = 400; // starting money
-	protected int group_size = 5; // amount of warriors in the team
+	protected int wealth = 600; // starting money
+	protected int group_size = 1; // amount of warriors in the team
 	
 	
 	//job effects
@@ -268,13 +318,13 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		strength  +=Math.min(3, Math.max(-3, random.nextGaussian()));
 		dexterity  +=Math.min(3, Math.max(-3, random.nextGaussian()));
 		size  +=Math.min(3, Math.max(-3, 0.5*random.nextGaussian()));
-		endurance  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		endurance  +=Math.min(4, Math.max(-4, random.nextGaussian()));
 		wisdom  +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		spell_power +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		base_offense  +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		base_defense += Math.min(3, Math.max(-3, random.nextGaussian()));
-		precision += Math.min(3, Math.max(-3, random.nextGaussian()));
-		courage += Math.min(3, Math.max(-3, random.nextGaussian()));
+		spell_power +=Math.min(4, Math.max(-4, random.nextGaussian()));
+		base_offense  +=Math.min(4, Math.max(-4, random.nextGaussian()));
+		base_defense += Math.min(4, Math.max(-4, random.nextGaussian()));
+		precision += Math.min(4, Math.max(-4, random.nextGaussian()));
+		courage += Math.min(4, Math.max(-4, random.nextGaussian()));
 		weapon_skill += Math.min(3, Math.max(-3, random.nextGaussian()));
 		recovery += Math.min(3, Math.max(-3, random.nextGaussian()));
 		healer_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
@@ -284,7 +334,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		recruit_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
 		salary +=Math.min(3, Math.max(-3, random.nextGaussian()));
 		drill +=Math.min(15, Math.max(-15, 4*random.nextGaussian()));
-		learning +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		learning +=Math.min(10, Math.max(-10, 3*random.nextGaussian()));
 		
 	}
 	
@@ -469,62 +519,62 @@ public class BattleUnit implements HexTileUnit, Serializable{
 //		}
 		switch (random_stat) {
 		case 0:
-			spell_power+=5*random_factor;
+			spell_power+=6*random_factor;
 			break;
 		case 1:
-			wisdom+=5*random_factor;
+			wisdom+=6*random_factor;
 			break;
 		case 2:
-			precision+=5*random_factor;
+			precision+=6*random_factor;
 			break;
 		case 3:
-			courage+=5*random_factor;
+			courage+=6*random_factor;
 			break;
 		case 4:
-			recovery+=5*random_factor;
+			recovery+=6*random_factor;
 			break;
 		case 5:
-			dexterity+=5*random_factor;
+			dexterity+=6*random_factor;
 			break;
 		case 6:
-			strength+=4*random_factor;
+			strength+=5*random_factor;
 			break;
 		case 7:
-			endurance+=5*random_factor;
+			endurance+=6*random_factor;
 			break;
 		case 8:
 			weapon_skill+=3*random_factor;
 			break;
 		case 9:
-		    base_offense+=5*random_factor;
+		    base_offense+=6*random_factor;
 			break;
 		case 10:
-			base_defense+=5*random_factor;
+			base_defense+=6*random_factor;
 			break;
 		//campaign skills
 		case 11:
-			smith_points+=4*random_factor;
+			smith_points+=5*random_factor;
 			break;
 		case 12:
-			gold_bonus+=4*random_factor;
+			gold_bonus+=5*random_factor;
 			break;
 		case 13:
-			healer_points+=4*random_factor;
+			healer_points+=5*random_factor;
 			break;
 		case 14:
-			drill+=10*random_factor;
+			drill+=15*random_factor;
 			break;
 		case 15:
 			command_points+=2*random_factor;
 			break;
 		case 16:
-			recruit_points+=4*random_factor;
+			recruit_points+=6*random_factor;
 			break;
 		case 17:
-			learning += 10*random_factor;
+			learning += 15*random_factor;
 			break;
 		case 18:
-			vitality += 4*random_factor;
+			vitality += 5*random_factor;
 			break;
 		default:
 			//unlucky

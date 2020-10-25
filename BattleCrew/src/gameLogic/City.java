@@ -82,6 +82,7 @@ public class City {
 						break;
 					}
 					recruit.increase_random_stat();
+					recruit.increase_random_stat();
 				}
 			}
 			player.addHero(recruit);			

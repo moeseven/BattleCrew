@@ -39,6 +39,14 @@ public class Item implements Serializable{
 	//
 	private int thorns = 0;
 	private int regen = 0;
+	private int learning = 0;
+	//campaign stats
+	protected int healer_points = 0;  // chance of healing lost units after battles
+	protected int gold_bonus = 0; //money bonus
+	protected int smith_points = 0; //chance of enchanting an item when buying
+	protected int recruit_points = 0;
+	protected int drill = 0;
+	
 	private int image;
 	private LinkedList<String> description;
 	public Item(String[] stats,Game game) {
@@ -62,6 +70,12 @@ public class Item implements Serializable{
 		block = Integer.parseInt(stats[13]);
 		ammunition = stats[14];
 		thorns = Integer.parseInt(stats[15]);
+		learning = Integer.parseInt(stats[16]);
+		healer_points = Integer.parseInt(stats[17]);
+		gold_bonus = Integer.parseInt(stats[18]);
+		smith_points = Integer.parseInt(stats[19]);
+		recruit_points = Integer.parseInt(stats[20]);
+		drill = Integer.parseInt(stats[21]);
 //		attack_ability=Boolean.parseBoolean(stats[10]);
 //		if (attack_ability) {
 //			List<String> subArray = new ArrayList<String>();
@@ -152,6 +166,12 @@ public class Item implements Serializable{
 				vitality += affix.getVitality();		
 				thorns += affix.getThorns();
 				regen += affix.getRegen();
+				learning = affix.getLearning();
+				healer_points = affix.getHealer_points();
+				gold_bonus = affix.getGold_bonus();
+				smith_points = affix.getSmith_points();
+				recruit_points = affix.getRecruit_points();
+				drill = affix.getDrill();
 				//
 				return true;
 			}
@@ -182,6 +202,12 @@ public class Item implements Serializable{
 			hero.setVitality(hero.getVitality()+factor*vitality);
 			hero.setThorns(hero.getThorns()+factor*thorns);
 			hero.setRegen(hero.getRegen()+factor*regen);
+			hero.setLearning(hero.getLearning()+factor*learning);
+			hero.setHealer_points(hero.getHealer_points()+factor*healer_points);
+			hero.setGold_bonus(hero.getGold_bonus()+factor*gold_bonus);
+			hero.setSmith_points(hero.getSmith_points()+factor*smith_points);
+			hero.setRecruit_points(hero.getRecruit_points()+factor*recruit_points);
+			hero.setDrill(hero.getDrill()+factor*drill);
 		}
 	
 	}
@@ -232,6 +258,24 @@ public class Item implements Serializable{
 		}
 		if (regen!=0) {
 			description.add("regen: +" + regen);
+		}
+		if(learning!=0) {
+			description.add("learning: "+ learning);
+		}
+		if(healer_points!=0) {
+			description.add("healing: "+ healer_points);
+		}
+		if(gold_bonus!=0) {
+			description.add("treasuring: "+ gold_bonus);
+		}
+		if(smith_points!=0) {
+			description.add("smithing: "+ smith_points);
+		}
+		if(recruit_points!=0) {
+			description.add("recruiting: "+ recruit_points);
+		}
+		if(drill!=0) {
+			description.add("drilling: "+ drill);
 		}
 	}
 	//getters and setters
