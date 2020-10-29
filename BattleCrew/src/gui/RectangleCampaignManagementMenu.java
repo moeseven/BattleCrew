@@ -261,10 +261,12 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class MyMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
-						cw.gui_controller.getGame().getPlayer().appointHealer(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
-						cw.refresh();
-					}					
+					if(cw.gui_controller.getGame().getPlayer().getSelectedUnit()!=cw.gui_controller.getGame().getPlayer().getHealer()) {
+						if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+							cw.gui_controller.getGame().getPlayer().appointHealer(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+							cw.refresh();
+						}
+					}							
 				}
 			} 
 		}
@@ -278,13 +280,16 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		}
 		private class MyMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
-				if(e.getButton()==1){
-					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
-						cw.gui_controller.getGame().getPlayer().appointLeader(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
-						cw.refresh();
+				if(cw.gui_controller.getGame().getPlayer().getSelectedUnit()!=cw.gui_controller.getGame().getPlayer().getLeader()) {
+					if(e.getButton()==1){
+						if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+							cw.gui_controller.getGame().getPlayer().appointLeader(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+							cw.refresh();
+						}
+						
 					}
-					
 				}
+				
 			} 
 		}
 	}
@@ -298,10 +303,13 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class MyMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
-						cw.gui_controller.getGame().getPlayer().appointRecruiter(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
-						cw.refresh();
+					if(cw.gui_controller.getGame().getPlayer().getSelectedUnit()!=cw.gui_controller.getGame().getPlayer().getRecruiter()) {
+						if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+							cw.gui_controller.getGame().getPlayer().appointRecruiter(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+							cw.refresh();
+						}
 					}
+					
 					
 				}
 			} 
@@ -316,13 +324,16 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		}
 		private class MyMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
-				if(e.getButton()==1){
-					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
-						cw.gui_controller.getGame().getPlayer().appointSmith(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
-						cw.refresh();
+				if(cw.gui_controller.getGame().getPlayer().getSelectedUnit()!=cw.gui_controller.getGame().getPlayer().getSmith()) {
+					if(e.getButton()==1){
+						if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+							cw.gui_controller.getGame().getPlayer().appointSmith(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+							cw.refresh();
+						}
+						
 					}
-					
 				}
+				
 			} 
 		}
 	}
@@ -336,10 +347,13 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class MyMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
-						cw.gui_controller.getGame().getPlayer().appointTreasurer(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
-						cw.refresh();
+					if(cw.gui_controller.getGame().getPlayer().getSelectedUnit()!=cw.gui_controller.getGame().getPlayer().getTreasurer()) {
+						if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+							cw.gui_controller.getGame().getPlayer().appointTreasurer(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+							cw.refresh();
+						}
 					}
+					
 					
 				}
 			} 
@@ -355,10 +369,13 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class MyMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
-						cw.gui_controller.getGame().getPlayer().appointChampion(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
-						cw.refresh();
+					if(cw.gui_controller.getGame().getPlayer().getSelectedUnit()!=cw.gui_controller.getGame().getPlayer().getChampion()) {
+						if(cw.gui_controller.getGame().getPlayer().pay_gold(APPOINT_COST)) {
+							cw.gui_controller.getGame().getPlayer().appointChampion(cw.gui_controller.getGame().getPlayer().getSelectedUnit());
+							cw.refresh();
+						}
 					}
+					
 					
 				}
 			} 

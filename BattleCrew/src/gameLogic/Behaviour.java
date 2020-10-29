@@ -1,17 +1,21 @@
 package gameLogic;
 
+import java.util.Iterator;
+
 import HexTilePlayground.HexTile;
 import pathfinding.Pathfinder;
 import pathfinding.PathfinderField;
 
 public class Behaviour {
-	enum Movespeed {
+	public static enum Movespeed {
 		  SLOW,
 		  WALK,
 		  CHARGE
 	}
-	enum Behaviour_type {
+	public static enum Behaviour_type {
 		ATTACK_CLOSEST_ENEMY,
+		ATTACK_REAR,
+		CONSERVATIVE_ATTACKING,
 		FLANK
 	}
 	
@@ -24,13 +28,27 @@ public class Behaviour {
 				//flee you fools
 				retreat(battle, warrior);				
 			}else {
-				if(Math.random()*100 < warrior.getFatigue()) {
-					// take a rest
-					warrior.relax(1);
+				if(Math.random()*100 < warrior.getFatigue()) {					
+					BattleCalculations.realax_one_round(warrior);
 				}else {
 					switch (warrior.getBehaviour()) {
 					case ATTACK_CLOSEST_ENEMY:
 						tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+						break;
+					case CONSERVATIVE_ATTACKING:
+						if (warrior.getAttacks_taken_last_round()>1 || (warrior.getAttacks_taken_last_round()>0 && warrior.getHealth()<40)) {
+							if (warrior.getTile()!=warrior.getRetreat_tile()) {
+								move_towards_tile(battle, warrior, warrior.getRetreat_tile(), Movespeed.WALK);
+							}else {
+								tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+							}
+							
+						}else {
+							tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
+						}
+						break;
+					case ATTACK_REAR:
+						 tactic_attack_rear(warrior, battle, Movespeed.WALK);
 						break;
 					case FLANK:
 						tactic_flank(warrior, battle, Movespeed.WALK);
@@ -90,6 +108,42 @@ public class Behaviour {
 		if (move_towards_tile(battle, warrior, tile, speed)) {
 			warrior.setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
 		}
+	}
+	
+	public static void tactic_attack_rear(BattleUnit warrior, Battle battle, Movespeed speed) {
+		//move to right or left center of battlefield and then change tactic to attack closest enemy
+		boolean enemy_close = false;
+		for (int i = 0; i < battle.getBattleField().get_adjacent_tiles(warrior.getTile()).size(); i++) {
+			if (battle.getBattleField().get_adjacent_tiles(warrior.getTile()).get(i).getUnit() != null) {
+				if (battle.getBattleField().get_adjacent_tiles(warrior.getHexTile()).get(i).getUnit().getPlayer() != warrior.getPlayer()) {
+					enemy_close = true;
+				}
+			}			
+		}
+		if (enemy_close) {
+			tactic_move_to_and_attack_closest_enemy(warrior, battle, speed);
+		}else {
+			//TODO		
+			if(warrior.getPlayer() == battle.getAttacker()) {
+				warrior.setTarget(battle.defender.getHeroes().getFirst());
+				for (Iterator iterator = battle.defender.getHeroes().iterator(); iterator.hasNext();) {
+					BattleUnit type = (BattleUnit) iterator.next();
+					if (type.getTile().gety()<warrior.getTarget().getTile().gety()) {
+						warrior.setTarget(type);
+					}
+				}
+				
+			}else {
+				warrior.setTarget(battle.attacker.getHeroes().getFirst());
+				for (Iterator iterator = battle.attacker.getHeroes().iterator(); iterator.hasNext();) {
+					BattleUnit type = (BattleUnit) iterator.next();
+					if (type.getTile().gety()<warrior.getTarget().getTile().gety()) {
+						warrior.setTarget(type);
+					}
+				}
+			}
+			move_towards_tile(battle, warrior, warrior.getTarget().getTile(), speed);
+		}		
 	}
 	
 	public static void find_closest_target(BattleUnit warrior, Battle battle) {

@@ -9,5 +9,5 @@ public enum Commander_Class {
 	Noble,
 	Hero,
 	Enchanter,
-	Developer
+	Scion
 }

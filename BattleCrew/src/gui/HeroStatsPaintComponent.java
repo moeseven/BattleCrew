@@ -21,7 +21,8 @@ import gameLogic.Game;
 import gameLogic.Item;
 import guiRectangles.ClickableRectangle;
 import guiRectangles.RectangleClicker;
-
+import gameLogic.Behaviour;
+import gameLogic.Behaviour.Behaviour_type;
 
 public class HeroStatsPaintComponent extends JComponent{
 		private JPanel jp;
@@ -267,7 +268,6 @@ public class HeroStatsPaintComponent extends JComponent{
 						}					
 					}		
 				});
-				rc.updateCaptions();
 				
 				//amunition
 				rc.addRect(new ClickableRectangle("amo",115+offset,10+offset_horizontal,50,40) {
@@ -295,6 +295,49 @@ public class HeroStatsPaintComponent extends JComponent{
 						}					
 					}		
 				});
+				//battle stance
+				rc.addRect(new ClickableRectangle("stance",offset,30+offset_horizontal,60,20) {
+					@Override
+					public void onClick(MouseEvent e) {
+						if (warrior.getPlayer().getSelectedUnit().getBehaviour()!=null) {
+								switch (warrior.getPlayer().getSelectedUnit().getBehaviour()) {
+							case ATTACK_CLOSEST_ENEMY:
+								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.CONSERVATIVE_ATTACKING);
+								break;
+							case ATTACK_REAR:
+								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
+								break;
+							case CONSERVATIVE_ATTACKING:
+								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_REAR);
+								break;
+							default:
+								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
+								break;
+							}
+						}						
+					}
+					@Override
+					public void updateCaption() {
+						caption.removeFirst();
+						if (warrior.getPlayer().getSelectedUnit().getBehaviour()!=null) {
+							switch (warrior.getPlayer().getSelectedUnit().getBehaviour()) {
+							case ATTACK_CLOSEST_ENEMY:							
+								caption.addFirst("aggressive");
+								break;
+							case ATTACK_REAR:
+								caption.addFirst("attack rear");
+								break;
+							case CONSERVATIVE_ATTACKING:
+								caption.addFirst("defensive");
+								break;
+							default:
+								break;
+							}
+						}else {
+							caption.addFirst("stance");
+						}											
+					}		
+				});
 				rc.updateCaptions();
 			}
 			
@@ -303,9 +346,12 @@ public class HeroStatsPaintComponent extends JComponent{
 	private class MyMouseListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){	
 			//get equipment position from click
-			rc.triggerClick(e);												
-			rc.updateCaptions();
-			gw.get_gui_controller().refresh_gui();
+			if (vertical) {
+				rc.triggerClick(e);												
+				rc.updateCaptions();
+				gw.get_gui_controller().refresh_gui();
+			}
+			
 		} 
 	}
 	protected void paintComponent(Graphics g){
@@ -317,10 +363,10 @@ public class HeroStatsPaintComponent extends JComponent{
 		int y_offset;
 		int x_offset;
 		if (vertical) {
-			y_offset = 0;
+			y_offset = -12;
 			x_offset = 200;
-			for(int i=0; i<lines.size();i++) {
-				if(i<=component_height_lines+1) {
+			for(int i=1; i<lines.size();i++) {
+				if(i<=component_height_lines) {
 					g.drawString(lines.get(i), offset+x_offset, y_offset+10+12*i);
 				}else {
 					g.drawString(lines.get(i), offset+x_offset+130, y_offset+10+12*(i-component_height_lines));
@@ -333,7 +379,7 @@ public class HeroStatsPaintComponent extends JComponent{
 			}
 			
 		}else {
-			for(int i=0; i<lines.size();i++) {
+			for(int i=1; i<lines.size();i++) {
 				g.drawString(lines.get(i), 10, 200 + 10+12*i);		
 			}
 			if (paint_statistics) {
@@ -342,8 +388,30 @@ public class HeroStatsPaintComponent extends JComponent{
 				}
 			}
 		}
-		
+		//Name above picture
+		g.drawString(lines.getFirst(), 10, 10);
 		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, warrior.getPlayer().getSelectedUnit().getImageNumber(),gw.get_gui_controller().image_scale).getScaledInstance(240,204, 2),-30,0,null);
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getCommander()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getRecruiter()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,385, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getHealer()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,390, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getSmith()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,389, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getTreasurer()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,388, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getLeader()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,387, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
+		if (warrior.getPlayer().getSelectedUnit() == warrior.getPlayer().getChampion()) {
+			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,386, gw.get_gui_controller().image_scale).getScaledInstance(240, 204, 2),-60,+30,null);
+		}
 		for(int i=0; i<rc.rectAngles.size();i++) {
 				if (rc.rectAngles.get(i).getImageNumber()!=1) {
 					g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH, rc.rectAngles.get(i).getImageNumber(),gw.get_gui_controller().image_scale).getScaledInstance(120,102, 2),rc.rectAngles.get(i).getX()-35,rc.rectAngles.get(i).getY()-20,null);

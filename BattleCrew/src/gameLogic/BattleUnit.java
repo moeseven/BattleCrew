@@ -15,6 +15,11 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public short getAttacks_taken_last_round() {
+		return attacks_taken_last_round;
+	}
+
+
 	public int getLearning() {
 		return learning;
 	}
@@ -224,7 +229,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private boolean stunned;
 	private int tiles_moved_this_round;
 	private boolean attacked_this_round;
-	private short attacks_taken_this_round;
+	private short attacks_taken_last_round=0;
+	private short attacks_taken_this_round=0;
 	private HexTile tile;
 	private HexTile retreat_tile;
 	private boolean fled;
@@ -249,7 +255,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public int kills = 0;
 
 	//other things
-	private Behaviour_type behaviour;
+	private Behaviour_type behaviour = Behaviour_type.ATTACK_CLOSEST_ENEMY;
 	private boolean battle_participant;
 	private BattleUnit target;
 	
@@ -352,6 +358,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		tiles_moved_this_round = 0;
 		retreat_tile =tile;
 		attacked_this_round = false;
+		attacks_taken_last_round = 0;
 		attacks_taken_this_round = 0;
 	}
 	
@@ -377,7 +384,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void recover() {		
 		heal(regen*10);
 		heal_percent(recovery);
-		relax(recovery);	
+		relax(recovery*1.5);	
 	}
 	
 	/*
@@ -386,15 +393,16 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void round_begin() {
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
-		double battle_fright = 0.02;
+		double battle_fright = 0.013;
 		if (player.getLeader() != null) {
 			battle_fright = 0.01 + 0.01/player.getLeader().command_points;
 		}
-		frighten(0.01);
+		frighten(battle_fright);
 		//regen
 		heal(regen);
 		tiles_moved_this_round = 0;
 		attacked_this_round = false;
+		attacks_taken_last_round = attacks_taken_this_round;
 		attacks_taken_this_round = 0;
 	}
 	
@@ -589,8 +597,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			if (this.getEquipment().getHand1().getAmunitionType().equals("0")) {
 				//meele weapon used
 				BattleCalculations.perform_meele_attack(this, target);
-				//harassment
-				target.attacks_taken_this_round = (short) (target.attacks_taken_this_round + 1);
+				//harassment				
 			}else {
 				if (BattleCalculations.perform_ranged_attack(this, target)) {
 					
@@ -600,7 +607,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			}
 		}else {
 			BattleCalculations.perform_meele_attack(this, target);
-		}		
+		}
+		target.attacks_taken_this_round = (short) (target.attacks_taken_this_round + 1);		
 		attacked_this_round = true;
 		return true;
 	}
@@ -707,7 +715,6 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		//paint Hero info all interesting stats about the hero
 		LinkedList<String> lines=new LinkedList<String>();
 		lines.add(name+" (Level "+level+" "+type+")");
-		lines.add("");
 		lines.add("vitality: "+vitality+"/"+(int)(getHealth())+"%");
 		lines.add("endurance: "+endurance+"/"+(int)(100-getFatigue())+"%");
 		lines.add("moral: "+courage+"/"+(int) (100-getFear())+"%");
@@ -736,7 +743,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("precision: "+concat_string);
 		//lines.add("courage: "+courage);
 		lines.add("strength: "+getStrength());
-		lines.add("dexterity: "+(int) BattleCalculations.get_weight_corrected_dexterity(this));	
+		lines.add("dexterity: "+(int) BattleCalculations.get_battle_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
 		lines.add("");
 		int a_body = protection,a_head=protection,a_shield=0;

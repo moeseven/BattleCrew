@@ -24,8 +24,8 @@ public class TableComponent extends HexTileTableComponent {
 		// TODO Auto-generated method stub
 		super.paint_inside_tile(g, f, x_start, y_start);	
 		// show coordinates
-		//g.drawString(f.getx()+"/"+f.gety(), x_start+20, y_start+45);
-		//g.drawString(f.getX()+"/"+f.getY()+"/"+f.getZ(), x_start+5, y_start+25);
+//		g.drawString(f.getx()+"/"+f.gety(), x_start+20, y_start+45);
+//		g.drawString(f.getX()+"/"+f.getY()+"/"+f.getZ(), x_start+5, y_start+25);
 		//
 		
 		if (f.getUnit() != null) {

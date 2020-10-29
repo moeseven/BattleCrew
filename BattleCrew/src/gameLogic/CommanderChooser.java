@@ -41,7 +41,7 @@ public class CommanderChooser {
 		}		
 		game.getPlayer().setCommander(commander);	
 		game.getPlayer().setGold(commander.wealth);
-		game.getPlayer().appointLeader(commander);
+		//game.getPlayer().appointLeader(commander);
 		for(int i=1; i<commander.getGroup_size() ;i++) {
 			game.getPlayer().addHero(game.unitBuilder.buildUnitbyName(commander.getType(), game.getPlayer()));
 		}

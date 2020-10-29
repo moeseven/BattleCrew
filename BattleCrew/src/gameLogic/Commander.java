@@ -67,15 +67,18 @@ public class Commander extends BattleUnit {
 		case Leader:
 			command_points++;
 			wealth += 50;
+			player.appointLeader(this);
 			break;
 		case Thief:
 			dexterity+=5;
 			precision+=5;
 			gold_bonus+=10;
+			player.appointTreasurer(this);
 			break;
 		case Healer:
 			vitality++;
 			healer_points+=35;
+			player.appointHealer(this);
 			break;
 		case Warrior:
 			vitality += 3;
@@ -85,24 +88,27 @@ public class Commander extends BattleUnit {
 			base_defense+=4;
 			base_offense+=8;
 			recovery+=7;
+			player.appointChampion(this);
 			break;
 		case Tactician:
 			recruit_points += 10;
+			player.appointRecruiter(this);
 			break;
 		case Noble:
 			wealth += 500;
+			player.appointTreasurer(this);
 			break;
 		case Hero:
 			score_gain += 10;	
+			player.appointChampion(this);
 			break;
 		case Enchanter:
 			smith_points += 7;
+			player.appointSmith(this);
 			break;
-		case Developer:
-			learning+=10;
-			wealth += 10;
-			gold_bonus+=1;
-			score_gain +=1;
+		case Scion:
+			learning+=75;
+			player.appointChampion(this);
 			break;
 		default:
 			break;

@@ -206,7 +206,7 @@ protected void paintComponent(Graphics g){
 	//paint Hero info all interesting stats about the hero
 	LinkedList<String> lines=player.getSelectedUnit().generateStatLines();
 	lines.addAll(player.getSelectedUnit().generate_statistics_lines());
-	for(int i=0; i<lines.size();i++) {
+	for(int i=1; i<lines.size();i++) {
 		g.drawString(lines.get(i), 30, 420 + 10+12*i);		
 	}
 	
