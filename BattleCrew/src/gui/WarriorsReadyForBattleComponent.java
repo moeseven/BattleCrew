@@ -69,7 +69,12 @@ public class WarriorsReadyForBattleComponent extends JComponent{
 					//start battle
 					battle_prepare_window.gui_controller.getGame().enter_battle(battle_prepare_window.gui_controller.getGame().getOpponent());
 					battle_prepare_window.gui_controller.battle_window = new BattleWindow(battle_prepare_window.gui_controller);
-					battle_prepare_window.gui_controller.update_view();
+					try {
+						battle_prepare_window.gui_controller.update_view();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
 				}
 			} 

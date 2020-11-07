@@ -64,18 +64,33 @@ public class MainMenu extends X_to_main_main_menu_window{
 	private class ButtonShowLeaderboardListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
 			gui_controller.getGame().set_state(GameState.Leaderboard);
-			gui_controller.update_view();
+			try {
+				gui_controller.update_view();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			//gui_controller.leader_board = new LeaderboardWindow(gui_controller,false);
 		} 
 	}
 	private class ButtonStartListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			gui_controller.start_game();
+			try {
+				gui_controller.start_game();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} 
 	}
 	private class ButtonBuildCharacterListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			gui_controller.new_game();
+			try {
+				gui_controller.new_game();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} 
 	}
 	private class ButtonSaveUserListener extends MouseAdapter{

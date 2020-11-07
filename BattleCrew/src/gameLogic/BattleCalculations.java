@@ -7,9 +7,9 @@ public class BattleCalculations {
 	
 	public static double MINIMUM_DAMAGE_FACTOR = 0.6;
 	public static double MAXIMUM_DAMAGE_FACTOR = 1;
-	private static double MEELE_HIT_CHANCE_BASE = 0.5;
+	private static double MEELE_HIT_CHANCE_BASE = 0.4;
 	private static double MEELE_HIT_CHANCE_MIN = 0.05;
-	private static double WEIGHT_EXHAUSTION_FACTOR = 0.00005;
+	private static double WEIGHT_EXHAUSTION_FACTOR = 0.00003;
 	private static int WEIGHT_PER_SIZE = 8000;
 	private static int BASE_EVASION = 10;
 	private static double ARMOR_EFFECTIVENESS = 0.8;
@@ -71,6 +71,9 @@ public class BattleCalculations {
 	
 	public static double calc_meele_hit_chance(BattleUnit attacker, BattleUnit defender) {
 		double attack_vs_defense = get_combat_offense_skill(attacker)-get_combat_defense_skill(defender);
+		if (attack_vs_defense<0) {
+			attack_vs_defense*=.5;
+		}
 		double chance = Math.max(MEELE_HIT_CHANCE_MIN, MEELE_HIT_CHANCE_BASE + attack_vs_defense/100.0);
 		return chance;
 	}
@@ -257,6 +260,7 @@ public class BattleCalculations {
 		defender.getPlayer().getGame().log.addLine(attacker.getName()+" engages "+defender.getName());
 		//stats update
 		defender.target_of_a_meele_attack++;
+		defender.attacks_taken_this_round++;
 		attacker.meele_attacks_attempted++;
 		//
 		attacker.exhaust(calc_attack_exhaustion(attacker));

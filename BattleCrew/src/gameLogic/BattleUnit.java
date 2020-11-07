@@ -230,7 +230,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private int tiles_moved_this_round;
 	private boolean attacked_this_round;
 	private short attacks_taken_last_round=0;
-	private short attacks_taken_this_round=0;
+	public short attacks_taken_this_round=0;
 	private HexTile tile;
 	private HexTile retreat_tile;
 	private boolean fled;
@@ -315,7 +315,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
         salary = Integer.parseInt(stats[36]);
         drill = Integer.parseInt(stats[37]);
         learning = Integer.parseInt(stats[38]);
-        name = player.getGame().name_generator.generate_name(type);
+        name = player.getGame().builder.generate_name(type);
         image_number = meele_image;
 	}
 	public void randomizeStats(Random random) {
@@ -393,6 +393,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void round_begin() {
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
+		relax(0.5);
 		double battle_fright = 0.013;
 		if (player.getLeader() != null) {
 			battle_fright = 0.01 + 0.01/player.getLeader().command_points;
@@ -608,7 +609,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		}else {
 			BattleCalculations.perform_meele_attack(this, target);
 		}
-		target.attacks_taken_this_round = (short) (target.attacks_taken_this_round + 1);		
+				
 		attacked_this_round = true;
 		return true;
 	}
@@ -775,6 +776,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		if (regen > 0) {
 			lines.add("regen: "+regen);
 		}
+		lines.add("learning: " + learning);	
 		lines.add("");
 		lines.add("commanding: " + command_points+"/"+drill +" drill");		
 		lines.add("healing: " + healer_points);					

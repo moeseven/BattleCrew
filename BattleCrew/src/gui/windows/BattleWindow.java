@@ -35,7 +35,7 @@ public class BattleWindow extends X_to_main_main_menu_window implements ActionLi
 		
 		battle_tick_timer.start();
 	}
-	public void battleOver(){
+	public void battleOver() throws Exception{
 		if(gui_controller.getGame().getBattle().getWinner()!=null){
 //			dispose();
 //			gui_controller.campaign_window.dispose();
@@ -67,7 +67,12 @@ public class BattleWindow extends X_to_main_main_menu_window implements ActionLi
 		control_component.repaint();
 		
 		repaint();
-		battleOver();
+		try {
+			battleOver();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void pause() {
 		paused=true;

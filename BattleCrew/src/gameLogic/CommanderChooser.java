@@ -2,8 +2,6 @@ package gameLogic;
 
 import java.util.LinkedList;
 
-import builders.BattleUnitBuilder;
-
 public class CommanderChooser {
 	private Game game;
 	public String type_name_string = "type name here";
@@ -12,7 +10,7 @@ public class CommanderChooser {
 	LinkedList<Commander_Class> charClasses;
 	LinkedList<String> charRaces;
 	public static String[] COMMANDER_RACES = {"human","elf","dwarf","halfling"};
-	public CommanderChooser(Game game) {
+	public CommanderChooser(Game game) throws Exception {
 		super();
 		this.game=game;
 		charClasses=new LinkedList<Commander_Class>();
@@ -31,11 +29,11 @@ public class CommanderChooser {
 	public void scrollThroughCharRaces() {
 		charRaces.add(charRaces.removeFirst());
 	}
-	public void updateHero() {
-		commander = game.unitBuilder.buildCommanderbyName(charRaces.getFirst(),charClasses.getFirst(), game.getPlayer());
+	public void updateHero() throws Exception {
+		commander = game.builder.buildCommanderbyName(charRaces.getFirst(),charClasses.getFirst(), game.getPlayer());
 		game.getPlayer().setSelectedHero(commander);
 	}
-	public void createHero(String name) {
+	public void createHero(String name) throws Exception {
 		if (!name.equals(type_name_string)) {
 			commander.setName(name);
 		}		
@@ -43,7 +41,7 @@ public class CommanderChooser {
 		game.getPlayer().setGold(commander.wealth);
 		//game.getPlayer().appointLeader(commander);
 		for(int i=1; i<commander.getGroup_size() ;i++) {
-			game.getPlayer().addHero(game.unitBuilder.buildUnitbyName(commander.getType(), game.getPlayer()));
+			game.getPlayer().addHero(game.builder.buildUnitbyName(commander.getType(), game.getPlayer()));
 		}
 		game.getPlayer().addHero(commander);	
 	}

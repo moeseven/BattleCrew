@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import gameLogic.Game;
 import gameLogic.Game.GameState;
 import gameLogic.Shop;
+import gui.BattleOptionsCampaignComponent;
 import gui.HeroInventoryPaintComponent;
 import gui.HeroStatsPaintComponent;
 import gui.RectangleCampaignManagementMenu;
@@ -25,6 +26,8 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	private JPanel warrior_inspection;
 	private ShopinterfaceComponent shop;
 	private WarriorCampaignComponent warriors;
+	private BattleOptionsCampaignComponent battles;
+	//private 
 	private HeroStatsPaintComponent warrior_stats;
 	private HeroInventoryPaintComponent warrior_inventory;
 	private RectangleCampaignManagementMenu buttons;
@@ -38,6 +41,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		setLayout(new BorderLayout());	
 		shop= new ShopinterfaceComponent(this, new Shop(gc.getGame()));
 		warriors = new WarriorCampaignComponent(this);
+		battles = new BattleOptionsCampaignComponent(this);
 		showAccurateComponent();
 		add(buttons = new RectangleCampaignManagementMenu(this),BorderLayout.CENTER);
 		setUpWarriorInspectionPanel();
@@ -45,11 +49,12 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 	public void showAccurateComponent() {
 		remove(shop);
 		remove(warriors);
+		remove(battles);
 		if (state==0) {
 			add(shop,BorderLayout.NORTH);
 		}else {
 			if (state==1) {
-				//TODO
+				add(battles,BorderLayout.NORTH);
 			}else {
 				if (state == 2) {
 					add(warriors,BorderLayout.NORTH);

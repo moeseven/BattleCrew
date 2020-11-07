@@ -42,7 +42,7 @@ public class ViewController {
 	public GameOverWindow game_over;
 	private Game game;
 	Set<Refreshable_gui> refreshables;
-	public ViewController() {
+	public ViewController() throws Exception {
 		this.game= new Game();
 		main_menu = new MainMenu(this);
 		refreshables = new HashSet<Refreshable_gui>();
@@ -61,7 +61,7 @@ public class ViewController {
 	public void register_refreshable(Refreshable_gui refreshable) {
 		refreshables.add(refreshable);
 	}
-	public void update_view() {
+	public void update_view() throws Exception {
 		if (game.get_state() == GameState.Menu) {
 			show_menu();
 		}else {
@@ -203,7 +203,7 @@ public class ViewController {
 		}
 	}
 	
-	public void new_game() {
+	public void new_game() throws Exception {
 		erase_windows();
 		game = new Game();
 		character_builder = new CharacterBuilderWindow(new CommanderChooser(game), this);
@@ -211,7 +211,7 @@ public class ViewController {
 		update_view();
 	}
 	
-    public void start_game() {
+    public void start_game() throws Exception {
     	if(game.getPlayer().getHeroes().size()>0 && game.get_state() != GameState.GameOver) {
 			game.getPlayer().setSelectedHero(game.getPlayer().getHeroes().getFirst());	
 			game.set_state(game.previous_game_state());
@@ -282,7 +282,7 @@ public class ViewController {
 		leader_board.setVisible(true);
 	}
 	
-	private void show_character_creation() {
+	private void show_character_creation() throws Exception {
 		if (character_builder == null) {
 			character_builder = new CharacterBuilderWindow(new CommanderChooser(game),this);
 		}

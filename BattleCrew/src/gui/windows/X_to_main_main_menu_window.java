@@ -29,7 +29,12 @@ public class X_to_main_main_menu_window extends JFrame implements ViewControlled
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 		       gui_controller.getGame().set_state(GameState.Menu);
-		       gui_controller.update_view();
+		       try {
+				gui_controller.update_view();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		    }
 		});
 

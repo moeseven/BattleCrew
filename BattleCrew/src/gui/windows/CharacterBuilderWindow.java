@@ -58,24 +58,44 @@ public class CharacterBuilderWindow extends X_to_main_main_menu_window{
 	private class ButtonRaceListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
 			cb.scrollThroughCharRaces();
-			cb.updateHero();
+			try {
+				cb.updateHero();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			cbi.repaint();
 		} 
 	}
 	private class ButtonClassListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
 			cb.scrollThroughCharClasses();
-			cb.updateHero();
+			try {
+				cb.updateHero();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			cbi.repaint();
 		} 
 	}
 	private class ButtonCreateHeroListener extends MouseAdapter{
 		public void mousePressed(MouseEvent e){
-			fcb.cb.createHero(cbi.getTf().getText());	
+			try {
+				fcb.cb.createHero(cbi.getTf().getText());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
 			//careful
 			gui_controller.campaign_window = new CampaignWindow(gui_controller);
 			gui_controller.getGame().getCampaign().enter_next_tile();
-			gui_controller.update_view();
+			try {
+				gui_controller.update_view();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} 
 	}
 	public CommanderChooser getCb() {

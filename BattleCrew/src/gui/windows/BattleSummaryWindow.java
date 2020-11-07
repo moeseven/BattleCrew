@@ -77,8 +77,13 @@ public class BattleSummaryWindow extends X_to_main_main_menu_window{
 			
 			gui_controller.getGame().getCampaign().enter_next_tile();
 			//
-			
-			gui_controller.update_view();
+			gui_controller.getGame().getCampaign().getSelectedBattle().levelup();
+			try {
+				gui_controller.update_view();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} 
 	}
 	

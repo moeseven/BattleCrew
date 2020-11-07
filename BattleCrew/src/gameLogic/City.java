@@ -40,7 +40,7 @@ public class City {
 		return false;
 	}
 	
-	public static boolean hire_new_recruit(Player player) {
+	public static boolean hire_new_recruit(Player player) throws Exception {
 		//TODO this should be more interesting
 		if (player.pay_gold(RECRUIT_COST)) {
 			if (player.getGroupSize() <= player.getHeroes().size()) {
@@ -53,10 +53,10 @@ public class City {
 			}
 			BattleUnit recruit;
 			if (roll < 17) {
-				recruit = player.getGame().unitBuilder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player);
+				recruit = player.getGame().builder.buildUnitbyName(CommanderChooser.COMMANDER_RACES[(int) (Math.random()*CommanderChooser.COMMANDER_RACES.length)], player);
 				
 			}else {
-				recruit = player.getGame().unitBuilder.buildUnitbyName(player.getCommander().getType(), player);
+				recruit = player.getGame().builder.buildUnitbyName(player.getCommander().getType(), player);
 			}
 			if (player.getRecruiter() != null) {
 				roll = Math.random()*100;

@@ -11,6 +11,8 @@ import HexTilePlayground.HexTileUnit;
 
 
 public class Player implements HexTilePlayer,Serializable{
+
+
 	public void setGold(int gold) {
 		this.gold = gold;
 	}
@@ -138,6 +140,7 @@ public class Player implements HexTilePlayer,Serializable{
 		}
 		this.score += score;
 	}
+	
 	private BattleUnit selectedWarrior;
 	private HexTile selectedTile;
 	private Item selectedItem;

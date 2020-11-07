@@ -33,23 +33,23 @@ public class BattleUnitBuilder implements Serializable{
 		csvReader.close();
 	}
 
-	public BattleUnit buildUnitbyName(String name,Player player) {
+	public BattleUnit buildUnitbyName(String name,Player player) throws Exception {
 		BattleUnit unit;
 		if (map.containsKey(name)) {
 			unit = new BattleUnit(map.get(name),game,player,random); //all parameters needed to genarate an item
 		}else {
-			System.out.println("there is no unit with the name "+name);
 			unit = new BattleUnit();
+			throw new Exception("there is no unit with the name "+name);
 		}
 		unit.randomizeStats(random);
 		return unit;
 	}
-	public Commander buildCommanderbyName(String name, Commander_Class commander_class, Player player) {
+	public Commander buildCommanderbyName(String name, Commander_Class commander_class, Player player) throws Exception{
 		if (map.containsKey(name)) {
 			return new Commander(map.get(name),commander_class,game,player, random); //all parameters needed to genarate an item
-		}else {
-			System.out.println("there is no unit with the name "+name);
-			return new Commander(map.get("human"),commander_class, game, player, random);
+		}else {			
+			throw new Exception("there is no unit with the name "+name);
+			//return new Commander(map.get("human"),commander_class, game, player, random);
 		}
 		
 	}

@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -15,13 +16,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 import gameLogic.City;
+import gameLogic.Game.GameState;
 import gui.windows.CampaignWindow;
 import gui.windows.ViewController;
 import guiRectangles.RectangleClicker;
 
 public class RectangleCampaignManagementMenu extends JComponent implements Refreshable_gui{
 	private RectangleClicker rectangle_clicker;
-	private JButton shop_button,warriors_button,prepare_battle_button;
+	private JButton shop_button,warriors_button,prepare_battle_button,battles_button;
 	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, enchant_button, score_button; //city actions (use up action points)
 	private JButton appoint_healer_button, appoint_smith_button, appoint_treasurer_button, appoint_champion_button, appoint_recruiter_button, appoint_commander_button;//job buttons
 	private JPanel appoint_panel, pay_action_panel, view_change_panel;
@@ -33,10 +35,12 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		setLayout(new GridLayout(1,3));
 		shop_button= new ShopButton();
 		prepare_battle_button= new PrepareBattleButton();
+		prepare_battle_button.setVisible(false);
 		rest_button = new RestButton();
 		train_button = new LearnButton();		
 		recruit_button = new RecruitButton();		
 		warriors_button = new WarriorsButton();
+		battles_button = new BattlesButton();
 		//
 		appoint_champion_button = new AppointChampionButton();
 		appoint_commander_button = new AppointCommanderButton();
@@ -61,9 +65,10 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		pay_action_panel.add(recruit_button);
 		
 		view_change_panel = new JPanel();
-		view_change_panel.setLayout(new GridLayout(3,1));
+		view_change_panel.setLayout(new GridLayout(4,1));
 		view_change_panel.add(warriors_button);
 		view_change_panel.add(shop_button);
+		view_change_panel.add(battles_button);
 		view_change_panel.add(prepare_battle_button);
 		add(appoint_panel);
 		add(pay_action_panel);
@@ -116,7 +121,12 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class SpecificMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					City.hire_new_recruit(cw.getGame().getPlayer());
+					try {
+						City.hire_new_recruit(cw.getGame().getPlayer());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					handle_action_point_buttons_visibility();
 				}
 				cw.gui_controller.refresh_gui();
@@ -207,8 +217,9 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 					cw.setState(0);
 					cw.showAccurateComponent();
 					shop_button.setVisible(false);
-					prepare_battle_button.setVisible(true);
 					warriors_button.setVisible(true);
+					prepare_battle_button.setVisible(false);
+					battles_button.setVisible(true);
 				}
 			} 
 		}
@@ -223,12 +234,34 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class ShopButtonMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					//TODO open shop here
+					//TODO show warriors here
 					cw.setState(2);
 					cw.showAccurateComponent();
 					warriors_button.setVisible(false);
 					shop_button.setVisible(true);
-					
+					prepare_battle_button.setVisible(false);
+					battles_button.setVisible(true);
+				}
+			} 
+		}
+	}
+	private class BattlesButton extends JButton{
+		public BattlesButton() {
+			setName("battles");
+			this.setText("battles");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new ShopButtonMouseListener());
+		}
+		private class ShopButtonMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					//show battle options here
+					cw.setState(1);
+					cw.showAccurateComponent();
+					battles_button.setVisible(false);
+					prepare_battle_button.setVisible(true);
+					warriors_button.setVisible(true);
+					shop_button.setVisible(true);
 				}
 			} 
 		}
@@ -243,9 +276,31 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		private class PrepareButtonMouseListener extends MouseAdapter{
 			public void mousePressed(MouseEvent e){	
 				if(e.getButton()==1){
-					//TODO open battle prepare here
-					cw.gui_controller.getGame().getCampaign().enter_next_tile();
-					cw.gui_controller.update_view();
+					//open battle prepare for selected battle here
+					//cw.gui_controller.getGame().getCampaign().enter_next_tile();
+					try {
+						cw.gui_controller.getGame().setOpponent(cw.gui_controller.getGame().getCampaign().getSelectedBattle().generate_enemy_general_with_army());
+					} catch (Exception e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					cw.gui_controller.getGame().getEnemyTable().clear_table(); // remove old units
+					//place new units randomly
+					ArrayList<Integer> available_positions = new ArrayList<Integer>();
+					for (int i = 0; i < cw.gui_controller.getGame().getEnemyTable().getTiles().size(); i++) {
+						available_positions.add(i);
+					}
+					for (int i = 0; i <cw.gui_controller.getGame().getOpponent().getHeroes().size(); i++) {
+						int random = (int) (Math.random()*available_positions.size());
+						cw.gui_controller.getGame().getEnemyTable().getTiles().get(available_positions.remove(random)).setUnit(cw.gui_controller.getGame().getOpponent().getHeroes().get(i));
+					}
+					cw.gui_controller.getGame().set_state(GameState.BattlePrepare);
+					try {
+						cw.gui_controller.update_view();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			} 
 		}

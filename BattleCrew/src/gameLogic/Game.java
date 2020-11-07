@@ -6,11 +6,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import builders.AbilityBuilder;
-import builders.BattleUnitBuilder;
-import builders.ItemAffixBuilder;
-import builders.ItemBuilder;
-import builders.NameGenerator;
+import builders.GameObjectBuilder;
+
 import game.Leaderboard.LeaderBoardEntry;
 import game.Leaderboard.Leaderboard;
 import gameLogic.campaignTiles.CampaignTile;
@@ -32,10 +29,7 @@ public class Game implements Serializable {
 	private WarriorsReadyForBattleTableEnemy enemyTable;
 	protected int maximumGroupSize=5;
 	private Shop shop;
-	public ItemBuilder itemBuilder;
-	public ItemAffixBuilder affix_builder;
-	public BattleUnitBuilder unitBuilder;
-	public NameGenerator name_generator;
+	public GameObjectBuilder builder;
 	private Campaign campaign;
 	//public ItemSpecialBuilder itemSpecialBuilder;
 	//public ItemSuffixBuilder itemSuffixBuilder;
@@ -77,7 +71,7 @@ public class Game implements Serializable {
 			return true;
 		}
 	}
-	public Game() {
+	public Game() throws Exception {
 		super();
 		log = new MyLog();	
 		prepareTable= new WarriorsReadyForBattleTable(9, 3, 1, this);
@@ -85,10 +79,7 @@ public class Game implements Serializable {
 		player = new Player(this,false);
 		lastCaster= null;
 		try {
-			affix_builder = new ItemAffixBuilder(this);
-			itemBuilder= new ItemBuilder(this);
-			unitBuilder= new BattleUnitBuilder(this);
-			name_generator = new NameGenerator(this);
+			builder = new GameObjectBuilder(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,11 +94,11 @@ public class Game implements Serializable {
 			
 		// cardBuilder.printMap();
 	}
-	public void startExampleBattle() {
+	public void startExampleBattle() throws Exception {
 		
 		Player defender = new Player(this,true);
 		for (int i = 0; i < 10; i++) {
-			defender.addHero(unitBuilder.buildUnitbyName("giant_rat", defender));	
+			defender.addHero(builder.buildUnitbyName("giant_rat", defender));	
 		}			
 		
 //		defender.getHeroes().get(1).equip(itemBuilder.buildItembyName("slingshot"));

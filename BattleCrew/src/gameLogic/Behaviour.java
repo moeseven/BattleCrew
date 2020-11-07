@@ -36,7 +36,7 @@ public class Behaviour {
 						tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
 						break;
 					case CONSERVATIVE_ATTACKING:
-						if (warrior.getAttacks_taken_last_round()>1 || (warrior.getAttacks_taken_last_round()>0 && warrior.getHealth()<40)) {
+						if (warrior.getAttacks_taken_last_round()>1 || (warrior.getAttacks_taken_last_round()>0 && warrior.getHealth()<30)) {
 							if (warrior.getTile()!=warrior.getRetreat_tile()) {
 								move_towards_tile(battle, warrior, warrior.getRetreat_tile(), Movespeed.WALK);
 							}else {
@@ -111,16 +111,8 @@ public class Behaviour {
 	}
 	
 	public static void tactic_attack_rear(BattleUnit warrior, Battle battle, Movespeed speed) {
-		//move to right or left center of battlefield and then change tactic to attack closest enemy
-		boolean enemy_close = false;
-		for (int i = 0; i < battle.getBattleField().get_adjacent_tiles(warrior.getTile()).size(); i++) {
-			if (battle.getBattleField().get_adjacent_tiles(warrior.getTile()).get(i).getUnit() != null) {
-				if (battle.getBattleField().get_adjacent_tiles(warrior.getHexTile()).get(i).getUnit().getPlayer() != warrior.getPlayer()) {
-					enemy_close = true;
-				}
-			}			
-		}
-		if (enemy_close) {
+		//attack rearmost enemy
+		if (warrior.getAttacks_taken_last_round()>0) {
 			tactic_move_to_and_attack_closest_enemy(warrior, battle, speed);
 		}else {
 			//TODO		
