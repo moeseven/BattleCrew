@@ -116,7 +116,7 @@ public class Behaviour {
 			tactic_move_to_and_attack_closest_enemy(warrior, battle, speed);
 		}else {
 			//TODO		
-			if(warrior.getPlayer() == battle.getAttacker()) {
+			if(warrior.getPlayer() == battle.getAttacker() && battle.defender.getHeroes().size()>0) {
 				warrior.setTarget(battle.defender.getHeroes().getFirst());
 				for (Iterator iterator = battle.defender.getHeroes().iterator(); iterator.hasNext();) {
 					BattleUnit type = (BattleUnit) iterator.next();
@@ -126,13 +126,15 @@ public class Behaviour {
 				}
 				
 			}else {
-				warrior.setTarget(battle.attacker.getHeroes().getFirst());
-				for (Iterator iterator = battle.attacker.getHeroes().iterator(); iterator.hasNext();) {
-					BattleUnit type = (BattleUnit) iterator.next();
-					if (type.getTile().gety()<warrior.getTarget().getTile().gety()) {
-						warrior.setTarget(type);
+				if (battle.attacker.getHeroes().size()>0) {
+					warrior.setTarget(battle.attacker.getHeroes().getFirst());
+					for (Iterator iterator = battle.attacker.getHeroes().iterator(); iterator.hasNext();) {
+						BattleUnit type = (BattleUnit) iterator.next();
+						if (type.getTile().gety()<warrior.getTarget().getTile().gety()) {
+							warrior.setTarget(type);
+						}
 					}
-				}
+				}			
 			}
 			move_towards_tile(battle, warrior, warrior.getTarget().getTile(), speed);
 		}		

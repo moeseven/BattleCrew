@@ -324,7 +324,7 @@ public class BattleCalculations {
 	}
 	
 	public static void realax_one_round(BattleUnit warrior) {
-		warrior.relax(1+2*(100-warrior.getFear())/100);
+		warrior.relax(0.5+2*(100-warrior.getFear())/100);
 	}
 	
 	
