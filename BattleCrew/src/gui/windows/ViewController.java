@@ -183,7 +183,6 @@ public class ViewController {
 	}
 	
 	public void save_game() {
-		//TODO make stuff serializable
 		//save game;
 		ObjectOutputStream oos=null;
 		try {

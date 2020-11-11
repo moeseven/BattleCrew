@@ -1,7 +1,10 @@
 package gameLogic;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -13,6 +16,12 @@ import game.Leaderboard.Leaderboard;
 import gameLogic.campaignTiles.CampaignTile;
 
 public class Game implements Serializable {
+	public Player getKing_of_the_hill() {
+		return king_of_the_hill;
+	}
+	public void setKing_of_the_hill(Player king_of_the_hill) {
+		this.king_of_the_hill = king_of_the_hill;
+	}
 	public WarriorsReadyForBattleTableEnemy getEnemyTable() {
 		return enemyTable;
 	}
@@ -24,6 +33,7 @@ public class Game implements Serializable {
 	}
 	private Player player; // change this for multiplayer
 	private Player opponent;
+	private Player king_of_the_hill;
 	private BattleTicked battle;
 	private WarriorsReadyForBattleTable prepareTable;
 	private WarriorsReadyForBattleTableEnemy enemyTable;
@@ -76,7 +86,31 @@ public class Game implements Serializable {
 		log = new MyLog();	
 		prepareTable= new WarriorsReadyForBattleTable(9, 3, 1, this);
 		enemyTable = new WarriorsReadyForBattleTableEnemy(9, 3, 1, this);
-		player = new Player(this,false);
+		player = new Player(this,false);	
+		//load from file;
+		ObjectInputStream ois=null;
+		try {
+			ois=new ObjectInputStream(new FileInputStream("./saves/king_of_the_hill.dat"));
+			king_of_the_hill = (Player) ois.readObject();
+			king_of_the_hill.setGame(this);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		finally{
+			try {
+				ois.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+		}
 		lastCaster= null;
 		try {
 			builder = new GameObjectBuilder(this);

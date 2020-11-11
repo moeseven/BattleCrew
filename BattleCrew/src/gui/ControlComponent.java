@@ -19,7 +19,6 @@ import javax.swing.JComponent;
 import javax.swing.border.LineBorder;
 
 import SpriteSheet.StaticImageLoader;
-import gameLogic.Ability;
 import gameLogic.Player;
 import gui.windows.BattleWindow;
 import guiRectangles.ClickableRectangle;

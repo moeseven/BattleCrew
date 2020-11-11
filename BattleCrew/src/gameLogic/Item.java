@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Item implements Serializable{
+	public String getDamage_type() {
+		return damage_type;
+	}
 	public int getNumber_of_enchantments() {
 		return number_of_enchantments;
 	}
@@ -17,7 +20,6 @@ public class Item implements Serializable{
 	private String name;
 	private int number_of_enchantments=0;
 	private String[] ability_names;
-	private LinkedList<Ability> abilities;
 	private int gold_value;
 	public boolean droppable;	
 	private int category;
@@ -28,6 +30,7 @@ public class Item implements Serializable{
 	private int block;
 	private int precision;
 	private String ammunition;
+	private String damage_type;
 	//mods
 	private int armor;
 	private int offense;
@@ -51,11 +54,10 @@ public class Item implements Serializable{
 	private LinkedList<String> description;
 	public Item(String[] stats,Game game) {
 		super();
-		abilities=new LinkedList<Ability>();
 		//generate item out of table
 		//name,abilities,gold_value,droppable,category
 		name=stats[0];
-		String[] ability_names = stats[1].split(";");
+		damage_type = stats[1];
 		gold_value= Integer.parseInt(stats[2]);
 		droppable= Boolean.parseBoolean(stats[3]);
 		category= Integer.parseInt(stats[4]);
@@ -212,18 +214,13 @@ public class Item implements Serializable{
 	
 	}
 	
-	public void resetAbilityCooldowns() {
-		for (int i = 0; i < abilities.size(); i++) {
-			abilities.get(i).refresh();
-		}
-	}
 	public void generateItemDescription() {
 		//TODO
 		description=new LinkedList<String>();
 		description.add("cost: "+gold_value);
 		description.add("weight: "+weight);
 		if (damage > 0 && block == 0) {
-			description.add("damage: "+damage);
+			description.add("damage: "+damage +"("+damage_type+")");
 		}
 		if (range > 0) {
 			description.add("range: "+range);
@@ -287,12 +284,6 @@ public class Item implements Serializable{
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
-	}
-	public LinkedList<Ability> getAbilities() {
-		return abilities;
-	}
-	public void setAbilities(LinkedList<Ability> abilities) {
-		this.abilities = abilities;
 	}
 	public int getImage() {
 		return image;

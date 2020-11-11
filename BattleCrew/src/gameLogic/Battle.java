@@ -1,5 +1,11 @@
 package gameLogic;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -23,6 +29,7 @@ public class Battle implements Serializable{
 	public boolean started = false;
 	public Pathfinder pathfinder;
 
+
 	public Battle(Game game, Battlefield battlefield,Player attacker, Player defender) {
 		this.game=game;
 		this.battleField=battlefield;
@@ -39,6 +46,45 @@ public class Battle implements Serializable{
 			}
 			
 		}
+		//save attacker army to file
+		if (defender.king_of_the_hill_player) {
+			game.getCampaign().getBattle_templates().removeLast();
+			Player challenger = new Player(game, true);
+			for (int i = 0; i < attacker.getHeroes().size(); i++) {
+				if (attacker.getHeroes().get(i).isBattle_participant()) {
+					challenger.getHeroes().addFirst(attacker.getHeroes().get(i));
+				}
+			}			
+			int gold = 0;
+			for (int i = 0; i < challenger.getHeroes().size(); i++) {
+				for(int j = 0; j<challenger.getHeroes().get(i).getEquipment().getAllEquippedItems().size();j++) {
+					gold += challenger.getHeroes().get(i).getEquipment().getAllEquippedItems().get(j).getGold_value();
+				}
+			}
+			challenger.king_of_the_hill_player = true;
+			challenger.setGold(gold);
+			challenger.setScore(attacker.getScore());
+			challenger.setExperience_reward(attacker.getCommander().getExperience());
+			ObjectOutputStream oos=null;
+			try {
+				oos = new ObjectOutputStream(new FileOutputStream("./saves/challenger.dat"));
+				oos.writeObject(challenger);
+			} catch (FileNotFoundException e1) {			
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			finally{
+				try {
+					oos.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		
+		
 		//place warriors and add them to battlefield
 //		for (int i = 0; i < attacker.getHeroes().size(); i++) {
 //			if (attacker.getHeroes().get(i).isBattle_participant()) {
@@ -142,6 +188,34 @@ public class Battle implements Serializable{
 		}else {
 			if (count_defender==0) {
 				winner=attacker;
+				//become king of the hill if this is a king of the hill battle
+				if (defender.king_of_the_hill_player) {
+					//load from file;
+					ObjectInputStream ois=null;ObjectOutputStream oos=null;
+					try {
+						ois=new ObjectInputStream(new FileInputStream("./saves/challenger.dat"));
+						Player p = (Player) ois.readObject();
+						oos = new ObjectOutputStream(new FileOutputStream("./saves/king_of_the_hill.dat"));
+						oos.writeObject(p);
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					finally{
+						try {
+							ois.close();oos.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						
+					}
+				}
 			}		
 		}
 		if (winner!=null) {

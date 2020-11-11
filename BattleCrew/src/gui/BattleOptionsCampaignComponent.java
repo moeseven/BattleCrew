@@ -100,13 +100,14 @@ public void refresh() {
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);
 	rc.paintRectangles(g);
-	for(int i=0; i<rc.rectAngles.size();i++) {
+	for(int i=0; i<window.get_view_controller().getGame().getCampaign().getBattle_templates().size();i++) {
 		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,rc.getRectAngles().get(i).getImageNumber(), window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY(),null);
 		if (window.get_view_controller().getGame().getCampaign().getSelectedBattle() == window.get_view_controller().getGame().getCampaign().getBattle_templates().get(i)) {
 			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
 		}
 	}
 	g.drawString("Round: " + window.get_view_controller().getGame().getCampaign().getRound_counter(), BATTLE_SIZE_X*2 +100, 10);
+	
 }
 
 @Override

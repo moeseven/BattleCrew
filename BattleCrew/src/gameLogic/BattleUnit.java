@@ -15,6 +15,21 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public int getExperience() {
+		return experience;
+	}
+
+
+	public int getResist_blunt() {
+		return resist_blunt;
+	}
+
+
+	public void setResist_blunt(int resist_blunt) {
+		this.resist_blunt = resist_blunt;
+	}
+
+
 	public short getAttacks_taken_last_round() {
 		return attacks_taken_last_round;
 	}
@@ -194,7 +209,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	private int resist_mind;
 	private int resist_stun;
 	private int resist_poison;
-	private int resist_bash;
+	
+	//weapon types
+	private int resist_blunt;
 	private int resist_slash;
 	private int resist_pirce;
 	
@@ -296,7 +313,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		resist_mind = Integer.parseInt(stats[18]);
 		resist_stun = Integer.parseInt(stats[19]);
 		resist_poison = Integer.parseInt(stats[20]);
-		resist_bash = Integer.parseInt(stats[21]);
+		
+		//weapon types
+		resist_blunt = Integer.parseInt(stats[21]);
 		resist_slash = Integer.parseInt(stats[22]);
         resist_pirce = Integer.parseInt(stats[23]);
         
@@ -629,7 +648,22 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	}
 
 	
-	public void take_damage(double damage,BattleUnit attacker) {		
+	public void take_damage(double damage,BattleUnit attacker, String damage_type) {	
+		//resistances
+		switch (damage_type) {
+		case "blunt":
+			damage*=(100-resist_blunt)/100.0;
+			break;
+		case "pierce":
+			damage*=(100-resist_pirce)/100.0;
+			break;
+		case "slash":
+			damage*=(100-resist_slash)/100.0;	
+			break;
+		default:
+			System.out.println("unkown damage type: "+damage_type);
+			break;
+		}
 		if (damage > 0) {
 			attacker.add_to_damage_dealt(damage);
 			player.getGame().log.addLine(name+" took "+(int) damage+" damage!");
@@ -727,8 +761,12 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		String damage_line = "damage: " + (int) BattleCalculations.calc_minimum_damage(this)+"-"+(int) BattleCalculations.calc_maximum_damage(this);
 		if (equipment.getHand1()!=null) {
 			if (equipment.getHand1().getRange()>2 && BattleCalculations.amunition_ready(this)) {
-				damage_line = "damage: " + (int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MINIMUM_DAMAGE_FACTOR)+"-"+(int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MAXIMUM_DAMAGE_FACTOR);
+				damage_line = "damage: " + (int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MINIMUM_DAMAGE_FACTOR)+"-"+(int) (BattleCalculations.calc_amunition_damage(this)*BattleCalculations.MAXIMUM_DAMAGE_FACTOR)+" ("+ getEquipment().getAmunition().get(0).getDamage_type()+")";
+			}else {
+				damage_line += " ("+BattleCalculations.get_meele_damage_type(this)+")";	
 			}
+		}else{
+			damage_line+=" ("+BattleCalculations.get_meele_damage_type(this)+")";		
 		}
 		lines.add(damage_line);
 		lines.add("offese: "+ BattleCalculations.get_meele_attack_skill(this));
@@ -746,7 +784,16 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("strength: "+getStrength());
 		lines.add("dexterity: "+(int) BattleCalculations.get_battle_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
-		lines.add("");
+		lines.add("resistances:");
+		if (resist_blunt>0) {
+			lines.add("blunt: " + resist_blunt+"%");
+		}
+		if (resist_slash>0) {
+			lines.add("slash: " + resist_slash+"%");	
+		}
+		if (resist_pirce>0) {
+			lines.add("pierce: " + resist_pirce+"%");
+		}		
 		int a_body = protection,a_head=protection,a_shield=0;
 		String armor_line = "armor: ";
 		if (this.getEquipment().getHead()!=null) {
@@ -1046,13 +1093,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		this.resist_poison = resist_poison;
 	}
 
-	public int getResist_bash() {
-		return resist_bash;
-	}
 
-	public void setResist_bash(int resist_bash) {
-		this.resist_bash = resist_bash;
-	}
 
 	public int getResist_slash() {
 		return resist_slash;

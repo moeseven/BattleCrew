@@ -58,6 +58,7 @@ public class Campaign implements Serializable{
 		battle_templates.add(game.builder.buildBattleTemplate("goblin group"));
 		battle_templates.add(game.builder.buildBattleTemplate("undead"));
 		battle_templates.add(game.builder.buildBattleTemplate("animals"));
+		battle_templates.add(new BattleTemplateKing(new String[1], game)); //this needs to be last in the list
 		campaign_tiles.add(new VictoryTile());
 		campaign_tiles.add(new TownTile());
 		Player defender = new Player(game,true);

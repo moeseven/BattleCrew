@@ -3,6 +3,7 @@ package builders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -17,7 +18,32 @@ import gameLogic.Item;
 import gameLogic.ItemAffix;
 import gameLogic.Player;
 
-public class GameObjectBuilder {
+public class GameObjectBuilder implements Serializable{
+	public HashMap<String, String[]> getMap_army() {
+		return map_army;
+	}
+
+	public void setMap_army(HashMap<String, String[]> map_army) {
+		this.map_army = map_army;
+	}
+
+	public HashMap<String, String[]> getMap_units() {
+		return map_units;
+	}
+
+	public void setMap_units(HashMap<String, String[]> map_units) {
+		this.map_units = map_units;
+	}
+
+	public HashMap<String, String[]> getMap_items() {
+		return map_items;
+	}
+
+	public void setMap_items(HashMap<String, String[]> map_items) {
+		this.map_items = map_items;
+	}
+
+
 	private HashMap<String,String[]> map_units;
 	private HashMap<String,String[]> map_item_affixes;
 	private HashMap<String,String[]> map_items;

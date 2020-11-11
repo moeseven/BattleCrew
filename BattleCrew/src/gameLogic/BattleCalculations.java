@@ -19,6 +19,7 @@ public class BattleCalculations {
 	private static double STRENGTH_FACTOR_RANGED = .33;
 	private static double STRENGTH_FACTOR_ONEHAND = 1;
 	private static double STRENGTH_FACTOR_TWOHAND = 1.33;
+	private static double BLUNT_WEAPON_STRENGTH_BONUS = 0.5;
 	
 	public static double calc_movement_exhaustion(BattleUnit unit) {
 		double exhaustion;
@@ -131,6 +132,9 @@ public class BattleCalculations {
 			if (warrior.getEquipment().getHand1() == warrior.getEquipment().getHand2()) {
 				damage += get_battle_strength(warrior)*(STRENGTH_FACTOR_TWOHAND-1);
 			}
+			if (get_meele_damage_type(warrior).equals("blunt")) {
+				damage += get_battle_strength(warrior)*BLUNT_WEAPON_STRENGTH_BONUS;
+			}
 		}		
 		damage += get_battle_strength(warrior);
 		//size factor
@@ -242,16 +246,18 @@ public class BattleCalculations {
 		if (amunition_ready(attacker)) {
 			//check distance
 			if (attacker.get_adjacent_enemies().size()==0) {
-				use_amunition(attacker);
+				
 				defender.getPlayer().getGame().log.addLine(attacker.getName()+" takes a shot at "+defender.getName());
 				attacker.exhaust(calc_attack_exhaustion(attacker));
 				if (calc_attack_ranged_hit(attacker, defender)) {
 					if (!evade(attacker, defender)) {
-						defender.take_damage(roll_ranged_damage(attacker, defender),attacker);						
+						defender.take_damage(roll_ranged_damage(attacker, defender),attacker,attacker.getEquipment().getAmunition().get(0).getDamage_type());						
 					}
 				}
+				use_amunition(attacker);
 				return true;
-			}					
+			}	
+			use_amunition(attacker);
 		}
 		return false;
 	}
@@ -273,9 +279,18 @@ public class BattleCalculations {
 					defender.getPlayer().getGame().log.addLine("thorns");
 					thorn_damage(attacker, defender);
 				}				
-				defender.take_damage(roll_damage(attacker, defender),attacker);
+				defender.take_damage(roll_damage(attacker, defender),attacker,get_meele_damage_type(attacker));
 			}
 		}
+	}
+	
+	public static String get_meele_damage_type(BattleUnit warrior) {
+		if (warrior.getEquipment().getHand1()!= null) {
+			return warrior.getEquipment().getHand1().getDamage_type();
+		}else {
+			return "blunt";
+		}
+		
 	}
 	
 	/**
@@ -339,6 +354,6 @@ public class BattleCalculations {
 	public static void thorn_damage(BattleUnit attacker, BattleUnit defender) {
 		double thorn = defender.getThorns();
 		//factor in armor
-		attacker.take_damage(thorn, defender);
+		attacker.take_damage(thorn, defender,"pierce");
 	}
 }

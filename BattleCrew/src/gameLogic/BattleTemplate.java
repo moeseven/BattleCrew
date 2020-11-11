@@ -1,12 +1,13 @@
 package gameLogic;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class BattleTemplate {
+public class BattleTemplate implements Serializable{
 public String getName() {
 		return name;
 	}
@@ -27,17 +28,29 @@ public String getName() {
 	//protected LinkedList<String> lines;
 	private HashMap<String,List<String>> map;
 	
-	public BattleTemplate(String[] stats,Game game) {
+	public BattleTemplate(String[] stats,Game game) throws Exception {
 		super();
+		//check for correct
 		this.game = game;
 		level = 1;
 		//go through resource file
 		name = stats[0];
 		units = stats[1].split(";"); //unit names
+		//check
+		for (int i = 0; i < units.length; i++) {
+			if (!game.builder.getMap_units().containsKey(units[i])) {
+				throw new Exception("there is no unit with the name "+units[i]+"(template: "+name+")");
+			}
+		}
 		String[] help_string = stats[2].split(";"); //item names
 		items = new String[help_string.length][];
 		for(int i = 0; i<help_string.length;i++) {//number of units
 			String[] equipment = help_string[i].split("&");
+			for (int j = 0; j < equipment.length; j++) {
+				if (!game.builder.getMap_items().containsKey(equipment[j])) {
+					throw new Exception("there is no item with the name "+equipment[j]+"(template: "+name+")");
+				}
+			}
 			items[i] = equipment;
 		}
 		help_string = stats[3].split(";"); 

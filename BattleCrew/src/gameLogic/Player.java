@@ -13,6 +13,10 @@ import HexTilePlayground.HexTileUnit;
 public class Player implements HexTilePlayer,Serializable{
 
 
+	public boolean isKing_of_the_hill_player() {
+		return king_of_the_hill_player;
+	}
+
 	public void setGold(int gold) {
 		this.gold = gold;
 	}
@@ -157,6 +161,7 @@ public class Player implements HexTilePlayer,Serializable{
 	private BattleUnit leader;
 	private BattleUnit recruiter;
 	//
+	boolean king_of_the_hill_player=false;
 	private Game game;
 	private boolean cheat=false;
 	private int score = 0;
