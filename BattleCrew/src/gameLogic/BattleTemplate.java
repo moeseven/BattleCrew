@@ -73,7 +73,7 @@ public String getName() {
 	public void levelup() {
 		level++;
 		gold_reward+=gold_grow;
-		exp_grow+=exp_grow;
+		exp_reward+=exp_grow;
 		score_reward+=score_grow;
 		for (int i = 0; i < amount.length; i++) {
 			amount[i] = amount[i] + grow_numbers[i];

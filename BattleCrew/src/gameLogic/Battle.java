@@ -62,7 +62,7 @@ public class Battle implements Serializable{
 				}
 			}
 			challenger.king_of_the_hill_player = true;
-			challenger.setGold(gold);
+			challenger.setGold_reward(gold);
 			challenger.setScore(attacker.getScore());
 			challenger.setExperience_reward(attacker.getCommander().getExperience());
 			ObjectOutputStream oos=null;
