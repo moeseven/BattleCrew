@@ -60,7 +60,11 @@ public void set_up_rectangles() {
 			public void onClick(MouseEvent e) {
 				int hero_index = this.getX()/WARRIOR_SIZE_X;
 				if (this.getY() >= WARRIOR_SIZE_Y) {
-					hero_index = hero_index + NEXT_ROW_THRESHOLD;
+					if(this.getY() >= WARRIOR_SIZE_Y*2) {
+						hero_index = hero_index + 2*NEXT_ROW_THRESHOLD;
+					}else {
+						hero_index = hero_index + NEXT_ROW_THRESHOLD;
+					}					
 				}
 				window.get_view_controller().getGame().getPlayer().setSelectedHero(window.get_view_controller().getGame().getPlayer().getHeroes().get(hero_index));				
 			}

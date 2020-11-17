@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -23,10 +24,15 @@ public class ShopinterfaceComponent extends JComponent implements Refreshable_gu
 	private RectangleClicker rc;
 	private CampaignWindow campaign_window;
 	private Shop shop;
+	private ShopItmesComponent sic;
 	public ShopinterfaceComponent(CampaignWindow campaignWindow, Shop s) {
 	this.campaign_window=campaignWindow;
+	this.sic = new ShopItmesComponent(campaignWindow);
+	sic.setVisible(true);
 	this.shop=s;
 	setBorder(new LineBorder(Color.WHITE));
+	setLayout(new GridLayout(1, 2));
+	add(sic); //TODO not displayed             
 	super.setPreferredSize(new Dimension(600,350));
 	MyMouseListener ml = new MyMouseListener();
 	super.addMouseListener(ml);

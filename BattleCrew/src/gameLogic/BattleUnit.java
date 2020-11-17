@@ -413,7 +413,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		//gain fatigue modified by weight and already performed actions
 		exhaust(BattleCalculations.calc_movement_exhaustion(this));
 		relax(0.5);
-		double battle_fright = 0.013;
+		double battle_fright = 0.01;
 		if (player.getLeader() != null) {
 			battle_fright = 0.01 + 0.01/player.getLeader().command_points;
 		}

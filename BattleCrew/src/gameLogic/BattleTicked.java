@@ -50,7 +50,7 @@ public class BattleTicked  extends Battle{
 			battleParticipants.remove(warrior);
 			for (int w = 0; w < battleParticipants.size(); w++) {
 				if (warrior.getPlayer() == battleParticipants.get(w).getPlayer()) {
-					battleParticipants.get(w).frighten(warrior.getVitality()/(total_vit+1.0));
+					battleParticipants.get(w).frighten(warrior.getVitality()/(total_vit+1.0)*.75);
 				}else {
 					//maybe gain some moral back through kills
 					battleParticipants.get(w).gain_courage(warrior.getVitality()/(total_vit+1.0)*25);

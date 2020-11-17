@@ -17,6 +17,7 @@ import gui.HeroInventoryPaintComponent;
 import gui.HeroStatsPaintComponent;
 import gui.RectangleCampaignManagementMenu;
 import gui.Refreshable_gui;
+import gui.ShopItmesComponent;
 import gui.ShopinterfaceComponent;
 import gui.WarriorCampaignComponent;
 import gui.WarriorsReadyForBattleComponent;
@@ -25,6 +26,7 @@ import gui.WarriorsReadyForBattleComponent;
 public class CampaignWindow extends X_to_main_main_menu_window implements Refreshable_gui{
 	private JPanel warrior_inspection;
 	private ShopinterfaceComponent shop;
+	private ShopItmesComponent shop_items;
 	private WarriorCampaignComponent warriors;
 	private BattleOptionsCampaignComponent battles;
 	//private 
@@ -39,6 +41,7 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		this.setSize(1300, 780);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());	
+		shop_items = new ShopItmesComponent(this);
 		shop= new ShopinterfaceComponent(this, new Shop(gc.getGame()));
 		warriors = new WarriorCampaignComponent(this);
 		battles = new BattleOptionsCampaignComponent(this);
@@ -47,11 +50,13 @@ public class CampaignWindow extends X_to_main_main_menu_window implements Refres
 		setUpWarriorInspectionPanel();
 	}
 	public void showAccurateComponent() {
-		remove(shop);
+		//remove(shop);
+		remove(shop_items);
 		remove(warriors);
 		remove(battles);
 		if (state==0) {
-			add(shop,BorderLayout.NORTH);
+			//add(shop,BorderLayout.NORTH);
+			add(shop_items,BorderLayout.NORTH);
 		}else {
 			if (state==1) {
 				add(battles,BorderLayout.NORTH);

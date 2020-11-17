@@ -32,7 +32,7 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 		private JScrollPane sp;
 		private ViewControlledWindow window;
 		public RectangleClicker rc;
-		private int x_offset = -90;
+		private int x_offset = -140;
 		private Game game;
 		public HeroInventoryPaintComponent(ViewControlledWindow window){
 			this.window=window;
