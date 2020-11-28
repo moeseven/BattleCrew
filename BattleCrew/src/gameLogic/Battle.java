@@ -225,6 +225,9 @@ public class Battle implements Serializable{
 		return false;
 	}
 	public void end_battle() {
+		for (int i = 0; i < battleParticipants.size(); i++) {
+			battleParticipants.get(i).debuff();
+		}
 //		for (int i = 0; i < attacker.getHeroes().size(); i++) {
 //			attacker.getHeroes().get(i).setBattle_participant(false);
 //				

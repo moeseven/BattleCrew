@@ -101,6 +101,7 @@ public class Game implements Serializable {
 			e1.printStackTrace();
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
+			king_of_the_hill = null;
 			e1.printStackTrace();
 		}
 		finally{

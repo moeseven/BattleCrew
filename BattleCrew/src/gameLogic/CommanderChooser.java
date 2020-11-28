@@ -9,7 +9,7 @@ public class CommanderChooser {
 	private int points; //TODO give points
 	LinkedList<Commander_Class> charClasses;
 	LinkedList<String> charRaces;
-	public static String[] COMMANDER_RACES = {"human","elf","dwarf","halfling"};
+	public static String[] COMMANDER_RACES = {"human","elf","dwarf","halfling","wizard"};
 	public CommanderChooser(Game game) throws Exception {
 		super();
 		this.game=game;

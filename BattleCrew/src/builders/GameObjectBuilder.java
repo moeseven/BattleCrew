@@ -11,6 +11,7 @@ import java.util.Random;
 
 import gameLogic.BattleTemplate;
 import gameLogic.BattleUnit;
+import gameLogic.Buff;
 import gameLogic.Commander;
 import gameLogic.Commander_Class;
 import gameLogic.Game;
@@ -47,6 +48,7 @@ public class GameObjectBuilder implements Serializable{
 	private HashMap<String,String[]> map_units;
 	private HashMap<String,String[]> map_item_affixes;
 	private HashMap<String,String[]> map_items;
+	private HashMap<String,String[]> map_buffs;
 	private HashMap<String,String[]> map_names;
 	private HashMap<String,String[]> map_army;
 	private Game game;
@@ -81,6 +83,16 @@ public class GameObjectBuilder implements Serializable{
 		    map_items.put(data[0], data);
 		}
 		csvReader.close();
+		//buff map
+		map_buffs= new HashMap<String,String[]>();
+		path ="./resources/Buffs.csv";
+		csvReader = new BufferedReader(new FileReader(path));
+		while ((row = csvReader.readLine()) != null) {
+		    String[] data = row.split(",");
+		    map_items.put(data[0], data);
+		}
+		csvReader.close();
+		//name map
 		map_names= new HashMap<String,String[]>();
 		path ="./resources/Names.csv";
 		csvReader = new BufferedReader(new FileReader(path));
@@ -150,7 +162,15 @@ public class GameObjectBuilder implements Serializable{
 		}
 		
 	}
-
+	
+	public Buff buildBuffbyName(String name, double factor, int duration) throws Exception {
+		if (map_buffs.containsKey(name)) {
+			return new Buff(map_buffs.get(name),factor,duration); //all parameters needed to genarate a buff
+		}else {
+			throw new Exception("there is no buff with the name "+name);
+		}
+	}
+	
 	public String generate_name(String type) {
 		if (map_names.containsKey(type)) {
 			int random =  (int) (1+Math.random()* (map_names.get(type).length-1));
@@ -162,7 +182,7 @@ public class GameObjectBuilder implements Serializable{
 			return type+" ";
 		}		
 	}
-
+	
 	
 	public BattleTemplate buildBattleTemplate(String name) throws Exception{
 		BattleTemplate template;

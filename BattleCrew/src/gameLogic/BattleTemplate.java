@@ -91,6 +91,10 @@ public String getName() {
 			for(int number = 0; number<amount[unit_type];number++) {
 				//make unit
 				BattleUnit u = game.builder.buildUnitbyName(units[unit_type], defender);
+				//level unit
+				for (int lvl = 1; lvl < level; lvl++) {
+					u.lvl_up();
+				}
 				//equip unit
 				for(int item = 0; item<items[unit_type].length;item++) {
 					Item e = game.builder.buildItembyName(items[unit_type][item]);
@@ -114,6 +118,10 @@ public String getName() {
 			for(int number = 0; number<(int)(amount[unit_type]);number++) {
 				//make unit
 				BattleUnit u = game.builder.buildUnitbyName(units[unit_type], defender);
+				//level unit
+				for (int lvl = 1; lvl < level; lvl++) {
+					u.lvl_up();
+				}
 				//equip unit
 				for(int item = 0; item<items[unit_type].length;item++) {
 					Item e = game.builder.buildItembyName(items[unit_type][item]);

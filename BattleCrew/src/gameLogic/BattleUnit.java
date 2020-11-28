@@ -2,7 +2,10 @@ package gameLogic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import HexTilePlayground.HexTile;
@@ -236,7 +239,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	protected int recruit_points = 1;
 	protected int drill = 60;
 	
-	//unused
+	//buffs  (name of buff, duration of buff)
+	private HashMap<String,Buff> buffs;
 	
 	//dynamic stats
 	private double health;
@@ -281,6 +285,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		super();
 		this.player = player;
 		equipment = new Equipment(this);
+		buffs = new HashMap<String,Buff>();
 		health = 100;
 		type=stats[0];
 		meele_image = Integer.parseInt(stats[1]);
@@ -346,8 +351,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		endurance  +=Math.min(4, Math.max(-4, random.nextGaussian()));
 		wisdom  +=Math.min(3, Math.max(-3, random.nextGaussian()));
 		spell_power +=Math.min(4, Math.max(-4, random.nextGaussian()));
-		base_offense  +=Math.min(4, Math.max(-4, random.nextGaussian()));
-		base_defense += Math.min(4, Math.max(-4, random.nextGaussian()));
+		base_offense  +=Math.min(5, Math.max(-5, 2*random.nextGaussian()));
+		base_defense += Math.min(5, Math.max(-5, 2*random.nextGaussian()));
 		precision += Math.min(4, Math.max(-4, random.nextGaussian()));
 		courage += Math.min(4, Math.max(-4, random.nextGaussian()));
 		weapon_skill += Math.min(3, Math.max(-3, random.nextGaussian()));
@@ -403,6 +408,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void recover() {		
 		heal(regen*10);
 		heal_percent(recovery);
+		gain_mana(wisdom*recovery/100.0);
 		relax(recovery*1.5);	
 	}
 	
@@ -424,8 +430,36 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		attacked_this_round = false;
 		attacks_taken_last_round = attacks_taken_this_round;
 		attacks_taken_this_round = 0;
+		//buff downtick
+		for (Entry<String, Buff> entry : buffs.entrySet()) {
+		    if (entry.getValue().duration > 1) {
+				entry.getValue().duration -= 1;
+			}else {
+				buffs.remove(entry.getKey());
+				entry.getValue().demod(this);
+			}
+		    
+		}
 	}
 	
+	public boolean buff(Buff b) {
+		for (Entry<String, Buff> entry : buffs.entrySet()) {
+		    if (entry.getKey().equals(b.getName())) {
+		    	entry.getValue().duration+=b.duration;
+				return false;
+			}		    
+		}
+		buffs.put(b.getName(), b);
+		b.mod(this);
+		return true;
+	}
+	
+	public void debuff() {
+		for (Entry<String, Buff> entry : buffs.entrySet()) {
+		    entry.getValue().demod(this);
+		    buffs.remove(entry.getKey());
+		}
+	}
 	
 	public void exhaust(double e) {
 		fatigue+=e;
@@ -468,6 +502,19 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			}
 		}
 	}
+	public void gain_mana(double m) {
+		if(m>=0) {
+			mana+=m;
+			if (mana>wisdom) {
+				mana = wisdom;
+			}
+		}else {
+			mana-= m;
+			if (mana < 0) {
+				mana = 0;
+			}
+		}
+	}
 	public void heal(double h) {
 		if (h > 0) {
 			health += h/vitality*10;
@@ -505,6 +552,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	}
 	
 	public void lvl_up() {
+		exp_value*=1.05;
 		level++;
 		salary++;
 		vitality++;
@@ -682,6 +730,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void die() {		
 		this.tile.setUnit(null);
 		equipment.unequipAll();
+		debuff();
 		if (player.getHealer()!=null) {
 			if (Math.random() < player.getHealer().getHealer_points()/100.0) { //recover chance
 				health = 1;
