@@ -78,6 +78,9 @@ public class City {
 						recruit.setMeele_image(31);
 						recruit.setImage_number(31);
 						break;
+					case "wizard":
+						recruit.setMeele_image(125);
+						recruit.setImage_number(125);
 					default:
 						break;
 					}

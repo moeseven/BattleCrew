@@ -16,6 +16,7 @@ public class Behaviour {
 		ATTACK_CLOSEST_ENEMY,
 		ATTACK_REAR,
 		CONSERVATIVE_ATTACKING,
+		CAST_SPELLS,
 		FLANK
 	}
 	
@@ -53,7 +54,8 @@ public class Behaviour {
 					case FLANK:
 						tactic_flank(warrior, battle, Movespeed.WALK);
 						break;
-		
+					case CAST_SPELLS:
+						tactic_cast_spells(warrior, battle, Movespeed.WALK);
 					default:
 						tactic_move_to_and_attack_closest_enemy(warrior, battle, Movespeed.WALK);
 						break;
@@ -65,6 +67,24 @@ public class Behaviour {
 		}		
 	}
 	
+	private static void tactic_cast_spells(BattleUnit warrior, Battle battle, Movespeed speed) {
+		if (warrior.getSpellbook().size() > 0) {
+			try {
+				if (warrior.getSpellbook().get(0).cast_spell(warrior, battle)) {
+					//spell cast
+				}else {
+					tactic_move_to_and_attack_closest_enemy(warrior, battle, speed);
+				}
+				//next spell next time
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			tactic_move_to_and_attack_closest_enemy(warrior, battle, speed);
+		}		
+	}
+
 	public static void potion_check_and_use(BattleUnit warrior) {
 		if (warrior.getEquipment().getPotion() != null) {
 			if ((warrior.getMaxHealth()-warrior.getHealth())/10*warrior.getVitality() > warrior.getEquipment().getPotion().getDamage()) {

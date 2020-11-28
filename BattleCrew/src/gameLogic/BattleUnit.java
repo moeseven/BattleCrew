@@ -18,6 +18,11 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public LinkedList<Spell> getSpellbook() {
+		return spellbook;
+	}
+
+
 	public int getExperience() {
 		return experience;
 	}
@@ -241,7 +246,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	//buffs  (name of buff, duration of buff)
 	private HashMap<String,Buff> buffs;
-	
+	private LinkedList<Spell> spellbook;
 	//dynamic stats
 	private double health;
 	private double fatigue = 0;
@@ -286,6 +291,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		this.player = player;
 		equipment = new Equipment(this);
 		buffs = new HashMap<String,Buff>();
+		spellbook = new LinkedList<Spell>();
 		health = 100;
 		type=stats[0];
 		meele_image = Integer.parseInt(stats[1]);
@@ -341,6 +347,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
         learning = Integer.parseInt(stats[38]);
         name = player.getGame().builder.generate_name(type);
         image_number = meele_image;
+        mana = wisdom;
 	}
 	public void randomizeStats(Random random) {
 		//TODO
@@ -610,7 +617,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			recovery+=6*random_factor;
 			break;
 		case 5:
-			dexterity+=6*random_factor;
+			dexterity+=5*random_factor;
 			break;
 		case 6:
 			strength+=5*random_factor;
@@ -818,8 +825,7 @@ public class BattleUnit implements HexTileUnit, Serializable{
 			damage_line+=" ("+BattleCalculations.get_meele_damage_type(this)+")";		
 		}
 		lines.add(damage_line);
-		lines.add("offese: "+ BattleCalculations.get_meele_attack_skill(this));
-		lines.add("defense: "+ BattleCalculations.get_meele_defense_skill(this));
+		lines.add("combat: "+ BattleCalculations.get_meele_attack_skill(this)+"/"+BattleCalculations.get_meele_defense_skill(this));
 		
 		//precison and accuracy
 		String concat_string = ""+(int) BattleCalculations.get_combat_accuracy(this);
@@ -833,6 +839,8 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		lines.add("strength: "+getStrength());
 		lines.add("dexterity: "+(int) BattleCalculations.get_battle_dexterity(this));	
 		lines.add("weapon skill: " + weapon_skill);
+		lines.add("magic: "+spell_power+"/"+ wisdom);
+		lines.add("mana: "+ (int) mana);
 		lines.add("resistances:");
 		if (resist_blunt>0) {
 			lines.add("blunt: " + resist_blunt+"%");

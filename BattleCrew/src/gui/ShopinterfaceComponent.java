@@ -176,7 +176,7 @@ public class ShopinterfaceComponent extends JComponent implements Refreshable_gu
 			}					
 		}		
 	});
-	rc.addRect(new ClickableRectangle("buy",510,10,45,20) {
+	rc.addRect(new ClickableRectangle("buy",510,10,55,30) {
 		@Override
 		public void onClick(MouseEvent e) {
 			// TODO Auto-generated method stub

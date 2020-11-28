@@ -3,12 +3,25 @@ package gameLogic;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import gameLogic.spellLibrary.BloodlustSpell;
+import gameLogic.spellLibrary.StoneskinSpell;
+
 public class Shop implements Serializable{
+	public LinkedList<Spell> getSpells() {
+		return spells;
+	}
+	public void setSpells(LinkedList<Spell> spells) {
+		this.spells = spells;
+	}
 	private Game game;
 	private int imageNumber=382;
 	private Inventory inventory;
+	private LinkedList<Spell> spells;
 	public Shop(Game game) {
 		this.game=game;
+		spells = new LinkedList<Spell>();
+		spells.add(new BloodlustSpell());
+		spells.add(new StoneskinSpell());
 		inventory = new Inventory();
 		
 		//one hand meele weapon

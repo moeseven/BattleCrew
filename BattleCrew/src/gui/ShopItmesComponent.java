@@ -76,26 +76,26 @@ public void set_up_rectangles() {
 		rc.addRect(r);
 	}
 	//sell
-		rc.addRect(new ClickableRectangle("sell",910,35,45,20) {
-			@Override
-			public void onClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-				window.get_view_controller().getGame().getShop().sell_item(window.get_view_controller().getGame().getPlayer(), window.get_view_controller().getGame().getPlayer().getSelectedItem());
-
-			}
-			@Override
-			public void updateCaption() {
-				// TODO Auto-generated method stub
-				if(window.get_view_controller().getGame().getPlayer().getInventory().contains(window.get_view_controller().getGame().getPlayer().getSelectedItem())) {
-					this.setFirstLineColor(Color.black);
-				}else {
-					if(window.get_view_controller().getGame().getShop().getInventory().contains(window.get_view_controller().getGame().getPlayer().getSelectedItem())) {
-						this.setFirstLineColor(Color.GRAY);
-					}			
-				}					
-			}		
-		});
-		rc.addRect(new ClickableRectangle("buy",910,10,45,20) {
+//		rc.addRect(new ClickableRectangle("sell",910,35,45,20) {
+//			@Override
+//			public void onClick(MouseEvent e) {
+//				// TODO Auto-generated method stub
+//				window.get_view_controller().getGame().getShop().sell_item(window.get_view_controller().getGame().getPlayer(), window.get_view_controller().getGame().getPlayer().getSelectedItem());
+//
+//			}
+//			@Override
+//			public void updateCaption() {
+//				// TODO Auto-generated method stub
+//				if(window.get_view_controller().getGame().getPlayer().getInventory().contains(window.get_view_controller().getGame().getPlayer().getSelectedItem())) {
+//					this.setFirstLineColor(Color.black);
+//				}else {
+//					if(window.get_view_controller().getGame().getShop().getInventory().contains(window.get_view_controller().getGame().getPlayer().getSelectedItem())) {
+//						this.setFirstLineColor(Color.GRAY);
+//					}			
+//				}					
+//			}		
+//		});
+		rc.addRect(new ClickableRectangle("buy",910,10,55,30) {
 			@Override
 			public void onClick(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -157,7 +157,7 @@ public void refresh() {
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);
 	rc.paintRectangles(g);
-	for(int i=0; i<rc.rectAngles.size()-2;i++) {
+	for(int i=0; i<rc.rectAngles.size()-1;i++) {
 		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,rc.getRectAngles().get(i).getImageNumber(), window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY(),null);
 		if (window.get_view_controller().getGame().getShop().getInventory().getInventory_list().get(i).get(0) == window.get_view_controller().getGame().getPlayer().getSelectedItem()) {
 			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);

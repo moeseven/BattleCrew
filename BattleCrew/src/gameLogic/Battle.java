@@ -15,6 +15,9 @@ import HexTilePlayground.HexTile;
 import pathfinding.Pathfinder;
 
 public class Battle implements Serializable{
+	public LinkedList<BattleUnit> getBattleParticipants() {
+		return battleParticipants;
+	}
 	public Player getAttacker() {
 		return attacker;
 	}

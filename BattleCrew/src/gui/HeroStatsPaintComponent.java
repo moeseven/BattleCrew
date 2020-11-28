@@ -305,11 +305,13 @@ public class HeroStatsPaintComponent extends JComponent{
 								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.CONSERVATIVE_ATTACKING);
 								break;
 							case ATTACK_REAR:
-								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
+								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.CAST_SPELLS);
 								break;
 							case CONSERVATIVE_ATTACKING:
 								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_REAR);
 								break;
+							case CAST_SPELLS:
+								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
 							default:
 								warrior.getPlayer().getSelectedUnit().setBehaviour(Behaviour_type.ATTACK_CLOSEST_ENEMY);
 								break;
@@ -329,6 +331,9 @@ public class HeroStatsPaintComponent extends JComponent{
 								break;
 							case CONSERVATIVE_ATTACKING:
 								caption.addFirst("defensive");
+								break;
+							case CAST_SPELLS:
+								caption.addFirst("cast spells");
 								break;
 							default:
 								break;

@@ -23,7 +23,7 @@ import guiRectangles.RectangleClicker;
 
 public class RectangleCampaignManagementMenu extends JComponent implements Refreshable_gui{
 	private RectangleClicker rectangle_clicker;
-	private JButton shop_button,warriors_button,prepare_battle_button,battles_button;
+	private JButton shop_button,warriors_button,prepare_battle_button,battles_button,magic_school_button;
 	private JButton rest_button, train_button, earn_button, recruit_button, leadership_button, enchant_button, score_button; //city actions (use up action points)
 	private JButton appoint_healer_button, appoint_smith_button, appoint_treasurer_button, appoint_champion_button, appoint_recruiter_button, appoint_commander_button;//job buttons
 	private JPanel appoint_panel, pay_action_panel, view_change_panel;
@@ -41,6 +41,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		recruit_button = new RecruitButton();		
 		warriors_button = new WarriorsButton();
 		battles_button = new BattlesButton();
+		magic_school_button = new MagicSchoolButton();
 		//
 		appoint_champion_button = new AppointChampionButton();
 		appoint_commander_button = new AppointCommanderButton();
@@ -65,11 +66,13 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 		pay_action_panel.add(recruit_button);
 		
 		view_change_panel = new JPanel();
-		view_change_panel.setLayout(new GridLayout(4,1));
+		view_change_panel.setLayout(new GridLayout(5,1));
 		view_change_panel.add(warriors_button);
 		view_change_panel.add(shop_button);
+		view_change_panel.add(magic_school_button);
 		view_change_panel.add(battles_button);
 		view_change_panel.add(prepare_battle_button);
+
 		add(appoint_panel);
 		add(pay_action_panel);
 		add(view_change_panel);
@@ -220,6 +223,29 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 					warriors_button.setVisible(true);
 					prepare_battle_button.setVisible(false);
 					battles_button.setVisible(true);
+					magic_school_button.setVisible(true);
+				}
+			} 
+		}
+	}
+	private class MagicSchoolButton extends JButton{
+		public MagicSchoolButton() {
+			setName("magic school");
+			this.setText("magic school");
+			setPreferredSize(new Dimension(100, 40));
+			addMouseListener(new ShopButtonMouseListener());
+		}
+		private class ShopButtonMouseListener extends MouseAdapter{
+			public void mousePressed(MouseEvent e){	
+				if(e.getButton()==1){
+					//TODO open shop here
+					cw.setState(3);
+					cw.showAccurateComponent();
+					magic_school_button.setVisible(false);
+					warriors_button.setVisible(true);
+					prepare_battle_button.setVisible(false);
+					battles_button.setVisible(true);
+					shop_button.setVisible(true);
 				}
 			} 
 		}
@@ -241,6 +267,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 					shop_button.setVisible(true);
 					prepare_battle_button.setVisible(false);
 					battles_button.setVisible(true);
+					magic_school_button.setVisible(true);
 				}
 			} 
 		}
@@ -262,6 +289,7 @@ public class RectangleCampaignManagementMenu extends JComponent implements Refre
 					prepare_battle_button.setVisible(true);
 					warriors_button.setVisible(true);
 					shop_button.setVisible(true);
+					magic_school_button.setVisible(true);
 				}
 			} 
 		}

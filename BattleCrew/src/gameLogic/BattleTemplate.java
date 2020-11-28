@@ -43,7 +43,7 @@ public String getName() {
 			}
 		}
 		String[] help_string = stats[2].split(";"); //item names
-		items = new String[help_string.length][];
+		items = new String[units.length][];
 		for(int i = 0; i<help_string.length;i++) {//number of units
 			String[] equipment = help_string[i].split("&");
 			for (int j = 0; j < equipment.length; j++) {

@@ -209,6 +209,30 @@ public class HeroInventoryPaintComponent extends JComponent implements Refreshab
 					}
 				}		
 			});
+			//sell
+			rc.addRect(new ClickableRectangle("sell",210+x_offset,90,55,20) {
+				@Override
+				public void onClick(MouseEvent e) {
+					if(game.getPlayer().getSelectedItem()!=null) {
+						if(game.getPlayer().getInventory().contains(game.getPlayer().getSelectedItem())) {
+							game.getPlayer().getInventory().remove(game.getPlayer().getSelectedItem());
+							game.getPlayer().gainGold((int) (game.getPlayer().getSelectedItem().getGold_value()/5.0));//sell for one fifth of value
+							if(game.getPlayer().getInventory().getInventory_list().size()>0) {
+								game.getPlayer().setSelectedItem(game.getPlayer().getInventory().getInventory_list().getFirst().get(0));
+							}
+						}	
+					}
+				}
+				@Override
+				public void updateCaption() {
+					// TODO Auto-generated method stub
+					if(game.getPlayer().getInventory().contains(game.getPlayer().getSelectedItem())) {
+						this.setFirstLineColor(Color.black);
+					}else {
+							this.setFirstLineColor(Color.GRAY);		
+					}					
+				}
+			});
 			//gold
 			rc.addRect(new ClickableRectangle("gold",515+x_offset,120,90,20) {
 				@Override

@@ -43,12 +43,15 @@ public class Item implements Serializable{
 	private int thorns = 0;
 	private int regen = 0;
 	private int learning = 0;
+	protected int spellpower = 0;
+	protected int wisdom = 0;
 	//campaign stats
 	protected int healer_points = 0;  // chance of healing lost units after battles
 	protected int gold_bonus = 0; //money bonus
 	protected int smith_points = 0; //chance of enchanting an item when buying
 	protected int recruit_points = 0;
 	protected int drill = 0;
+
 	
 	private int image;
 	private LinkedList<String> description;
@@ -78,6 +81,8 @@ public class Item implements Serializable{
 		smith_points = Integer.parseInt(stats[19]);
 		recruit_points = Integer.parseInt(stats[20]);
 		drill = Integer.parseInt(stats[21]);
+		spellpower =  Integer.parseInt(stats[22]);
+		wisdom =  Integer.parseInt(stats[23]);
 //		attack_ability=Boolean.parseBoolean(stats[10]);
 //		if (attack_ability) {
 //			List<String> subArray = new ArrayList<String>();
@@ -168,12 +173,14 @@ public class Item implements Serializable{
 				vitality += affix.getVitality();		
 				thorns += affix.getThorns();
 				regen += affix.getRegen();
-				learning = affix.getLearning();
-				healer_points = affix.getHealer_points();
-				gold_bonus = affix.getGold_bonus();
-				smith_points = affix.getSmith_points();
-				recruit_points = affix.getRecruit_points();
-				drill = affix.getDrill();
+				learning += affix.getLearning();
+				healer_points += affix.getHealer_points();
+				gold_bonus += affix.getGold_bonus();
+				smith_points += affix.getSmith_points();
+				recruit_points += affix.getRecruit_points();
+				drill += affix.getDrill();
+				spellpower += affix.getSpellpower();
+				wisdom += affix.getWisdom();
 				//
 				return true;
 			}
@@ -210,6 +217,8 @@ public class Item implements Serializable{
 			hero.setSmith_points(hero.getSmith_points()+factor*smith_points);
 			hero.setRecruit_points(hero.getRecruit_points()+factor*recruit_points);
 			hero.setDrill(hero.getDrill()+factor*drill);
+			hero.setSpell_power(hero.getSpell_power()+factor*spellpower);
+			hero.setWisdom(hero.getWisdom()+factor*wisdom);
 		}
 	
 	}
@@ -227,6 +236,12 @@ public class Item implements Serializable{
 		}
 		if(precision > 0) {
 			description.add("precision: "+precision);
+		}
+		if (spellpower > 0) {
+			description.add("spellpower: +"+spellpower);
+		}
+		if (wisdom > 0) {
+			description.add("wisdom: +"+wisdom);
 		}
 		if (block > 0) {
 			description.add("block: "+block+"%");
