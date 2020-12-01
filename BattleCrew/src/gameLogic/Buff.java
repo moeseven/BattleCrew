@@ -47,8 +47,8 @@ public class Buff{
 				factor = -1;
 			}
 			hero.setArmor(hero.getArmor()+factor*armor);
-			hero.setDefense(hero.getDefense()+factor*defense);
-			hero.setOffense(hero.getOffense()+factor*offense);
+			hero.setBase_defense(hero.getBase_defense()+factor*defense);
+			hero.setBase_offense(hero.getBase_offense()+factor*offense);
 			hero.setStrength(hero.getStrength()+factor*strength);
 			hero.setDexterity(hero.getDexterity()+factor*dexterity);
 			hero.setVitality(hero.getVitality()+factor*vitality);

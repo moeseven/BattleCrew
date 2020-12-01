@@ -79,12 +79,22 @@ public void set_up_rectangles() {
 		rc.addRect(r);
 	}
 
-		rc.addRect(new ClickableRectangle("study spell",910,10,55,30) {
+		rc.addRect(new ClickableRectangle("study spell",910,10,85,30) {
 			@Override
 			public void onClick(MouseEvent e) {			
 				if(selectedSpell!=null) {
 					selectedSpell.studySpell(window.get_view_controller().getGame().getPlayer().getSelectedUnit());
 				}
+			}
+			@Override
+			public void updateCaption() {
+								
+			}		
+		});
+		rc.addRect(new ClickableRectangle("flip through spells",910,40,85,30) {
+			@Override
+			public void onClick(MouseEvent e) {			
+				window.get_view_controller().getGame().getPlayer().getSelectedUnit().getSpellbook().addLast(window.get_view_controller().getGame().getPlayer().getSelectedUnit().getSpellbook().removeFirst());
 			}
 			@Override
 			public void updateCaption() {
@@ -118,12 +128,18 @@ public void refresh() {
 protected void paintComponent(Graphics g){
 	super.paintComponent(g);
 	rc.paintRectangles(g);
-	for(int i=0; i<rc.rectAngles.size()-1;i++) {
+	for(int i=0; i<rc.rectAngles.size()-2;i++) {
 		g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,rc.getRectAngles().get(i).getImageNumber(), window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY(),null);
 		if (window.get_view_controller().getGame().getShop().getSpells().get(i) == selectedSpell) {
 			g.drawImage(StaticImageLoader.getScaledImage(Resources.IMAGE_PATH,391, window.get_view_controller().image_scale).getScaledInstance(120, 102, 2),-30+rc.rectAngles.get(i).getX(),rc.rectAngles.get(i).getY()+15,null);
 		}
 	}
+	//Spellbook of selected hero
+	g.drawString("Spellbook:", 500, 30);
+	for (int i = 0; i < window.get_view_controller().getGame().getPlayer().getSelectedUnit().getSpellbook().size(); i++) {
+		g.drawString(window.get_view_controller().getGame().getPlayer().getSelectedUnit().getSpellbook().get(i).getName(), 500, 50+i*20);
+	}
+
 }
 
 @Override

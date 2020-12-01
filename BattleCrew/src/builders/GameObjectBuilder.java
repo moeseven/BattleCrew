@@ -89,8 +89,9 @@ public class GameObjectBuilder implements Serializable{
 		csvReader = new BufferedReader(new FileReader(path));
 		while ((row = csvReader.readLine()) != null) {
 		    String[] data = row.split(",");
-		    map_items.put(data[0], data);
+		    map_buffs.put(data[0], data);
 		}
+		map_buffs.remove("name");
 		csvReader.close();
 		//name map
 		map_names= new HashMap<String,String[]>();

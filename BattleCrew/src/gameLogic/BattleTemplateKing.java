@@ -9,6 +9,7 @@ public class BattleTemplateKing extends BattleTemplate {
 		if (game.getKing_of_the_hill()!=null) {
 			LinkedList<String> lines=new LinkedList<String>();		
 			lines.add("king of the hill");
+			lines.add("");
 			lines.add("bounty");
 			lines.add("gold: "+ game.getKing_of_the_hill().getGold_reward());
 			lines.add("experience: "+game.getKing_of_the_hill().getExperience_reward());

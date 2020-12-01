@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 import gameLogic.spellLibrary.BloodlustSpell;
+import gameLogic.spellLibrary.MagicMissile;
 import gameLogic.spellLibrary.StoneskinSpell;
 
 public class Shop implements Serializable{
@@ -19,9 +20,13 @@ public class Shop implements Serializable{
 	private LinkedList<Spell> spells;
 	public Shop(Game game) {
 		this.game=game;
+		//Spells
 		spells = new LinkedList<Spell>();
 		spells.add(new BloodlustSpell());
 		spells.add(new StoneskinSpell());
+		spells.add(new MagicMissile());
+		
+		//
 		inventory = new Inventory();
 		
 		//one hand meele weapon

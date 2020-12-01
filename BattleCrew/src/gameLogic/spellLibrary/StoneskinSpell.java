@@ -10,7 +10,7 @@ public class StoneskinSpell extends Spell {
 		name = "stoneskin";
 		manacost = 10;
 		exhaustion = 50;
-		study_cost = 100;
+		study_cost = 150;
 		study_power = 5;
 	}
 

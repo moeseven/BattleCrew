@@ -18,6 +18,16 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	
 	
 
+	public void setBase_offense(int base_offense) {
+		this.base_offense = base_offense;
+	}
+
+
+	public void setBase_defense(int base_defense) {
+		this.base_defense = base_defense;
+	}
+
+
 	public LinkedList<Spell> getSpellbook() {
 		return spellbook;
 	}
@@ -352,11 +362,11 @@ public class BattleUnit implements HexTileUnit, Serializable{
 	public void randomizeStats(Random random) {
 		//TODO
 		vitality += Math.min(3, Math.max(-3, random.nextGaussian()));
-		strength  +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		dexterity  +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		size  +=Math.min(3, Math.max(-3, 0.5*random.nextGaussian()));
-		endurance  +=Math.min(4, Math.max(-4, random.nextGaussian()));
-		wisdom  +=Math.min(3, Math.max(-3, random.nextGaussian()));
+		strength  += Math.min(3, Math.max(-3, random.nextGaussian()));
+		dexterity  += Math.min(3, Math.max(-3, random.nextGaussian()));
+		size += Math.min(3, Math.max(-3, 0.5*random.nextGaussian()));
+		endurance  += Math.min(4, Math.max(-4, random.nextGaussian()));
+		wisdom += Math.min(3, Math.max(-3, random.nextGaussian()));
 		spell_power +=Math.min(4, Math.max(-4, random.nextGaussian()));
 		base_offense  +=Math.min(5, Math.max(-5, 2*random.nextGaussian()));
 		base_defense += Math.min(5, Math.max(-5, 2*random.nextGaussian()));
@@ -364,14 +374,14 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		courage += Math.min(4, Math.max(-4, random.nextGaussian()));
 		weapon_skill += Math.min(3, Math.max(-3, random.nextGaussian()));
 		recovery += Math.min(3, Math.max(-3, random.nextGaussian()));
-		healer_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		smith_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		gold_bonus +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		command_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		recruit_points +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		salary +=Math.min(3, Math.max(-3, random.nextGaussian()));
-		drill +=Math.min(15, Math.max(-15, 4*random.nextGaussian()));
-		learning +=Math.min(10, Math.max(-10, 3*random.nextGaussian()));
+		healer_points += Math.min(3, Math.max(-3, random.nextGaussian()));
+		smith_points += Math.min(3, Math.max(-3, random.nextGaussian()));
+		gold_bonus += Math.min(3, Math.max(-3, random.nextGaussian()));
+		command_points += Math.min(3, Math.max(-3, random.nextGaussian()));
+		recruit_points += Math.min(3, Math.max(-3, random.nextGaussian()));
+		salary += Math.min(3, Math.max(-3, random.nextGaussian()));
+		drill += Math.min(15, Math.max(-15, 4*random.nextGaussian()));
+		learning += Math.min(10, Math.max(-10, 3*random.nextGaussian()));
 		
 	}
 	
@@ -510,13 +520,12 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		}
 	}
 	public void gain_mana(double m) {
-		if(m>=0) {
-			mana+=m;
+		mana+=m;
+		if(m>=0) {		
 			if (mana>wisdom) {
 				mana = wisdom;
 			}
 		}else {
-			mana-= m;
 			if (mana < 0) {
 				mana = 0;
 			}
@@ -715,6 +724,9 @@ public class BattleUnit implements HexTileUnit, Serializable{
 		case "slash":
 			damage*=(100-resist_slash)/100.0;	
 			break;
+		case "magic":
+			//TODO
+			;
 		default:
 			System.out.println("unkown damage type: "+damage_type);
 			break;
