@@ -52,7 +52,7 @@ public abstract class Spell implements Serializable {
 	}
 	protected void casting_exhaustion(BattleUnit caster) {
 		caster.getPlayer().getGame().log.addLine(caster.getName()+" casts "+name);
-		caster.exhaust(exhaustion*BattleCalculations.weight_endurance_exhaustion_factor(caster));
+		caster.exhaust(exhaustion*(1+BattleCalculations.weight_endurance_exhaustion_factor(caster)));
 	}
 	public boolean studySpell(BattleUnit caster) {
 		if (caster.getWisdom() >= manacost) {

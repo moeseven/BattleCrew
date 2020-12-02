@@ -10,7 +10,7 @@ public class MagicMissile extends Spell {
 	public MagicMissile() {
 		name = "magic missile";
 		manacost = 1;
-		exhaustion = 8;
+		exhaustion = 7;
 		study_cost = 75;
 		study_power = 3;
 	}

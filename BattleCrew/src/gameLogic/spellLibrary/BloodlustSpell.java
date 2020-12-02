@@ -9,7 +9,7 @@ public class BloodlustSpell extends Spell {
 	public BloodlustSpell() {
 		name = "bloodlust";
 		manacost = 10;
-		exhaustion = 50;
+		exhaustion = 40;
 		study_cost = 100;
 		study_power = 5;
 	}
